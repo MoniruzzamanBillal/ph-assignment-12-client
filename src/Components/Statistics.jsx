@@ -1,4 +1,5 @@
 import React from "react";
+import StatisticsCard from "./StatisticsCard";
 
 const CounterData = [
   {
@@ -19,16 +20,10 @@ const Statistics = () => {
   return (
     <div className="CounterContainer bg-blue-200 py-8 ">
       <div className="counterWrapper ">
-        <div className="counter  m-auto w-[99%] xsm:w-[95%] sm:w-[92%] ">
-          <div className="counterWrapper flex justify-between  m-auto ">
-            {CounterData.map((ele, index) => (
-              <div
-                className="counterItem flex flex-col items-center m-auto  w-[32%] text-gray-900 text-sm xsm:text-lg sm:text-xl md:text-2xl xmd:text-3xl font-semibold   "
-                key={index}
-              >
-                <h3 className="counterNumber mb-1.5 ">{ele.number}+</h3>
-                <h4 className="counterTitle  ">{ele.text}</h4>
-              </div>
+        <div className="counter   m-auto w-[98%]  sm:w-[96%] md:w-[94%] ">
+          <div className="counterWrapper grid grid-cols-2 sm:grid-cols-3 gap-x-2 md:gap-x-3 gap-y-4  ">
+            {CounterData.map((counter, index) => (
+              <StatisticsCard key={index} counter={counter} />
             ))}
           </div>
         </div>
@@ -38,3 +33,10 @@ const Statistics = () => {
 };
 
 export default Statistics;
+
+{
+  /* <h3 className="counterNumber mb-1.5 ">{ele.number}+</h3> */
+}
+{
+  /* <h4 className="counterTitle  ">{ele.text}</h4> */
+}

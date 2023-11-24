@@ -2,6 +2,7 @@ import React from "react";
 import HomeBanner from "../Components/HomeBanner";
 import Feature from "../Components/Feature";
 import Statistics from "../Components/Statistics";
+import TopDelivery from "../Components/TopDelivery";
 
 const Home = () => {
   return (
@@ -24,6 +25,12 @@ const Home = () => {
           <Statistics />
         </div>
         {/* statistics section  */}
+
+        {/* our  top delivery man section  */}
+        <div className="topDeliveryMan ">
+          <TopDelivery />
+        </div>
+        {/* our  top delivery man section  */}
 
         {/*  */}
       </div>

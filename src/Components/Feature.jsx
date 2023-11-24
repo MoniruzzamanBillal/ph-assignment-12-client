@@ -25,7 +25,7 @@ const featureCardItem = [
 const Feature = () => {
   return (
     <div className="featureContainer  ">
-      <div className="featureWrapper  w-[99%] sm:w-[95%] md:w-[92%] xmd:w-[88%] lg:w-[85%] m-auto ">
+      <div className="featureWrapper  w-[97%] sm:w-[95%] md:w-[92%] xmd:w-[88%] lg:w-[85%] m-auto ">
         {/*  */}
 
         {/* feature heading  */}
