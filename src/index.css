@@ -9,3 +9,9 @@
 }
 
 /* shared css  */
+
+.imageCenter {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
