@@ -2,10 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 import { RiMenu3Fill, RiCloseFill, RiXingLine } from "react-icons/ri";
-import {
-  MdOutlineCircleNotifications,
-  MdOutlineNotifications,
-} from "react-icons/md";
+import { MdOutlineNotifications } from "react-icons/md";
 
 const navLink = [
   {
@@ -91,7 +88,7 @@ const NavBar = () => {
             {/* notification icon  */}
             <div className="notificationIcon   ml-2 relative z-[10] ">
               <MdOutlineNotifications className="text-2xl" />
-              <div className="absolute inline-flex items-center justify-center w-[1.2rem] h-[1.2rem] text-xs  text-white  border border-white rounded-full -top-1.5 -end-1.5 dark:border-gray-900">
+              <div className=" bg-red-500 absolute inline-flex items-center justify-center w-[1.2rem] h-[1.2rem] text-xs  text-white  border border-white rounded-full -top-1.5 -end-1.5 dark:border-gray-900">
                 8
               </div>
             </div>

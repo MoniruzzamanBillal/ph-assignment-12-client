@@ -1,6 +1,7 @@
 import React from "react";
 import HomeBanner from "../Components/HomeBanner";
 import Feature from "../Components/Feature";
+import Statistics from "../Components/Statistics";
 
 const Home = () => {
   return (
@@ -17,6 +18,12 @@ const Home = () => {
           <Feature />
         </div>
         {/* feature section  */}
+
+        {/* statistics section  */}
+        <div className="statisticsSection py-4  ">
+          <Statistics />
+        </div>
+        {/* statistics section  */}
 
         {/*  */}
       </div>

@@ -3,7 +3,7 @@ import React from "react";
 const FeatureCard = ({ feature }) => {
   const { cardImg, cardTitle, cardSummery } = feature;
   return (
-    <div className="flex group flex-col items-center justify-between rounded-lg bg-gray-100 dark:bg-gray-600 p-4 lg:p-8  cursor-pointer relative m-auto w-[94%] xsm:w-full h-[13rem] xsm:h-[15rem] md:h-[16rem] xmd:h-[18rem] ">
+    <div className="flex group flex-col items-center justify-between rounded-lg bg-gray-100 dark:bg-gray-600 p-4 lg:p-8  cursor-pointer relative m-auto w-[94%] xsm:w-full h-[13rem] xsm:h-[15rem] md:h-[16rem] xmd:h-[18rem] hover:shadow-lg ">
       {/* top border  */}
 
       {/* top line  */}
