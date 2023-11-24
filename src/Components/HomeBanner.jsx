@@ -6,8 +6,8 @@ const HomeBanner = () => {
       <div className="homeBannerWraper">
         <section className="bg-center bg-no-repeat bg-cover bg-[url('https://i.ibb.co/NszxzGz/banner-2.jpg')] bg-gray-500 bg-blend-multiply">
           <div className="px-4 mx-auto max-w-screen-xl text-center py-24 xsm:py-32 sm:py-36 md:py-40  xmd:py-48 lg:py-52 bg-lime-2000 ">
-            <h1 className="mb-4 text-xl font-extrabold tracking-tight  text-white md:text-2xl lg:text-3xl">
-              Track, Manage, and Receive: Your Parcel Solution Awaits!
+            <h1 className=" mb-4 xsm:mb-5 sm:mb-6 md:mb-8 text-2xl font-semibold tracking-tight  text-white md:text-3xl lg:text-4xl">
+              TRACK YOUR PRODUCT
             </h1>
 
             <div className="flex  space-y-4 sm:flex-row sm:justify-center sm:space-y-0   ">
@@ -15,7 +15,7 @@ const HomeBanner = () => {
 
               <div className=" w-[85%] xsm:w-[68%] sm:w-[58%] md:w-[52%] xmd:w-[45%] lg:w-[38%] m-auto  ">
                 <label
-                  for="default-search"
+                  htmlFor="default-search"
                   className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
                 >
                   Search
@@ -31,9 +31,9 @@ const HomeBanner = () => {
                     >
                       <path
                         stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                       />
                     </svg>
