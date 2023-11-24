@@ -2,6 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 import { RiMenu3Fill, RiCloseFill, RiXingLine } from "react-icons/ri";
+import {
+  MdOutlineCircleNotifications,
+  MdOutlineNotifications,
+} from "react-icons/md";
 
 const navLink = [
   {
@@ -9,16 +13,7 @@ const navLink = [
     link: "/",
   },
   {
-    item: "Our Menu",
-    link: "/",
-  },
-  {
-    item: "Blog",
-    link: "/",
-  },
-
-  {
-    item: "My Cart",
+    item: "Dashboard",
     link: "/",
   },
 ];
@@ -78,104 +73,85 @@ const NavBar = () => {
         </div>
         {/* nav left  */}
 
-        {/* nav Middle   */}
-
-        <div className="navLinks hidden md:flex ">
-          {navLink.map((ele, ind) => (
-            <NavLink
-              key={ind}
-              to={ele.link}
-              className={`  ${
-                navLink.length - 1 === ind ? "mr-0" : "mr-5"
-              } relative group  text-base lg:text-lg   text-gray-700 dark:text-[#E4F1FF] hover:text-blue-500 hover:drop-shadow-md  `}
-            >
-              {ele.item}
-              <span className="absolute -bottom-[.15rem] left-0 w-0 h-[.14rem] bg-blue-400 group-hover:w-full group-hover:transition-all"></span>
-            </NavLink>
-          ))}
-        </div>
-
-        {/* nav Middle   */}
-
         {/* nav right  */}
         <div className="navRight  flex justify-between items-center  ">
-          {/* !mobile view  */}
-
-          <div className="notMobile flex justify-center items-center ">
-            {/* avatar image  */}
-            <div
-              className="avaterImg pr-2 relative  "
-              onClick={() => setToggleAvatar(!toggleAvatar)}
-            >
-              {/* {user?.photoURL && (
-              <div className="flex items-center gap-1 cursor-pointer ">
-                <p className=" dancingFont font-semibold text-xs lg:text-sm">
-                  {user?.displayName}
-                </p>
-                <img
-                  className=" w-7 h-7 lg:w-9 lg:h-9  rounded-full ring-1 ring-gray-300 dark:ring-gray-500"
-                  src={user?.photoURL}
-                  alt="Bordered avatar"
-                />
+          <div className="navLinks hidden md:flex  justify-center items-center   mr-1.5 ">
+            {navLink.map((ele, ind) => (
+              <NavLink
+                key={ind}
+                to={ele.link}
+                className={`  ${
+                  navLink.length - 1 === ind ? "mr-0" : "mr-5"
+                } relative group  text-base lg:text-lg   text-gray-700 dark:text-[#E4F1FF] hover:text-blue-500 hover:drop-shadow-md  `}
+              >
+                {ele.item}
+                <span className="absolute -bottom-[.15rem] left-0 w-0 h-[.14rem] bg-blue-400 group-hover:w-full group-hover:transition-all"></span>
+              </NavLink>
+            ))}
+            {/* notification icon  */}
+            <div className="notificationIcon   ml-2 relative z-[10] ">
+              <MdOutlineNotifications className="text-2xl" />
+              <div className="absolute inline-flex items-center justify-center w-[1.2rem] h-[1.2rem] text-xs  text-white  border border-white rounded-full -top-1.5 -end-1.5 dark:border-gray-900">
+                8
               </div>
-            )} */}
-
-              <div className="flex items-center gap-1 cursor-pointer ">
-                <p className=" dancingFont font-semibold text-xs lg:text-sm">
-                  displayName
-                </p>
-                <img
-                  className=" w-7 h-7 lg:w-9 lg:h-9  rounded-full ring-1 ring-gray-300 dark:ring-gray-500"
-                  // src={user?.photoURL}
-                  alt="User photo"
-                />
-              </div>
-
-              {/* avatar item  */}
-              {toggleAvatar && (
-                <div className="menuList text-center py-2 bg-[#183D3D] dark:bg-gray-300 absolute transform -translate-x-1/2 -translate-y-1/2 -right-[4.8rem] top-[5.7rem] xsm:top-[5.8rem] lg:top-[6.3rem] w-[10rem] ">
-                  <div className="menuItem   ">
-                    {avatarItems.map((ele, ind) => (
-                      <div
-                        key={ind}
-                        className={` text-base ${
-                          ind === navLink.length - 1 ? "pb-0" : "pb-3"
-                        }  `}
-                      >
-                        <a
-                          href={ele.link}
-                          className="  cursor-pointer text-gray-50 dark:text-gray-900 "
-                          onClick={() => handleToggle()}
-                        >
-                          {" "}
-                          {ele.item}{" "}
-                        </a>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* avatar item  */}
             </div>
 
-            {/* avatar image  */}
+            {/* notification icon  */}
+          </div>
+          {/* !mobile view  */}
 
-            {/* {user ? (
-            <Link
-              className=" hidden md:block bg-gray-600 py-2 px-3 lg:px-4  text-white font-semibold text-xs lg:text-sm  "
-              onClick={() => handleLogout()}
+          <div className="notMobile flex justify-center items-center relative z-[10] ">
+            {/*  */}
+            {/*  */}
+            <button
+              id="dropdownUserAvatarButton"
+              data-dropdown-toggle="dropdownAvatar"
+              className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+              type="button"
+              onClick={() => setToggleAvatar(!toggleAvatar)}
             >
-              Log out
-            </Link>
-          ) : (
-            <Link
-              to={`/login`}
-              className=" hidden md:block bg-gray-600 py-2 px-3 lg:px-4  text-white font-semibold text-xs lg:text-sm "
-            >
-              Log in
-            </Link>
-          )} */}
+              <span className="sr-only">Open user menu</span>
+              <img
+                className="w-8 h-8 rounded-full"
+                src="/docs/images/people/profile-picture-3.jpg"
+                alt="user photo"
+              />
+            </button>
+
+            {/* <!-- Dropdown menu --> */}
+
+            {toggleAvatar && (
+              <div
+                id="dropdownAvatar"
+                className="z-10 absolute  top-[7rem] lg:top-[7.2rem]  -right-[6rem] md:-right-[2rem] lg:-right-[1.2rem]  transform -translate-x-1/2 -translate-y-1/2  bg-blue-200 divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+              >
+                <div className="px-4 py-3 text-sm text-gray-900 dark:text-white cursor-pointer">
+                  <div>Bonnie Green</div>
+                  <div className="font-medium truncate">name@flowbite.com</div>
+                </div>
+                <ul
+                  className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                  aria-labelledby="dropdownUserAvatarButton"
+                >
+                  <li
+                    className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    onClick={() => setToggleAvatar(!toggleAvatar)}
+                  >
+                    Dashboard
+                  </li>
+                  <li
+                    className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    onClick={() => setToggleAvatar(!toggleAvatar)}
+                  >
+                    Sign out
+                  </li>
+                </ul>
+              </div>
+            )}
+
+            {/*  */}
+            {/*  */}
+
             <Link
               to={`/login`}
               className=" hidden md:block bg-gray-600 py-2 px-3 lg:px-4  text-white font-semibold text-xs lg:text-sm "
