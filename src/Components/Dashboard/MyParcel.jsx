@@ -9,91 +9,92 @@ const MyParcel = () => {
 
         {/* <!-- component --> */}
 
-        <div class=" py-2 bg-red-400    ">
-          <div class="align-middle  inline-block min-w-full shadow overflow-hidden bg-gray-100 shadow-dashboard px-8 pt-3">
-            <table class="min-w-full">
+        <div className=" bg-red-400    ">
+          {/* <div className="align-middle  inline-block min-w-full shadow overflow-hidden bg-gray-600 shadow-dashboard px-8 pt-3"> */}
+          <div className=" flex flex-col justify-center items-center h-screen  shadow  bg-gray-50  px-2 pt-3">
+            <table className=" ">
               <thead>
                 <tr>
                   {/* parcel type  */}
-                  <th class=" text-center px-2 py-2 border-b-2 border-gray-300 leading-4 text-blue-500 ">
+                  <th className=" text-center px-2 py-2 border-b-2 border-gray-300 leading-4 text-blue-500 ">
                     Parcel type
                   </th>
                   {/* parcel type  */}
 
                   {/* requested deliveryc date  */}
-                  <th class="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
+                  <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
                     Requested delivery date
                   </th>
                   {/* requested deliveryc date  */}
 
                   {/* approximate delivery date  */}
-                  <th class=" text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
+                  <th className=" text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
                     Approximate delivery date
                   </th>
                   {/* approximate delivery date  */}
 
                   {/* Booking Date delivery date  */}
-                  <th class="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
+                  <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
                     Booking Date
                   </th>
                   {/* Booking Date delivery date  */}
 
                   {/* Delivery Men ID  */}
-                  <th class="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
+                  <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
                     Delivery Men ID
                   </th>
                   {/*Delivery Men ID  */}
 
                   {/* Booking Status */}
-                  <th class="px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500 text-center">
+                  <th className="px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500 text-center">
                     Booking Status
                   </th>
                   {/*Booking Status  */}
 
                   {/* Booking Status */}
-                  <th class="px-2 py-2 border-b-2 border-gray-300 text-center leading-4 text-blue-500">
+                  <th className="px-2 py-2 border-b-2 border-gray-300 text-center leading-4 text-blue-500">
                     Action
                   </th>
                   {/*Booking Status  */}
                 </tr>
               </thead>
-              <tbody class="bg-white">
+              <tbody className="bg-white">
                 <tr>
-                  <td class="  py-2 text-left leading-4    border-b border-gray-500">
-                    <div class="flex items-center justify-center ">
+                  <td className="  py-2 text-left leading-4    border-b border-gray-500">
+                    <div className="flex items-center justify-center ">
                       <div>
-                        <div class="text-sm leading-5 text-gray-800">
+                        <div className="text-sm leading-5 text-gray-800">
                           parcel type
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td class="py-2 text-left leading-4  border-b border-gray-500">
-                    <div class="text-sm leading-5 text-blue-900 flex items-center justify-center">
+                  <td className="py-2 text-left leading-4  border-b border-gray-500">
+                    <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
                       requested delivery date
                     </div>
                   </td>
-                  <td class="py-2 text-left leading-4  border-b border-gray-500 ">
+                  <td className="py-2 text-left leading-4  border-b border-gray-500 ">
                     <div className="flex items-center justify-center">
                       approximate delivary date
                     </div>
                   </td>
-                  <td class="py-2 text-left leading-4  border-b border-gray-500">
+                  <td className="py-2 text-left leading-4  border-b border-gray-500">
                     <div className="flex items-center justify-center">
                       booking date
                     </div>
                   </td>
-                  <td class="py-2 text-left leading-4  border-b border-gray-500">
+                  <td className="py-2 text-left leading-4  border-b border-gray-500">
                     <div className="flex items-center justify-center">
                       delivary man id
                     </div>
                   </td>
-                  <td class="py-2 text-left leading-4  border-b border-gray-500">
+                  <td className="py-2 text-left leading-4  border-b border-gray-500">
                     <div className="flex items-center justify-center">
                       pending ...
                     </div>
                   </td>
-                  <td class="py-2 text-left leading-4 border-b border-gray-500">
+                  <td className="py-2 text-left leading-4 border-b border-gray-500">
                     <div className="flex items-center justify-center">
                       update or cancel
                     </div>
@@ -105,140 +106,146 @@ const MyParcel = () => {
                 {/*  */}
                 {/*  */}
                 <tr>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                    <div class="flex items-center">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                    <div className="flex items-center">
                       <div>
-                        <div class="text-sm leading-5 text-gray-800">#1</div>
+                        <div className="text-sm leading-5 text-gray-800">
+                          #1
+                        </div>
                       </div>
                     </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                    <div class="text-sm leading-5 text-blue-900">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                    <div className="text-sm leading-5 text-blue-900">
                       Damilare Anjorin
                     </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
                     damilareanjorin1@gmail.com
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
                     +2348106420637
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                    <span class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
+                    <span className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
                       <span
                         aria-hidden
-                        class="absolute inset-0 bg-red-200 opacity-50 rounded-full"
+                        className="absolute inset-0 bg-red-200 opacity-50 rounded-full"
                       ></span>
-                      <span class="relative text-xs">not active</span>
+                      <span className="relative text-xs">not active</span>
                     </span>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">
                     September 12
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                    <button class="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
+                  <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
+                    <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
                       View Details
                     </button>
                   </td>
                 </tr>
                 <tr>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                    <div class="flex items-center">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                    <div className="flex items-center">
                       <div>
-                        <div class="text-sm leading-5 text-gray-800">#1</div>
+                        <div className="text-sm leading-5 text-gray-800">
+                          #1
+                        </div>
                       </div>
                     </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                    <div class="text-sm leading-5 text-blue-900">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                    <div className="text-sm leading-5 text-blue-900">
                       Damilare Anjorin
                     </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
                     damilareanjorin1@gmail.com
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
                     +2348106420637
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                    <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
+                    <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                       <span
                         aria-hidden
-                        class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
+                        className="absolute inset-0 bg-green-200 opacity-50 rounded-full"
                       ></span>
-                      <span class="relative text-xs">active</span>
+                      <span className="relative text-xs">active</span>
                     </span>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">
                     September 12
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                    <button class="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
+                  <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
+                    <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
                       View Details
                     </button>
                   </td>
                 </tr>
                 <tr>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                    <div class="flex items-center">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                    <div className="flex items-center">
                       <div>
-                        <div class="text-sm leading-5 text-gray-800">#1</div>
+                        <div className="text-sm leading-5 text-gray-800">
+                          #1
+                        </div>
                       </div>
                     </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                    <div class="text-sm leading-5 text-blue-900">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
+                    <div className="text-sm leading-5 text-blue-900">
                       Damilare Anjorin
                     </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
                     damilareanjorin1@gmail.com
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
                     +2348106420637
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                    <span class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
+                    <span className="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
                       <span
                         aria-hidden
-                        class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"
+                        className="absolute inset-0 bg-orange-200 opacity-50 rounded-full"
                       ></span>
-                      <span class="relative text-xs">disabled</span>
+                      <span className="relative text-xs">disabled</span>
                     </span>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">
                     September 12
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                    <button class="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
+                  <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
+                    <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
                       View Details
                     </button>
                   </td>
                 </tr>
               </tbody>
             </table>
-            <div class="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">
+            <div className="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">
               <div>
-                <p class="text-sm leading-5 text-blue-700">
+                <p className="text-sm leading-5 text-blue-700">
                   Showing
-                  <span class="font-medium">1</span>
+                  <span className="font-medium">1</span>
                   to
-                  <span class="font-medium">200</span>
+                  <span className="font-medium">200</span>
                   of
-                  <span class="font-medium">2000</span>
+                  <span className="font-medium">2000</span>
                   results
                 </p>
               </div>
               <div>
-                <div class="relative z-0 inline-flex shadow-sm">
+                <div className="relative z-0 inline-flex shadow-sm">
                   <div>
                     <a
                       href="#"
-                      class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
+                      className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
                       aria-label="Previous"
                     >
                       <svg
-                        class="h-5 w-5"
+                        className="h-5 w-5"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -253,19 +260,19 @@ const MyParcel = () => {
                   <div>
                     <a
                       href="#"
-                      class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-700 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
+                      className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-700 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
                     >
                       1
                     </a>
                     <a
                       href="#"
-                      class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
+                      className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
                     >
                       2
                     </a>
                     <a
                       href="#"
-                      class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
+                      className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
                     >
                       3
                     </a>
@@ -273,11 +280,11 @@ const MyParcel = () => {
                   <div v-if="pagination.current_page < pagination.last_page">
                     <a
                       href="#"
-                      class="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
+                      className="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
                       aria-label="Next"
                     >
                       <svg
-                        class="h-5 w-5"
+                        className="h-5 w-5"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >

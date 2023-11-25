@@ -6,6 +6,8 @@ import Register from "../Pages/Register";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import BookParcel from "../Components/Dashboard/BookParcel";
 import MyParcel from "../Components/Dashboard/MyParcel";
+import MyProfile from "../Components/Dashboard/MyProfile";
+import AllParcel from "../Components/Dashboard/admin/AllParcel";
 
 const Router = createBrowserRouter([
   {
@@ -31,10 +33,6 @@ const Router = createBrowserRouter([
     element: <Dashboard />,
     children: [
       {
-        path: "/dashboard/",
-        element: <p> book parcel </p>,
-      },
-      {
         path: "/dashboard/myparcel",
         element: <MyParcel />,
       },
@@ -44,7 +42,23 @@ const Router = createBrowserRouter([
       },
       {
         path: "/dashboard/myprofile",
-        element: <p> My profile </p>,
+        element: <MyProfile />,
+      },
+      {
+        path: "/dashboard/statistics",
+        element: <p> book parcel </p>,
+      },
+      {
+        path: "/dashboard/parcels",
+        element: <AllParcel />,
+      },
+      {
+        path: "/dashboard/users",
+        element: <p>all users </p>,
+      },
+      {
+        path: "/dashboard/deliverymans",
+        element: <p>all delivery man </p>,
       },
     ],
   },

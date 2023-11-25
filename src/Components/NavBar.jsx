@@ -13,7 +13,7 @@ const navLink = [
   },
   {
     item: "Dashboard",
-    link: "/dashboard/bookparcel",
+    link: "/dashboard",
   },
 ];
 

@@ -5,7 +5,7 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 // importing icons:
 import { ImBook } from "react-icons/im";
 import { BsCash, BsGraphUpArrow } from "react-icons/bs";
-import { FaPiggyBank, FaBoxOpen } from "react-icons/fa";
+import { FaPiggyBank, FaBoxOpen, FaUsers } from "react-icons/fa";
 import { TbCurrencyTaka } from "react-icons/tb";
 import { GiReceiveMoney } from "react-icons/gi";
 import { AiFillCreditCard, AiOutlineShop } from "react-icons/ai";
@@ -15,35 +15,31 @@ import { RiProfileFill } from "react-icons/ri";
 import { IoIosHome } from "react-icons/io";
 import UseAuth from "../../Hooks/UseAuth";
 import Loading from "../../Components/Loading/Loading";
+import { IoStatsChart } from "react-icons/io5";
+import { FaUserAstronaut } from "react-icons/fa6";
 
 // global variables:
 
-const bottomMenuItems = [
+const adminMenu = [
   {
-    title: " Cash",
-    icon: <BsCash />,
+    title: "Statistics",
+    path: "/dashboard/statistics",
+    icon: <IoStatsChart />,
   },
   {
-    title: "Credit card",
-    icon: <AiFillCreditCard />,
+    title: "All parcel",
+    path: "/dashboard/parcels",
+    icon: <CiBookmarkCheck />,
   },
   {
-    title: "Business",
-    icon: <MdBusinessCenter />,
+    title: "All users",
+    path: "/dashboard/users",
+    icon: <FaUsers />,
   },
   {
-    title: "Loan",
-    icon: <AiOutlineShop />,
-    red: true,
-  },
-
-  {
-    title: "Investment",
-    icon: <BsGraphUpArrow />,
-  },
-  {
-    title: "Asset",
-    icon: <MdOutlineDiamond />,
+    title: "All delivery man",
+    path: "/dashboard/deliverymans",
+    icon: <FaUserAstronaut />,
   },
 ];
 
@@ -90,9 +86,9 @@ const Dashboard = () => {
     return <Loading />;
   }
 
-  console.log("--------------------------");
-  console.log(user);
-  console.log("--------------------------");
+  // console.log("--------------------------");
+  // console.log(user);
+  // console.log("--------------------------");
 
   return (
     <section className="relative flex justify-end">
@@ -121,29 +117,6 @@ const Dashboard = () => {
 
             {/* top account container ends */}
 
-            {/* top list items starts  */}
-            {/* <ul className="pt-5 topList bg-red-500 ">
-              {topMenuItems.map((ele, i) => (
-                <li
-                  key={i}
-                  onClick={() => setIsSidebarActive(false)}
-                  className={({ isActive }) =>
-                    isActive
-                      ? `flex rounded-md p-2 cursor-pointer bg-gray-50 text-gray-700 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4 mb-1 
-              `
-                      : `flex rounded-md p-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4 mb-1 
-              `
-                  }
-                >
-                  <div className="text-lg icon">{ele.src}</div>
-                  <span className={` flex origin-left duration-200`}>
-                    {ele.title}
-                  </span>
-                </li>
-              ))}
-            </ul> */}
-            {/* top list items ends  */}
-
             {/* bottom list items start  */}
             {/* bottom list items start  */}
 
@@ -163,7 +136,11 @@ const Dashboard = () => {
             </Link>
 
             <div className="sidebarList mt-2  ">
-              {userMenu.map((ele, ind) => (
+              {/*  */}
+              {/*  */}
+              {/* admin menu  */}
+
+              {adminMenu.map((ele, ind) => (
                 <NavLink
                   to={ele.path}
                   key={ind}
@@ -177,6 +154,32 @@ const Dashboard = () => {
                   </h1>
                 </NavLink>
               ))}
+              {/* admin menu  */}
+              {/*  */}
+              {/*  */}
+
+              {/*  */}
+              {/*  */}
+              {/* normal user side links  */}
+              {/* {userMenu.map((ele, ind) => (
+                <NavLink
+                  to={ele.path}
+                  key={ind}
+                  className={`flex rounded-md py-3 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
+                >
+                  <div className="icon text-lg">{ele.icon}</div>
+                  <h1
+                    className={`hidden gap-1  origin-left duration-200 w-full sm:flex`}
+                  >
+                    {ele.title}
+                  </h1>
+                </NavLink>
+              ))} */}
+              {/* normal user side links ends  */}
+              {/*  */}
+              {/*  */}
+
+              {/*  */}
             </div>
 
             {/* bottom list items end  */}
