@@ -8,6 +8,7 @@ import BookParcel from "../Components/Dashboard/BookParcel";
 import MyParcel from "../Components/Dashboard/MyParcel";
 import MyProfile from "../Components/Dashboard/MyProfile";
 import AllParcel from "../Components/Dashboard/admin/AllParcel";
+import AllDeliveryMan from "../Components/Dashboard/admin/AllDeliveryMan";
 
 const Router = createBrowserRouter([
   {
@@ -58,7 +59,7 @@ const Router = createBrowserRouter([
       },
       {
         path: "/dashboard/deliverymans",
-        element: <p>all delivery man </p>,
+        element: <AllDeliveryMan />,
       },
     ],
   },
