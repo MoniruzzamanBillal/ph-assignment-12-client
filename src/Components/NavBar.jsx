@@ -3,6 +3,8 @@ import { Link, NavLink } from "react-router-dom";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 import { RiMenu3Fill, RiCloseFill, RiXingLine } from "react-icons/ri";
 import { MdOutlineNotifications } from "react-icons/md";
+import UseAuth from "../Hooks/UseAuth";
+import Loading from "./Loading/Loading";
 
 const navLink = [
   {
@@ -11,7 +13,7 @@ const navLink = [
   },
   {
     item: "Dashboard",
-    link: "/dashboard",
+    link: "/dashboard/bookparcel",
   },
 ];
 
@@ -33,11 +35,28 @@ const avatarItems = [
 const NavBar = () => {
   const [toggleAvatar, setToggleAvatar] = useState(false);
   const [toggle, setToggle] = useState(false);
+  const { user, loading, logoutFunction, toggleDarkMode, darkmode } = UseAuth();
 
   // menu toggle
   const handleToggle = () => {
     setToggle(!toggle);
   };
+
+  // dark mode toggle
+  const handleDarkMode = () => {
+    document.documentElement.classList.toggle("dark");
+    toggleDarkMode();
+  };
+
+  // logout function
+  const handleLogout = () => {
+    setToggleAvatar(!toggleAvatar);
+    logoutFunction();
+  };
+
+  // console.log("--------------------------");
+  // console.log(user);
+  // console.log("--------------------------");
 
   return (
     <div
@@ -88,7 +107,7 @@ const NavBar = () => {
             {/* notification icon  */}
             <div className="notificationIcon   ml-2 relative z-[10] ">
               <MdOutlineNotifications className="text-2xl" />
-              <div className=" bg-red-500 absolute inline-flex items-center justify-center w-[1.2rem] h-[1.2rem] text-xs  text-white  border border-white rounded-full -top-1.5 -end-1.5 dark:border-gray-900">
+              <div className="  absolute inline-flex items-center justify-center w-[1.2rem] h-[1.2rem] text-xs  text-white  border border-white rounded-full -top-1.5 -end-1.5 dark:border-gray-900">
                 8
               </div>
             </div>
@@ -97,23 +116,34 @@ const NavBar = () => {
           </div>
           {/* !mobile view  */}
 
-          <div className="notMobile flex justify-center items-center relative z-[10] ">
+          <div className="notMobile  mr-1 flex justify-center items-center relative z-[10]  ">
             {/*  */}
             {/*  */}
-            <button
-              id="dropdownUserAvatarButton"
-              data-dropdown-toggle="dropdownAvatar"
-              className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-              type="button"
-              onClick={() => setToggleAvatar(!toggleAvatar)}
-            >
-              <span className="sr-only">Open user menu</span>
-              <img
-                className="w-8 h-8 rounded-full"
-                src="/docs/images/people/profile-picture-3.jpg"
-                alt="user photo"
-              />
-            </button>
+
+            {user ? (
+              <button
+                id="dropdownUserAvatarButton"
+                data-dropdown-toggle="dropdownAvatar"
+                className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                type="button"
+                onClick={() => setToggleAvatar(!toggleAvatar)}
+              >
+                <span className="sr-only">Open user menu</span>
+                <img
+                  className="w-8 h-8 rounded-full "
+                  // src="/docs/images/people/profile-picture-3.jpg"
+                  src={`${user?.photoURL}`}
+                  alt="user photo"
+                />
+              </button>
+            ) : (
+              <Link
+                to={`/login`}
+                className=" hidden md:block bg-gray-600 py-2 px-3 lg:px-4  text-white font-semibold text-xs lg:text-sm "
+              >
+                Log in
+              </Link>
+            )}
 
             {/* <!-- Dropdown menu --> */}
 
@@ -123,22 +153,23 @@ const NavBar = () => {
                 className="z-10 absolute  top-[7rem] lg:top-[7.2rem]  -right-[6rem] md:-right-[2rem] lg:-right-[1.2rem]  transform -translate-x-1/2 -translate-y-1/2  bg-blue-200 divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
               >
                 <div className="px-4 py-3 text-sm text-gray-900 dark:text-white cursor-pointer">
-                  <div>Bonnie Green</div>
-                  <div className="font-medium truncate">name@flowbite.com</div>
+                  <div> {user?.displayName} </div>
+                  <div className="font-medium truncate"> {user?.email} </div>
                 </div>
                 <ul
                   className="py-2 text-sm text-gray-700 dark:text-gray-200"
                   aria-labelledby="dropdownUserAvatarButton"
                 >
-                  <li
+                  <Link
+                    to={"/dashboard"}
                     className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     onClick={() => setToggleAvatar(!toggleAvatar)}
                   >
                     Dashboard
-                  </li>
+                  </Link>
                   <li
                     className="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    onClick={() => setToggleAvatar(!toggleAvatar)}
+                    onClick={() => handleLogout()}
                   >
                     Sign out
                   </li>
@@ -148,20 +179,18 @@ const NavBar = () => {
 
             {/*  */}
             {/*  */}
-
-            <Link
-              to={`/login`}
-              className=" hidden md:block bg-gray-600 py-2 px-3 lg:px-4  text-white font-semibold text-xs lg:text-sm "
-            >
-              Log in
-            </Link>
           </div>
 
           {/* !mobile view  */}
 
           {/* toggle button  */}
-          <div className="toggleMode  pl-0 md:pl-2 mr-3 md:pr-0 text-xl sm:text-2xl ">
-            <BsFillMoonFill />
+          <div
+            className="toggleMode  pl-0 md:pl-2 mr-3 md:pr-0 text-xl sm:text-2xl "
+            onClick={() => handleDarkMode()}
+          >
+            {/* <BsFillMoonFill /> */}
+
+            {darkmode ? <BsFillMoonFill /> : <BsFillSunFill />}
           </div>
           {/* toggle button  */}
 
@@ -181,7 +210,7 @@ const NavBar = () => {
             {/* menu list  */}
 
             {toggle && (
-              <div className="menuList text-center py-2 bg-[#183D3D] dark:bg-gray-300 absolute transform -translate-x-1/2 -translate-y-1/2 -right-[4.8rem] top-[7.1rem] sm:top-[7.4rem] w-[10rem] ">
+              <div className="menuList text-center py-2 bg-[#183D3D] dark:bg-gray-300 absolute transform -translate-x-1/2 -translate-y-1/2 -right-[4.8rem] top-[5.7rem] sm:top-[5.8rem] w-[10rem] ">
                 <div className="menuItem mb-4  ">
                   {navLink.map((ele, ind) => (
                     <div
@@ -202,32 +231,24 @@ const NavBar = () => {
                   ))}
                 </div>
 
-                {/* {user ? (
-                <Link
-                  className=" bg-amber-300 dark:bg-violet-500 rounded  py-1.5 px-5 text-gray-700 dark:text-white "
-                  onClick={() => {
-                    handleToggle();
-                  }}
-                >
-                  Log out
-                </Link>
-              ) : (
-                <Link
-                  to={`/login`}
-                  className=" bg-amber-300 dark:bg-violet-500 rounded   py-1.5 px-5 text-gray-700 dark:text-white "
-                  onClick={() => handleToggle()}
-                >
-                  Log in
-                </Link>
-              )} */}
-
-                <Link
-                  to={`/login`}
-                  className=" bg-amber-300 dark:bg-violet-500 rounded   py-1.5 px-5 text-gray-700 dark:text-white "
-                  onClick={() => handleToggle()}
-                >
-                  Log in
-                </Link>
+                {user ? (
+                  <Link
+                    className=" bg-amber-300 dark:bg-violet-500 rounded  py-1.5 px-5 text-gray-700 dark:text-white "
+                    onClick={() => {
+                      handleToggle();
+                    }}
+                  >
+                    Log out
+                  </Link>
+                ) : (
+                  <Link
+                    to={`/login`}
+                    className=" bg-amber-300 dark:bg-violet-500 rounded   py-1.5 px-5 text-gray-700 dark:text-white "
+                    onClick={() => handleToggle()}
+                  >
+                    Log in
+                  </Link>
+                )}
               </div>
             )}
             {/* menu list  */}

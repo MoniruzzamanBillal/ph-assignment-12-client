@@ -1,6 +1,6 @@
 // importing libraries:
 import { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 
 // importing icons:
 import { ImBook } from "react-icons/im";
@@ -12,6 +12,9 @@ import { AiFillCreditCard, AiOutlineShop } from "react-icons/ai";
 import { MdBusinessCenter, MdOutlineDiamond } from "react-icons/md";
 import { CiBookmarkCheck } from "react-icons/ci";
 import { RiProfileFill } from "react-icons/ri";
+import { IoIosHome } from "react-icons/io";
+import UseAuth from "../../Hooks/UseAuth";
+import Loading from "../../Components/Loading/Loading";
 
 // global variables:
 
@@ -79,7 +82,17 @@ const deliveryManMenu = [
 
 const Dashboard = () => {
   // states:
+
   const [isSidebarActive, setIsSidebarActive] = useState(false);
+  const { user, loading } = UseAuth();
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  console.log("--------------------------");
+  console.log(user);
+  console.log("--------------------------");
 
   return (
     <section className="relative flex justify-end">
@@ -96,12 +109,12 @@ const Dashboard = () => {
               <div className="flex items-center space-x-4 ">
                 <img
                   className="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500 cursor-pointer"
-                  src="https://static.theprint.in/wp-content/uploads/2021/06/Elon-Musk.jpg?compress=true&quality=80&w=376&dpr=2.6"
+                  src={`${user?.photoURL}`}
                   alt="Bordered avatar"
                 />
 
                 <div className=" font-medium dark:text-white sm:block">
-                  <div>Jese Leos</div>
+                  <div>{user?.displayName} </div>
                 </div>
               </div>
             </div>
@@ -133,28 +146,28 @@ const Dashboard = () => {
 
             {/* bottom list items start  */}
             {/* bottom list items start  */}
-            <ul className="pt-4 bottomList mt-5 ">
-              {/* <h1 className="text-gray-50 mb-2">Accounts</h1> */}
 
-              {/* <li
-                className={`flex rounded-md p-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4 
-              `}
+            <Link
+              to={"/"}
+              className={`flex rounded-md mt-10 py-3 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
+            >
+              <div className="icon text-lg">
+                {" "}
+                <IoIosHome />{" "}
+              </div>
+              <h1
+                className={`hidden gap-1  origin-left duration-200 w-full sm:flex`}
               >
-                <div className="icon text-lg">
-                  <ImBook />
-                </div>
-                <span className={` hidden origin-left duration-200 sm:flex `}>
-                  All transactions
-                </span>
-              </li> */}
-            </ul>
+                Home
+              </h1>
+            </Link>
 
             <div className="sidebarList mt-2  ">
               {userMenu.map((ele, ind) => (
-                <Link
+                <NavLink
                   to={ele.path}
                   key={ind}
-                  className={`flex rounded-md py-4 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
+                  className={`flex rounded-md py-3 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
                 >
                   <div className="icon text-lg">{ele.icon}</div>
                   <h1
@@ -162,7 +175,7 @@ const Dashboard = () => {
                   >
                     {ele.title}
                   </h1>
-                </Link>
+                </NavLink>
               ))}
             </div>
 
