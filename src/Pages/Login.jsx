@@ -7,47 +7,31 @@ import { Helmet } from "react-helmet";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../Utilities/Firebase.config";
 import UseInput from "../Hooks/UseInput";
+import UseAuth from "../Hooks/UseAuth";
 
 const Login = () => {
   const emailInput = UseInput();
   const passwordInput = UseInput();
   const navigate = useNavigate();
   const location = useLocation();
-
-  //   toast for success
-  const loggedInSuccessfully = () =>
-    toast.success("logged in successfully!", {
-      position: "top-center",
-      autoClose: 1200,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-
-  // toast for error login
-  const errorlogin = () =>
-    toast.warn("Username or password is incorrect!!", {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
+  const { user, loginFunction } = UseAuth();
 
   // email login
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const email = emailInput.value;
     const password = passwordInput.value;
 
     console.log(email);
     console.log(password);
+
+    const loginResponse = await loginFunction(email, password);
+
+    console.log(loginResponse);
   };
+
+  console.log("--------------------------");
+  console.log(user);
+  console.log("--------------------------");
 
   return (
     <div className="w-full h-screen font-sans imageCenter   bg-[url('https://i.ibb.co/R0QzCGk/pexels-norma-mortenson-4393668-1.jpg')] ">

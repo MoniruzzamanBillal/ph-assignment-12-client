@@ -7,6 +7,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { updateProfile } from "firebase/auth";
 import UseAxios from "../Hooks/UseAxios";
+import UseAuth from "../Hooks/UseAuth";
+import {
+  inputFieldError,
+  passwordValidationError,
+  registerSuccessfully,
+  termError,
+} from "../ToastFunc/ToastFunction";
 
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING;
 
@@ -18,64 +25,25 @@ const Register = () => {
   const [isChecked, setIsChecked] = useState(false); // for checkbox state
   const [imageInput, setImageInput] = useState();
   const [imageUrl, setImageUrl] = useState("");
+  const [category, setCategory] = useState("");
+  const { registerFunction, user, logoutFunction } = UseAuth();
 
   const nameInput = UseInput();
   const emailInput = UseInput();
   const passwordlInput = UseInput();
 
-  // toast for success fully register
-  const registerSuccessfully = () =>
-    toast.success("Register successfully!", {
-      position: "top-center",
-      autoClose: 1200,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-
-  // toast for term and condition error
-  const termError = () =>
-    toast.error("Select terms and conditions", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-
-  // toast for empty input field
-  const inputFieldError = () =>
-    toast.error("All fields are required", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-  // toast for password validation
-  const passwordValidationError = () =>
-    toast.error(
-      "Password should be at least 6 characters long, contain a capital letter, and a special character",
-      {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      }
+  // Function to validate the password
+  const isPasswordValid = (password) => {
+    const minLength = 6;
+    const hasCapitalLetter = /[A-Z]/.test(password);
+    const hasSpecialCharacter = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(
+      password
     );
+
+    return (
+      password.length >= minLength && hasCapitalLetter && hasSpecialCharacter
+    );
+  };
 
   // function for handling check box state
   const handleCheckboxChange = () => {
@@ -86,11 +54,18 @@ const Register = () => {
     const name = nameInput.value;
     const email = emailInput.value;
     const password = passwordlInput.value;
-    console.log("click");
 
     const imageFile = { image: imageInput };
 
-    console.log(imageFile);
+    // check  null input value
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      return inputFieldError();
+    } else if (!isChecked) {
+      return termError();
+    }
+    //  else if (!isPasswordValid(password)) {
+    //   return passwordValidationError();
+    // }
 
     const imageResponse = await axiosUrl.post(imageHostingApi, imageFile, {
       headers: {
@@ -98,14 +73,43 @@ const Register = () => {
       },
     });
 
-    console.log(imageResponse);
-
     if (imageResponse?.data?.success) {
-      const photoUrl = imageResponse?.data?.display_url;
+      const photoUrl = imageResponse?.data?.data?.display_url;
       setImageUrl(photoUrl);
+
+      const registerResponse = await registerFunction(email, password);
+
+      if (registerResponse?.user) {
+        updateProfile(registerResponse?.user, {
+          displayName: name,
+          photoURL: photoUrl,
+        })
+          .then((response) => {
+            logoutFunction();
+            registerSuccessfully();
+            setTimeout(() => {
+              navigate("/login");
+            }, 1200);
+          })
+          .catch((error) => {
+            const errormsg = error.message;
+            console.log(errormsg);
+            toast.warn(`${errormsg}`, {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+          });
+      }
     }
   };
 
+  // for taking image input value
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -128,6 +132,9 @@ const Register = () => {
     },
   };
 
+  console.log("--------------------------");
+  console.log(user);
+  console.log("--------------------------");
   return (
     <div className="   ">
       {/* <!-- component --> */}
@@ -198,6 +205,27 @@ const Register = () => {
               />
             </div>
           </motion.div>
+
+          {/* category  */}
+          <div>
+            <label
+              htmlFor="category"
+              className="block mb-2 text-sm font-medium text-gray-900 "
+            >
+              User Category
+            </label>
+            <select
+              id="category"
+              onChange={(e) => setCategory(e.target.value)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 "
+            >
+              <option value="">Select category</option>
+              <option value="Breakfast">DeliveryMen</option>
+              <option value="Appetizers">User</option>
+            </select>
+          </div>
+
+          {/* category  */}
 
           <motion.div
             initial={{ x: "-100", opacity: 0 }}
