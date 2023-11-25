@@ -4,6 +4,7 @@ import Home from "../Pages/Home";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import Dashboard from "../Pages/Dashboard/Dashboard";
+import BookParcel from "../Components/Dashboard/BookParcel";
 
 const Router = createBrowserRouter([
   {
@@ -38,7 +39,7 @@ const Router = createBrowserRouter([
       },
       {
         path: "/dashboard/bookparcel",
-        element: <p> Book parcel </p>,
+        element: <BookParcel />,
       },
       {
         path: "/dashboard/myprofile",

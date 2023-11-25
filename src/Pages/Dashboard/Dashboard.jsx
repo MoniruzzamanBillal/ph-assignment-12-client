@@ -178,7 +178,7 @@ const Dashboard = () => {
       {/* hamburger menu */}
       <div
         onClick={() => setIsSidebarActive(!isSidebarActive)}
-        className="fixed bottom-[20px] h-[50px] right-[20px] md:hidden flex flex-col justify-center gap-2 bg-[#1a171733] p-2 rounded cursor-pointer"
+        className="fixed bottom-[20px] h-[50px] right-[20px] md:hidden flex flex-col justify-center gap-2 bg-[#1a171733] p-2 rounded cursor-pointer z-[20] "
       >
         <div
           className={`line duration-300 h-[5px] w-[40px] bg-white rounded ${
@@ -203,7 +203,7 @@ const Dashboard = () => {
       {/* <div className="h-screen p-5 ml-64 duration-300"> */}
       {/* child components starts  */}
 
-      <div className="w-[100%] md:w-[calc(100%-16rem)] h-screen bg-slate-400">
+      <div className="w-[100%] md:w-[calc(100%-16rem)]  bg-slate-400">
         <Outlet />
       </div>
       {/* sidebar child components ends */}
