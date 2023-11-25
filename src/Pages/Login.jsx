@@ -8,6 +8,11 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../Utilities/Firebase.config";
 import UseInput from "../Hooks/UseInput";
 import UseAuth from "../Hooks/UseAuth";
+import {
+  errorlogin,
+  inputFieldError,
+  loggedInSuccessfully,
+} from "../ToastFunc/ToastFunction";
 
 const Login = () => {
   const emailInput = UseInput();
@@ -18,20 +23,32 @@ const Login = () => {
 
   // email login
   const handleLogin = async () => {
-    const email = emailInput.value;
-    const password = passwordInput.value;
+    try {
+      const email = emailInput.value;
+      const password = passwordInput.value;
 
-    console.log(email);
-    console.log(password);
+      console.log(email);
+      console.log(password);
 
-    const loginResponse = await loginFunction(email, password);
+      if (!email.trim() || !password.trim()) {
+        return inputFieldError();
+      }
 
-    console.log(loginResponse);
+      const loginResponse = await loginFunction(email, password);
+
+      if (loginResponse?.user) {
+        loggedInSuccessfully();
+        setTimeout(() => {
+          navigate(location?.state ? location.state : "/");
+        }, 1200);
+      }
+
+      console.log(loginResponse);
+    } catch (error) {
+      console.log(error);
+      errorlogin();
+    }
   };
-
-  console.log("--------------------------");
-  console.log(user);
-  console.log("--------------------------");
 
   return (
     <div className="w-full h-screen font-sans imageCenter   bg-[url('https://i.ibb.co/R0QzCGk/pexels-norma-mortenson-4393668-1.jpg')] ">
