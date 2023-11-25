@@ -27,6 +27,24 @@ const Router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <Dashboard />,
+    children: [
+      {
+        path: "/dashboard/",
+        element: <p> book parcel </p>,
+      },
+      {
+        path: "/dashboard/myparcel",
+        element: <p> My parcel </p>,
+      },
+      {
+        path: "/dashboard/bookparcel",
+        element: <p> Book parcel </p>,
+      },
+      {
+        path: "/dashboard/myprofile",
+        element: <p> My profile </p>,
+      },
+    ],
   },
 ]);
 

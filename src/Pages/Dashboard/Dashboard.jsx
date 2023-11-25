@@ -1,38 +1,19 @@
 // importing libraries:
 import { useState } from "react";
+import { Link, Outlet } from "react-router-dom";
 
 // importing icons:
 import { ImBook } from "react-icons/im";
 import { BsCash, BsGraphUpArrow } from "react-icons/bs";
-import { FaPiggyBank } from "react-icons/fa";
+import { FaPiggyBank, FaBoxOpen } from "react-icons/fa";
 import { TbCurrencyTaka } from "react-icons/tb";
 import { GiReceiveMoney } from "react-icons/gi";
 import { AiFillCreditCard, AiOutlineShop } from "react-icons/ai";
 import { MdBusinessCenter, MdOutlineDiamond } from "react-icons/md";
+import { CiBookmarkCheck } from "react-icons/ci";
+import { RiProfileFill } from "react-icons/ri";
 
 // global variables:
-const topMenuItems = [
-  {
-    title: "Dashboard",
-    path: "/",
-    src: <BsGraphUpArrow />,
-  },
-  {
-    title: "Incomes",
-    path: "incomes",
-    src: <BsCash />,
-  },
-  {
-    title: "Expenses",
-    path: "expenses",
-    src: <GiReceiveMoney />,
-  },
-  {
-    title: "Recent Transactions",
-    path: "histories",
-    src: <ImBook />,
-  },
-];
 
 const bottomMenuItems = [
   {
@@ -63,6 +44,39 @@ const bottomMenuItems = [
   },
 ];
 
+// users menu
+const userMenu = [
+  {
+    title: "Book parcel",
+    path: "/dashboard/bookparcel",
+    icon: <CiBookmarkCheck />,
+  },
+  {
+    title: "My parcels",
+    path: "/dashboard/myparcel",
+    icon: <FaBoxOpen />,
+  },
+  {
+    title: "My profile",
+    path: "/dashboard/myprofile",
+    icon: <RiProfileFill />,
+  },
+];
+
+// delivery man menu
+const deliveryManMenu = [
+  {
+    title: "My delivery",
+    path: "/",
+    icon: <BsGraphUpArrow />,
+  },
+  {
+    title: "My review",
+    path: "/",
+    icon: <BsGraphUpArrow />,
+  },
+];
+
 const Dashboard = () => {
   // states:
   const [isSidebarActive, setIsSidebarActive] = useState(false);
@@ -76,7 +90,7 @@ const Dashboard = () => {
         } z-20 SideBarContainer md:left-0 duration-200`}
       >
         <div className="flex">
-          <div className="relative w-64 h-screen p-5 pt-5 duration-300 bg-gray-700 mainContainer sm:w-64">
+          <div className="relative w-64 h-screen p-5 pt-5 duration-300 bg-gray-600 mainContainer sm:w-64">
             {/* top account container starts */}
             <div className="topContainer AccountContainer mb-2 ">
               <div className="flex items-center space-x-4 ">
@@ -88,9 +102,6 @@ const Dashboard = () => {
 
                 <div className=" font-medium dark:text-white sm:block">
                   <div>Jese Leos</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    Your Money
-                  </div>
                 </div>
               </div>
             </div>
@@ -98,7 +109,7 @@ const Dashboard = () => {
             {/* top account container ends */}
 
             {/* top list items starts  */}
-            <ul className="pt-5 topList">
+            {/* <ul className="pt-5 topList bg-red-500 ">
               {topMenuItems.map((ele, i) => (
                 <li
                   key={i}
@@ -117,15 +128,15 @@ const Dashboard = () => {
                   </span>
                 </li>
               ))}
-            </ul>
+            </ul> */}
             {/* top list items ends  */}
 
             {/* bottom list items start  */}
             {/* bottom list items start  */}
             <ul className="pt-4 bottomList mt-5 ">
-              <h1 className="text-gray-50 mb-2">Accounts</h1>
+              {/* <h1 className="text-gray-50 mb-2">Accounts</h1> */}
 
-              <li
+              {/* <li
                 className={`flex rounded-md p-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4 
               `}
               >
@@ -135,32 +146,26 @@ const Dashboard = () => {
                 <span className={` hidden origin-left duration-200 sm:flex `}>
                   All transactions
                 </span>
-              </li>
-
-              {bottomMenuItems.map((ele, ind) => (
-                <>
-                  <li
-                    key={ind}
-                    className={`flex rounded-md p-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
-                  >
-                    <div className="icon text-lg">{ele.icon}</div>
-                    <h1
-                      className={`hidden gap-1  origin-left duration-200 w-full sm:flex`}
-                    >
-                      {ele.title}
-                      <span
-                        className={` ${
-                          ele.red ? "text-red-600" : "text-green-600"
-                        } flex`}
-                      >
-                        (<TbCurrencyTaka className="self-center" />
-                        200 )
-                      </span>
-                    </h1>
-                  </li>
-                </>
-              ))}
+              </li> */}
             </ul>
+
+            <div className="sidebarList mt-2  ">
+              {userMenu.map((ele, ind) => (
+                <Link
+                  to={ele.path}
+                  key={ind}
+                  className={`flex rounded-md py-4 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
+                >
+                  <div className="icon text-lg">{ele.icon}</div>
+                  <h1
+                    className={`hidden gap-1  origin-left duration-200 w-full sm:flex`}
+                  >
+                    {ele.title}
+                  </h1>
+                </Link>
+              ))}
+            </div>
+
             {/* bottom list items end  */}
 
             {/* bottom list items end  */}
@@ -197,26 +202,11 @@ const Dashboard = () => {
       {/* sidebar child components starts */}
       {/* <div className="h-screen p-5 ml-64 duration-300"> */}
       {/* child components starts  */}
-      {/* child components starts  */}
-      {/* child components starts  */}
-      {/* child components starts  */}
-      <div className="w-[100%] md:w-[calc(100%-16rem)] bg-slate-400">
-        {/* <div className="ml-64 duration-300 h-100% p-2"> */}
-        {/* <HomePage /> */}
-        {/* <Income /> */}
-        {/* <Expense /> */}
-        {/* <History /> */}
-        <p>home</p>
-        <p>home</p>
-        <p>home</p>
-        <p>home</p>
-        <p>home</p>
-        <p>home</p>
+
+      <div className="w-[100%] md:w-[calc(100%-16rem)] h-screen bg-slate-400">
+        <Outlet />
       </div>
       {/* sidebar child components ends */}
-      {/* child components starts ends */}
-      {/* child components starts ends */}
-      {/* child components starts ends */}
       {/* child components starts ends */}
     </section>
   );
