@@ -13,13 +13,14 @@ import {
   inputFieldError,
   loggedInSuccessfully,
 } from "../ToastFunc/ToastFunction";
+import Loading from "../Components/Loading/Loading";
 
 const Login = () => {
   const emailInput = UseInput();
   const passwordInput = UseInput();
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, loginFunction } = UseAuth();
+  const { user, loginFunction, loading } = UseAuth();
 
   // email login
   const handleLogin = async () => {
@@ -49,6 +50,10 @@ const Login = () => {
       errorlogin();
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="w-full h-screen font-sans imageCenter   bg-[url('https://i.ibb.co/R0QzCGk/pexels-norma-mortenson-4393668-1.jpg')] ">

@@ -1,0 +1,29 @@
+.loadingText {
+  -webkit-text-stroke: 0.1vw rgb(0, 0, 0);
+}
+
+.loadingText::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  color: rgb(210, 10, 241);
+  -webkit-text-stroke: 0;
+  border-right: 1px solid rgb(252, 47, 255);
+  overflow: hidden;
+  animation: animate 2s linear infinite;
+}
+
+@keyframes animate {
+  0%,
+  10%,
+  100% {
+    width: 0%;
+  }
+  70%,
+  90% {
+    width: 100%;
+  }
+}

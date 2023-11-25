@@ -11,7 +11,7 @@ const navLink = [
   },
   {
     item: "Dashboard",
-    link: "/",
+    link: "/dashboard",
   },
 ];
 
