@@ -5,6 +5,7 @@ import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import BookParcel from "../Components/Dashboard/BookParcel";
+import MyParcel from "../Components/Dashboard/MyParcel";
 
 const Router = createBrowserRouter([
   {
@@ -35,7 +36,7 @@ const Router = createBrowserRouter([
       },
       {
         path: "/dashboard/myparcel",
-        element: <p> My parcel </p>,
+        element: <MyParcel />,
       },
       {
         path: "/dashboard/bookparcel",

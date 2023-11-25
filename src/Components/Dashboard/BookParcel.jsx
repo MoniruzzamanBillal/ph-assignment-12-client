@@ -265,6 +265,28 @@ const BookParcel = () => {
 
           {/* parcel delivery address  */}
 
+          {/* parcel charger  */}
+          <div className="w-full">
+            <label
+              htmlFor="parcel_charge"
+              className="block mb-2 text-sm font-medium text-gray-900 "
+            >
+              Parcel charge
+            </label>
+            <input
+              type="text"
+              name="parcel_charge"
+              id="parcel_charge"
+              // value={foodName}
+              // onChange={(e) => setfoodName(e.target.value)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+              placeholder="Parcel charge"
+              required=""
+              readOnly
+            />
+          </div>
+          {/* parcel charger  */}
+
           {/*  */}
         </div>
         <button
