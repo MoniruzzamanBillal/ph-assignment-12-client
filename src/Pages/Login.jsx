@@ -75,6 +75,12 @@ const Login = () => {
 
       axiosPublicUrl.post("/user", userData).then((userResponse) => {
         console.log(userResponse.data);
+
+        loggedInSuccessfully();
+
+        setTimeout(() => {
+          navigate(navigate?.state ? navigate.state : "/");
+        }, 1200);
       });
     });
   };

@@ -6,6 +6,7 @@ import {
 } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../Utilities/Firebase.config";
+import UseAxiosPublic from "../Hooks/UseAxiosPublic";
 
 export const AppContext = createContext();
 
@@ -13,6 +14,7 @@ const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [darkmode, setDarkmode] = useState(false);
+  const [axiosPublicUrl] = UseAxiosPublic();
 
   //   register function
   const registerFunction = (email, password) => {
@@ -39,6 +41,13 @@ const AppProvider = ({ children }) => {
     setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+
+      if (currentUser) {
+        axiosPublicUrl.post("/jwt").then((tokenResponse) => {
+          console.log(tokenResponse.data);
+        });
+      }
+
       setLoading(false);
     });
 
