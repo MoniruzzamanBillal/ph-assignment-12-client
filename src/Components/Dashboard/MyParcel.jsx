@@ -3,8 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 import UseAuth from "../../Hooks/UseAuth";
 import Loading from "../Loading/Loading";
+import { useNavigate } from "react-router-dom";
 
 const MyParcel = () => {
+  const navigate = useNavigate();
   const [axiosPublicUrl] = UseAxiosPublic();
   const { user } = UseAuth();
 
@@ -18,6 +20,12 @@ const MyParcel = () => {
   const userData = parcelData?.data;
 
   console.log(userData);
+
+  const handleUpdate = (id) => {
+    console.log("id on update = ", id);
+
+    navigate(`/dashboard/updateparcel/${id}`);
+  };
 
   if (dataLoading) {
     return <Loading />;
@@ -119,7 +127,10 @@ const MyParcel = () => {
                         </div>
                       </td>
                       <td className="py-2 text-left leading-4 border-b border-gray-500">
-                        <div className="flex items-center justify-center">
+                        <div
+                          className="flex items-center justify-center"
+                          onClick={() => handleUpdate(data?._id)}
+                        >
                           update or cancel
                         </div>
                       </td>

@@ -2,23 +2,25 @@ import React, { useContext, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Loading from "../Loading/Loading";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 import UseAuth from "../../Hooks/UseAuth";
-import InputField from "../InputField";
-
 import {
   inputFieldError,
-  insertSuccessfully,
+  updatedSuccessFully,
 } from "../../ToastFunc/ToastFunction";
-import axios from "axios";
-import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 
-const BookParcel = () => {
-  const navigate = useNavigate();
-  const { user } = UseAuth();
-
+const UpdateParcel = () => {
+  const { id } = useParams();
+  const { user, loading } = UseAuth();
   const [axiosPublicUrl] = UseAxiosPublic();
+  const date2 = new Date();
+  const orderDate = date2.getDate();
+  const orderMonth = date2.getMonth() + 1;
+  const orderYear = date2.getFullYear();
+
+  // !  states
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [parcelType, setParcelType] = useState("");
   const [parcelWeight, setParcelWeigt] = useState("");
@@ -34,29 +36,40 @@ const BookParcel = () => {
   const userName = user?.displayName;
   const userEmail = user?.email;
   const uid = user?.uid;
-  const date2 = new Date();
-  const orderDate = date2.getDate();
-  const orderMonth = date2.getMonth() + 1;
-  const orderYear = date2.getFullYear();
+  // !  states
 
-  // calculating parcel charge function
-  const calculateCharge = (e) => {
-    const weight = parseFloat(e.target.value);
+  useEffect(() => {
+    axiosPublicUrl
+      .get(`/parcel/${id}`)
+      .then((response) => {
+        const result = response?.data;
+        console.log(result);
 
-    setParcelWeigt(weight);
+        setPhoneNumber(response?.data?.phoneNumber);
+        setParcelType(response?.data?.parcelType);
+        setParcelWeigt(response?.data?.parcelWeight);
+        setReceiverName(response?.data?.receiverName);
+        setReceiverNumber(response?.data?.receiverPhoneNumber);
+        const formatDate = response?.data?.requestedDate;
+        const scatterDate = formatDate.split("-");
 
-    if (weight > 0 && weight <= 1) {
-      setParcelCharge(50);
-    } else if (weight > 1 && weight <= 2) {
-      setParcelCharge(100);
-    } else {
-      setParcelCharge(150);
-    }
-  };
+        const unformatDate = `${scatterDate[2]}-${scatterDate[1]}-${scatterDate[0]}`;
+        // console.log(unformatDate);
+        setDeliveryDate(unformatDate);
+        setLatitude(response?.data?.latitude);
+        setLongtide(response?.data?.longitude);
+        setDeliveryAddress(response?.data?.deliveryAddress);
+        setParcelCharge(response?.data?.parcelCharge);
+        setStatus(response?.data?.status);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
-  // function for submit form
-  const handleSubmit = async () => {
-    // console.log(formattedDate);
+  //   update function
+  const handleUpdate = async () => {
+    console.log("update click");
+    // console.log(deliveryDate);
+
     if (
       !userName.trim() ||
       !userEmail.trim() ||
@@ -98,19 +111,40 @@ const BookParcel = () => {
       bookingDate,
     };
 
-    // console.log(parcelObj);
+    const updateResponse = await axiosPublicUrl.patch(
+      `/parcel/${id}`,
+      parcelObj
+    );
 
-    const bookResponse = await axiosPublicUrl.post("/parcel", parcelObj);
-
-    console.log(bookResponse?.data);
-
-    if (bookResponse?.data?.insertedId) {
-      insertSuccessfully();
+    console.log(updateResponse?.data);
+    if (updateResponse?.data?.acknowledged) {
+      updatedSuccessFully();
     }
+
+    // console.log("--------------------------");
+    // console.log(parcelObj);
+    // console.log("--------------------------");
+
+    // console.log(requestedDate);
+    // console.log(bookingDate);
+
+    //
   };
 
-  // console.log(deliveryDate);
-  // console.log(user.uid);
+  // calculating parcel charge function
+  const calculateCharge = (e) => {
+    const weight = parseFloat(e.target.value);
+
+    setParcelWeigt(weight);
+
+    if (weight > 0 && weight <= 1) {
+      setParcelCharge(50);
+    } else if (weight > 1 && weight <= 2) {
+      setParcelCharge(100);
+    } else {
+      setParcelCharge(150);
+    }
+  };
 
   return (
     <div className=" py-4 relative mainContiner flex flex-col  w-full items-center justify-center  bg-no-repeat bg-cover bg-center ">
@@ -399,9 +433,9 @@ const BookParcel = () => {
         <button
           type="submit"
           className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-violet-600 rounded-lg focus:ring-4 focus:ring-primary-200  hover:bg-violet-800"
-          onClick={() => handleSubmit()}
+          onClick={() => handleUpdate()}
         >
-          Book now
+          Update
         </button>
       </div>
       {/* form  */}
@@ -410,4 +444,4 @@ const BookParcel = () => {
   );
 };
 
-export default BookParcel;
+export default UpdateParcel;

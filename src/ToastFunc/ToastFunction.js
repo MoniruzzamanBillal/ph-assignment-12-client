@@ -94,3 +94,16 @@ export const insertSuccessfully = () =>
     progress: undefined,
     theme: "colored",
   });
+
+// toast for successfull update
+export const updatedSuccessFully = () =>
+  toast.success(" item updated successfully!", {
+    position: "top-center",
+    autoClose: 1200,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });

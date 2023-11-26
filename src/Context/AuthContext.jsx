@@ -49,7 +49,6 @@ const AppProvider = ({ children }) => {
     user,
     loading,
     darkmode,
-    darkmode,
     registerFunction,
     loginFunction,
     logoutFunction,
