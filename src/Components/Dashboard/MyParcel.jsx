@@ -1,6 +1,28 @@
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
+import UseAuth from "../../Hooks/UseAuth";
+import Loading from "../Loading/Loading";
 
 const MyParcel = () => {
+  const [axiosPublicUrl] = UseAxiosPublic();
+  const { user } = UseAuth();
+
+  const { data: parcelData, isLoading: dataLoading } = useQuery({
+    queryKey: ["parcelData"],
+    queryFn: async () => {
+      return axiosPublicUrl.get(`/parcels?uid=${user?.uid}`);
+    },
+  });
+
+  const userData = parcelData?.data;
+
+  console.log(userData);
+
+  if (dataLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="MyParcelContainer">
       <div className="myParcelWrapper">
@@ -59,169 +81,56 @@ const MyParcel = () => {
                 </tr>
               </thead>
               <tbody className="bg-white">
-                <tr>
-                  <td className="  py-2 text-left leading-4    border-b border-gray-500">
-                    <div className="flex items-center justify-center ">
-                      <div>
-                        <div className="text-sm leading-5 text-gray-800">
-                          parcel type
+                {userData &&
+                  userData.map((data, ind) => (
+                    <tr key={ind}>
+                      <td className="  py-2 text-left leading-4    border-b border-gray-500">
+                        <div className="flex items-center justify-center ">
+                          <div>
+                            <div className="text-sm leading-5 text-gray-800">
+                              {data?.parcelType}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-2 text-left leading-4  border-b border-gray-500">
-                    <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
-                      requested delivery date
-                    </div>
-                  </td>
-                  <td className="py-2 text-left leading-4  border-b border-gray-500 ">
-                    <div className="flex items-center justify-center">
-                      approximate delivary date
-                    </div>
-                  </td>
-                  <td className="py-2 text-left leading-4  border-b border-gray-500">
-                    <div className="flex items-center justify-center">
-                      booking date
-                    </div>
-                  </td>
-                  <td className="py-2 text-left leading-4  border-b border-gray-500">
-                    <div className="flex items-center justify-center">
-                      delivary man id
-                    </div>
-                  </td>
-                  <td className="py-2 text-left leading-4  border-b border-gray-500">
-                    <div className="flex items-center justify-center">
-                      pending ...
-                    </div>
-                  </td>
-                  <td className="py-2 text-left leading-4 border-b border-gray-500">
-                    <div className="flex items-center justify-center">
-                      update or cancel
-                    </div>
-                  </td>
-                </tr>
-                {/*  */}
-                {/*  */}
-                {/*  */}
-                {/*  */}
-                {/*  */}
-                <tr>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                    <div className="flex items-center">
-                      <div>
-                        <div className="text-sm leading-5 text-gray-800">
-                          #1
+                      </td>
+                      <td className="py-2 text-left leading-4  border-b border-gray-500">
+                        <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
+                          {data?.requestedDate}
                         </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                    <div className="text-sm leading-5 text-blue-900">
-                      Damilare Anjorin
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                    damilareanjorin1@gmail.com
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                    +2348106420637
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                    <span className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                      <span
-                        aria-hidden
-                        className="absolute inset-0 bg-red-200 opacity-50 rounded-full"
-                      ></span>
-                      <span className="relative text-xs">not active</span>
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">
-                    September 12
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                    <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
-                      View Details
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                    <div className="flex items-center">
-                      <div>
-                        <div className="text-sm leading-5 text-gray-800">
-                          #1
+                      </td>
+                      <td className="py-2 text-left leading-4  border-b border-gray-500 ">
+                        <div className="flex items-center justify-center">
+                          approximate delivary date
                         </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                    <div className="text-sm leading-5 text-blue-900">
-                      Damilare Anjorin
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                    damilareanjorin1@gmail.com
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                    +2348106420637
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                    <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                      <span
-                        aria-hidden
-                        className="absolute inset-0 bg-green-200 opacity-50 rounded-full"
-                      ></span>
-                      <span className="relative text-xs">active</span>
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">
-                    September 12
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                    <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
-                      View Details
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                    <div className="flex items-center">
-                      <div>
-                        <div className="text-sm leading-5 text-gray-800">
-                          #1
+                      </td>
+                      <td className="py-2 text-left leading-4  border-b border-gray-500">
+                        <div className="flex items-center justify-center">
+                          {data?.bookingDate}
                         </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                    <div className="text-sm leading-5 text-blue-900">
-                      Damilare Anjorin
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                    damilareanjorin1@gmail.com
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                    +2348106420637
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                    <span className="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
-                      <span
-                        aria-hidden
-                        className="absolute inset-0 bg-orange-200 opacity-50 rounded-full"
-                      ></span>
-                      <span className="relative text-xs">disabled</span>
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">
-                    September 12
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                    <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
-                      View Details
-                    </button>
-                  </td>
-                </tr>
+                      </td>
+                      <td className="py-2 text-left leading-4  border-b border-gray-500">
+                        <div className="flex items-center justify-center">
+                          delivary man id
+                        </div>
+                      </td>
+                      <td className="py-2 text-left leading-4  border-b border-gray-500">
+                        <div className="flex items-center justify-center">
+                          {data?.status}
+                        </div>
+                      </td>
+                      <td className="py-2 text-left leading-4 border-b border-gray-500">
+                        <div className="flex items-center justify-center">
+                          update or cancel
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+
+                {/*  */}
+                {/*  */}
+                {/*  */}
+                {/*  */}
+                {/*  */}
               </tbody>
             </table>
             <div className="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">

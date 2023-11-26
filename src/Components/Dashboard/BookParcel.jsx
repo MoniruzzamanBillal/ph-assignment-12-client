@@ -33,6 +33,15 @@ const BookParcel = () => {
 
   const userName = user?.displayName;
   const userEmail = user?.email;
+  const uid = user?.uid;
+  const date2 = new Date();
+  const orderDate = date2.getDate();
+  const orderMonth = date2.getMonth() + 1;
+  const orderYear = date2.getFullYear();
+
+  // console.log(orderDate);
+  // console.log(orderMonth);
+  // console.log(orderYear);
 
   // calculating parcel charge function
   const calculateCharge = (e) => {
@@ -40,7 +49,7 @@ const BookParcel = () => {
 
     setParcelWeigt(weight);
 
-    if (weight > 0 && weight === 1) {
+    if (weight > 0 && weight <= 1) {
       setParcelCharge(50);
     } else if (weight > 1 && weight <= 2) {
       setParcelCharge(100);
@@ -72,7 +81,8 @@ const BookParcel = () => {
 
     const partDate = deliveryDate.split("-");
 
-    const formattedDate = `${partDate[2]}-${partDate[1]}-${partDate[0]}`;
+    const requestedDate = `${partDate[2]}-${partDate[1]}-${partDate[0]}`;
+    const bookingDate = `${orderDate}-${orderMonth}-${orderYear}`;
 
     const parcelObj = {
       userName,
@@ -82,12 +92,14 @@ const BookParcel = () => {
       parcelWeight,
       receiverName,
       receiverPhoneNumber,
-      formattedDate,
+      requestedDate,
       latitude,
       longitude,
       deliveryAddress,
       parcelCharge,
       status,
+      uid,
+      bookingDate,
     };
 
     // console.log(parcelObj);
@@ -102,6 +114,7 @@ const BookParcel = () => {
   };
 
   // console.log(deliveryDate);
+  // console.log(user.uid);
 
   return (
     <div className=" py-4 relative mainContiner flex flex-col  w-full items-center justify-center  bg-no-repeat bg-cover bg-center ">
