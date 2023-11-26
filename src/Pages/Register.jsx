@@ -27,7 +27,7 @@ const Register = () => {
   const [isChecked, setIsChecked] = useState(false); // for checkbox state
   const [imageInput, setImageInput] = useState();
   const [imageUrl, setImageUrl] = useState("");
-  const [category, setCategory] = useState("");
+  const [role, setRole] = useState("");
   const { registerFunction, user, logoutFunction } = UseAuth();
 
   const nameInput = UseInput();
@@ -70,13 +70,6 @@ const Register = () => {
     //   return passwordValidationError();
     // }
 
-    // !
-    // !
-    // !
-    // !
-    // !
-    // !
-    // !
     // !
 
     const formData = new FormData();
@@ -138,13 +131,6 @@ const Register = () => {
     }
 
     // !
-    // !
-    // !
-    // !
-    // !
-    // !
-    // !
-    // !
   };
 
   // for taking image input value
@@ -170,9 +156,6 @@ const Register = () => {
     },
   };
 
-  console.log("--------------------------");
-  console.log(user);
-  console.log("--------------------------");
   return (
     <div className="   ">
       {/* <!-- component --> */}
@@ -250,11 +233,11 @@ const Register = () => {
               htmlFor="category"
               className="block mb-2 text-sm font-medium text-gray-900 "
             >
-              User Category
+              User Role
             </label>
             <select
               id="category"
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => setRole(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 "
             >
               <option value="">Select category</option>

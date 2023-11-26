@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UseAuth from "../../Hooks/UseAuth";
 import Loading from "../Loading/Loading";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
+import { updateProfile } from "firebase/auth";
 
 //
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING;
@@ -13,6 +14,7 @@ const MyProfile = () => {
   const [axiosPublicUrl] = UseAxiosPublic();
   const { user, loading } = UseAuth();
   const [imageInput, setImageInput] = useState();
+  const [photoUrl, setPhotoUrl] = useState(user?.photoURL);
 
   // console.log(user);
 
@@ -34,22 +36,35 @@ const MyProfile = () => {
       }
 
       const data = await response.json();
-      console.log(data);
-      // Handle the successful upload here, e.g., display success message
+      // console.log(data);
+      const imageUrl = data?.data?.display_url;
+
+      if (data?.success) {
+        setPhotoUrl(imageUrl);
+        updateProfile(user, {
+          photoURL: imageUrl,
+        });
+      }
+
       toast.success("Image uploaded successfully!");
     } catch (error) {
       console.error("Error uploading image:", error.message);
-      // Handle error, e.g., display error message
+
       toast.error("Failed to upload image");
     }
 
     //
   };
 
+  useEffect(() => {
+    console.log("useeffect render");
+    handleUpdate();
+  }, [photoUrl]);
+
   // for taking image input value
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    console.log(file);
+
     if (file) {
       setImageInput(file);
     }
@@ -70,7 +85,7 @@ const MyProfile = () => {
               <div className="profileLeft   ">
                 <div class="h-64 overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-auto">
                   <img
-                    src={user?.photoURL}
+                    src={photoUrl}
                     loading="lazy"
                     alt="Photo by Martin Sanchez"
                     class="h-full w-full object-cover object-center"
@@ -145,6 +160,7 @@ const MyProfile = () => {
         {/*  */}
         {/*  */}
       </div>
+      <ToastContainer />
     </div>
   );
 };
