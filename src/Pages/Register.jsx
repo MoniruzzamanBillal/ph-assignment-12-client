@@ -58,7 +58,6 @@ const Register = () => {
     const password = passwordlInput.value;
 
     const imageFile = { image: imageInput };
-    console.log(imageFile);
 
     // check  null input value
     if (!name.trim() || !email.trim() || !password.trim()) {
@@ -86,21 +85,40 @@ const Register = () => {
       }
 
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
 
       if (data?.success) {
         const photoUrl = data?.data?.display_url;
         setImageUrl(photoUrl);
-        console.log(photoUrl);
+        // console.log(photoUrl);
 
         const registerResponse = await registerFunction(email, password);
 
         if (registerResponse?.user) {
+          // console.log(registerResponse?.user);
+          const uid = registerResponse?.user?.uid;
+          // console.log(uid);
+          const userData = {
+            email,
+            uid,
+            role,
+            name,
+          };
+
+          // console.log(userData);
+
+          //! sending user info in database
+
+          const sendDataResponse = await axiosPublicUrl.post("/user", userData);
+
+          //! sending user info in database ends
+
           updateProfile(registerResponse?.user, {
             displayName: name,
             photoURL: photoUrl,
           })
             .then((response) => {
+              console.log(response);
               logoutFunction();
               registerSuccessfully();
               setTimeout(() => {
@@ -241,8 +259,8 @@ const Register = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 "
             >
               <option value="">Select category</option>
-              <option value="Breakfast">DeliveryMen</option>
-              <option value="Appetizers">User</option>
+              <option value="deliveryman">DeliveryMen</option>
+              <option value="user">User</option>
             </select>
           </div>
 

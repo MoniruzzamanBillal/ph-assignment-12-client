@@ -14,8 +14,10 @@ import {
   loggedInSuccessfully,
 } from "../ToastFunc/ToastFunction";
 import Loading from "../Components/Loading/Loading";
+import UseAxiosPublic from "../Hooks/UseAxiosPublic";
 
 const Login = () => {
+  const [axiosPublicUrl] = UseAxiosPublic();
   const emailInput = UseInput();
   const passwordInput = UseInput();
   const navigate = useNavigate();
@@ -49,6 +51,32 @@ const Login = () => {
       console.log(error);
       errorlogin();
     }
+  };
+
+  // google sign in
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+
+    signInWithPopup(auth, provider).then((response) => {
+      // console.log(response?.user);
+      // name  role uid email
+
+      const name = response?.user?.displayName;
+      const email = response?.user?.email;
+      const uid = response?.user?.uid;
+      const role = "user";
+
+      const userData = {
+        name,
+        email,
+        uid,
+        role,
+      };
+
+      axiosPublicUrl.post("/user", userData).then((userResponse) => {
+        console.log(userResponse.data);
+      });
+    });
   };
 
   if (loading) {
