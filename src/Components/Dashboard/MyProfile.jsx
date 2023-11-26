@@ -3,20 +3,53 @@ import UseAuth from "../../Hooks/UseAuth";
 import Loading from "../Loading/Loading";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 
 //
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING;
 const imageHostingApi = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
 
 const MyProfile = () => {
+  const [axiosPublicUrl] = UseAxiosPublic();
   const { user, loading } = UseAuth();
   const [imageInput, setImageInput] = useState();
 
-  console.log(user);
+  // console.log(user);
+
+  // update function
+  const handleUpdate = async () => {
+    console.log("update button click");
+
+    const formData = new FormData();
+    formData.append("image", imageInput);
+
+    try {
+      const response = await fetch(imageHostingApi, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload image");
+      }
+
+      const data = await response.json();
+      console.log(data);
+      // Handle the successful upload here, e.g., display success message
+      toast.success("Image uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading image:", error.message);
+      // Handle error, e.g., display error message
+      toast.error("Failed to upload image");
+    }
+
+    //
+  };
 
   // for taking image input value
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    console.log(file);
     if (file) {
       setImageInput(file);
     }
@@ -83,7 +116,7 @@ const MyProfile = () => {
                       Upload profile picture
                     </label>
                     <input
-                      //   onChange={(e) => handleImageChange(e)}
+                      onChange={(e) => handleImageChange(e)}
                       className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                       id="file_input"
                       type="file"
@@ -97,7 +130,7 @@ const MyProfile = () => {
                 <div className="updateBtn">
                   <button
                     className=" mt-5 rounded hover:shadow font-semibold bg-gray-600 hover:bg-gray-700 dark:bg-gray-100 active:scale-[.99] py-2 w-full text-white dark:text-gray-900 "
-                    onClick={() => handleRegister()}
+                    onClick={() => handleUpdate()}
                   >
                     Update
                   </button>

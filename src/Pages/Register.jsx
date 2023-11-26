@@ -18,7 +18,8 @@ import UseAxiosPublic from "../Hooks/UseAxiosPublic";
 
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING;
 
-const imageHostingApi = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
+const imageHostingApi2 = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
+const imageHostingApi = `https://api.imgbb.com/1/upload?key=00fc9e4302335a502d2035bb196a9314`;
 
 const Register = () => {
   const [axiosPublicUrl] = UseAxiosPublic();
@@ -57,6 +58,7 @@ const Register = () => {
     const password = passwordlInput.value;
 
     const imageFile = { image: imageInput };
+    console.log(imageFile);
 
     // check  null input value
     if (!name.trim() || !email.trim() || !password.trim()) {
@@ -68,50 +70,81 @@ const Register = () => {
     //   return passwordValidationError();
     // }
 
-    const imageResponse = await axiosPublicUrl.post(
-      imageHostingApi,
-      imageFile,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+    // !
+    // !
+    // !
+    // !
+    // !
+    // !
+    // !
+    // !
+
+    const formData = new FormData();
+    formData.append("image", imageInput);
+
+    try {
+      const response = await fetch(imageHostingApi, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload image");
       }
-    );
 
-    if (imageResponse?.data?.success) {
-      const photoUrl = imageResponse?.data?.data?.display_url;
-      setImageUrl(photoUrl);
+      const data = await response.json();
+      console.log(data);
 
-      const registerResponse = await registerFunction(email, password);
+      if (data?.success) {
+        const photoUrl = data?.data?.display_url;
+        setImageUrl(photoUrl);
+        console.log(photoUrl);
 
-      if (registerResponse?.user) {
-        updateProfile(registerResponse?.user, {
-          displayName: name,
-          photoURL: photoUrl,
-        })
-          .then((response) => {
-            logoutFunction();
-            registerSuccessfully();
-            setTimeout(() => {
-              navigate("/login");
-            }, 1200);
+        const registerResponse = await registerFunction(email, password);
+
+        if (registerResponse?.user) {
+          updateProfile(registerResponse?.user, {
+            displayName: name,
+            photoURL: photoUrl,
           })
-          .catch((error) => {
-            const errormsg = error.message;
-            console.log(errormsg);
-            toast.warn(`${errormsg}`, {
-              position: "top-center",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
+            .then((response) => {
+              logoutFunction();
+              registerSuccessfully();
+              setTimeout(() => {
+                navigate("/login");
+              }, 1200);
+            })
+            .catch((error) => {
+              const errormsg = error.message;
+              console.log(errormsg);
+              toast.warn(`${errormsg}`, {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
             });
-          });
+        }
       }
+      toast.success("Image uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading image:", error.message);
+
+      toast.error("Failed to upload image");
     }
+
+    // !
+    // !
+    // !
+    // !
+    // !
+    // !
+    // !
+    // !
   };
 
   // for taking image input value

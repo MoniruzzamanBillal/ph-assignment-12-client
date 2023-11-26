@@ -11,6 +11,7 @@ import AllParcel from "../Components/Dashboard/admin/AllParcel";
 import AllDeliveryMan from "../Components/Dashboard/admin/AllDeliveryMan";
 import AllUsers from "../Components/Dashboard/admin/AllUsers";
 import UpdateParcel from "../Components/Dashboard/UpdateParcel";
+import Test from "../Components/Loading/Test";
 
 const Router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const Router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/test",
+    element: <Test />,
   },
   {
     path: "/register",

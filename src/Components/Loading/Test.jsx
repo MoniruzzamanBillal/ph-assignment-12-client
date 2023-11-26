@@ -1,212 +1,76 @@
-// importing libraries:
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
+import axios from "axios";
 
-import HomePage from "../../Pages/HomePage";
-import Income from "../../Components/Income/Income";
-import Expense from "../../Components/Expense/Expense";
-import History from "../../Components/History/History";
+const imageHostingApi = `https://api.imgbb.com/1/upload?key=00fc9e4302335a502d2035bb196a9314`;
 
-// importing icons:
-import { ImBook } from "react-icons/im";
-import { BsCash, BsGraphUpArrow } from "react-icons/bs";
-import { FaPiggyBank } from "react-icons/fa";
-import { TbCurrencyTaka } from "react-icons/tb";
-import { GiReceiveMoney } from "react-icons/gi";
-import { AiFillCreditCard, AiOutlineShop } from "react-icons/ai";
-import { MdBusinessCenter, MdOutlineDiamond } from "react-icons/md";
+const Test = () => {
+  const { axiosPublicUrl } = UseAxiosPublic();
+  const [imageInput, setImageInput] = useState();
+  const [imageUrl, setImageUrl] = useState("");
 
-// global variables:
-const topMenuItems = [
-  {
-    title: "Dashboard",
-    path: "/",
-    src: <BsGraphUpArrow />,
-  },
-  {
-    title: "Incomes",
-    path: "incomes",
-    src: <BsCash />,
-  },
-  {
-    title: "Expenses",
-    path: "expenses",
-    src: <GiReceiveMoney />,
-  },
-  {
-    title: "Recent Transactions",
-    path: "histories",
-    src: <ImBook />,
-  },
-];
+  const handleUpload = async () => {
+    const imageFile = { image: imageInput };
 
-const bottomMenuItems = [
-  {
-    title: " Cash",
-    icon: <BsCash />,
-  },
-  {
-    title: "Credit card",
-    icon: <AiFillCreditCard />,
-  },
-  {
-    title: "Business",
-    icon: <MdBusinessCenter />,
-  },
-  {
-    title: "Loan",
-    icon: <AiOutlineShop />,
-    red: true,
-  },
+    console.log(imageFile);
 
-  {
-    title: "Investment",
-    icon: <BsGraphUpArrow />,
-  },
-  {
-    title: "Asset",
-    icon: <MdOutlineDiamond />,
-  },
-];
+    // const imageResponse = await axiosPublicUrl.post(
+    //   imageHostingApi,
+    //   imageFile,
+    //   {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   }
+    // );
 
-export default function SideBar() {
-  // states:
-  const [isSidebarActive, setIsSidebarActive] = useState(false);
+    fetch(imageHostingApi, { method: "POST ", body: imageFile })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+      });
+
+    // console.log(imageResponse);
+  };
+
+  // for taking image input value
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageInput(file);
+    }
+  };
 
   return (
-    <section className="relative flex justify-end">
-      {/* sidebar container starts  */}
-      <div
-        className={`fixed top-0 ${
-          isSidebarActive ? "left-[0%]" : "left-[-100%]"
-        } z-20 SideBarContainer md:left-0 duration-200`}
+    <div>
+      <h1>Test</h1>
+      <h1>Test</h1>
+      <h1>Test</h1>
+      <h1>Test</h1>
+      <h1>Test</h1>
+      <h1>Tests</h1>
+      <div className="inputComponent mt-3  w-full mb-1  ">
+        <label
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          for="file_input"
+        >
+          Upload profile picture
+        </label>
+        <input
+          onChange={(e) => handleImageChange(e)}
+          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+          id="file_input"
+          type="file"
+        />
+      </div>
+      <button
+        className=" mt-5 rounded hover:shadow font-semibold bg-gray-600 hover:bg-gray-700 dark:bg-gray-100 active:scale-[.99] py-2 w-full text-white dark:text-gray-900 "
+        onClick={() => handleUpload()}
       >
-        <div className="flex">
-          <div className="relative w-64 h-screen p-5 pt-5 duration-300 bg-gray-700 mainContainer sm:w-64">
-            {/* top account container starts */}
-            <div className="topContainer AccountContainer mb-2 ">
-              <div className="flex items-center space-x-4 ">
-                <img
-                  className="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500 cursor-pointer"
-                  src="https://static.theprint.in/wp-content/uploads/2021/06/Elon-Musk.jpg?compress=true&quality=80&w=376&dpr=2.6"
-                  alt="Bordered avatar"
-                />
-
-                <div className=" font-medium dark:text-white sm:block">
-                  <div>Jese Leos</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    Your Money
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* top account container ends */}
-
-            {/* top list items starts  */}
-            <ul className="pt-5 topList">
-              {topMenuItems.map((ele, i) => (
-                <li
-                  key={i}
-                  onClick={() => setIsSidebarActive(false)}
-                  className={({ isActive }) =>
-                    isActive
-                      ? `flex rounded-md p-2 cursor-pointer bg-gray-50 text-gray-700 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4 mb-1 
-              `
-                      : `flex rounded-md p-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4 mb-1 
-              `
-                  }
-                >
-                  <div className="text-lg icon">{ele.src}</div>
-                  <span className={` flex origin-left duration-200`}>
-                    {ele.title}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            {/* top list items ends  */}
-
-            {/* bottom list items start  */}
-            {/* bottom list items start  */}
-            <ul className="pt-4 bottomList mt-5 ">
-              <h1 className="text-gray-50 mb-2">Accounts</h1>
-
-              <li
-                className={`flex rounded-md p-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4 
-              `}
-              >
-                <div className="icon text-lg">
-                  <ImBook />
-                </div>
-                <span className={` hidden origin-left duration-200 sm:flex `}>
-                  All transactions
-                </span>
-              </li>
-
-              {bottomMenuItems.map((ele, ind) => (
-                <>
-                  <li
-                    key={ind}
-                    className={`flex rounded-md p-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
-                  >
-                    <div className="icon text-lg">{ele.icon}</div>
-                    <h1
-                      className={`hidden gap-1  origin-left duration-200 w-full sm:flex`}
-                    >
-                      {ele.title}
-                      <span
-                        className={` ${
-                          ele.red ? "text-red-600" : "text-green-600"
-                        } flex`}
-                      >
-                        (<TbCurrencyTaka className="self-center" />
-                        200 )
-                      </span>
-                    </h1>
-                  </li>
-                </>
-              ))}
-            </ul>
-            {/* bottom list items end  */}
-
-            {/* bottom list items end  */}
-          </div>
-        </div>
-      </div>
-      {/* sidebar container ends  */}
-
-      {/* hamburger menu */}
-      <div
-        onClick={() => setIsSidebarActive(!isSidebarActive)}
-        className="fixed bottom-[20px] h-[50px] right-[20px] md:hidden flex flex-col justify-center gap-2 bg-[#1a171733] p-2 rounded cursor-pointer"
-      >
-        <div
-          className={`line duration-300 h-[5px] w-[40px] bg-white rounded ${
-            isSidebarActive ? "-rotate-45 translate-y-[13px]" : ""
-          }`}
-        ></div>
-        <div
-          className={`line duration-300 h-[5px] w-[40px] bg-white rounded ${
-            isSidebarActive ? "opacity-0" : ""
-          }`}
-        ></div>
-        <div
-          className={`line duration-300 h-[5px] w-[40px] bg-white rounded ${
-            isSidebarActive ? "rotate-45 translate-y-[-13px]" : ""
-          }`}
-        ></div>
-      </div>
-
-      {/* sidebar child components starts */}
-      {/* <div className="h-screen p-5 ml-64 duration-300"> */}
-      <div className="w-[100%] md:w-[calc(100%-16rem)] bg-slate-400">
-        {/* <div className="ml-64 duration-300 h-100% p-2"> */}
-        {/* <HomePage /> */}
-        {/* <Income /> */}
-        <Expense />
-        {/* <History /> */}
-      </div>
-      {/* sidebar child components ends */}
-    </section>
+        Register
+      </button>{" "}
+    </div>
   );
-}
+};
+
+export default Test;
