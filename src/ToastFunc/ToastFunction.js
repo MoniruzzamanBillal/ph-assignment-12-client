@@ -81,3 +81,16 @@ export const errorlogin = () =>
     progress: undefined,
     theme: "colored",
   });
+
+// toast for success full parcel insert
+export const insertSuccessfully = () =>
+  toast.success("Item added successfully", {
+    position: "top-center",
+    autoClose: 1200,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });

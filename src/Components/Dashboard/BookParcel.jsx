@@ -1,16 +1,107 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import Loading from "../Loading/Loading";
 import { useNavigate } from "react-router-dom";
 import UseAuth from "../../Hooks/UseAuth";
 import InputField from "../InputField";
-import UseAxios from "../../Hooks/UseAxios";
+
+import {
+  inputFieldError,
+  insertSuccessfully,
+} from "../../ToastFunc/ToastFunction";
+import axios from "axios";
+import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 
 const BookParcel = () => {
   const navigate = useNavigate();
   const { user } = UseAuth();
-  const [axiosUrl] = UseAxios();
+
+  const [axiosPublicUrl] = UseAxiosPublic();
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [parcelType, setParcelType] = useState("");
+  const [parcelWeight, setParcelWeigt] = useState("");
+  const [receiverName, setReceiverName] = useState("");
+  const [receiverPhoneNumber, setReceiverNumber] = useState("");
+  const [deliveryDate, setDeliveryDate] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongtide] = useState("");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [parcelCharge, setParcelCharge] = useState("");
+  const [status, setStatus] = useState("pending");
+
+  const userName = user?.displayName;
+  const userEmail = user?.email;
+
+  // calculating parcel charge function
+  const calculateCharge = (e) => {
+    const weight = parseFloat(e.target.value);
+
+    setParcelWeigt(weight);
+
+    if (weight > 0 && weight === 1) {
+      setParcelCharge(50);
+    } else if (weight > 1 && weight <= 2) {
+      setParcelCharge(100);
+    } else {
+      setParcelCharge(150);
+    }
+  };
+
+  // function for submit form
+  const handleSubmit = async () => {
+    // console.log(formattedDate);
+    if (
+      !userName.trim() ||
+      !userEmail.trim() ||
+      !phoneNumber.toString().trim() ||
+      !parcelType.trim() ||
+      !parcelWeight.toString().trim() ||
+      !receiverName.trim() ||
+      !receiverPhoneNumber.trim() ||
+      !deliveryDate.trim() ||
+      !latitude.trim() ||
+      !longitude.trim() ||
+      !deliveryAddress.trim() ||
+      !parcelCharge.toString().trim() ||
+      !status.trim()
+    ) {
+      return inputFieldError();
+    }
+
+    const partDate = deliveryDate.split("-");
+
+    const formattedDate = `${partDate[2]}-${partDate[1]}-${partDate[0]}`;
+
+    const parcelObj = {
+      userName,
+      userEmail,
+      phoneNumber,
+      parcelType,
+      parcelWeight,
+      receiverName,
+      receiverPhoneNumber,
+      formattedDate,
+      latitude,
+      longitude,
+      deliveryAddress,
+      parcelCharge,
+      status,
+    };
+
+    // console.log(parcelObj);
+
+    const bookResponse = await axiosPublicUrl.post("/parcel", parcelObj);
+
+    console.log(bookResponse?.data);
+
+    if (bookResponse?.data?.insertedId) {
+      insertSuccessfully();
+    }
+  };
+
+  // console.log(deliveryDate);
 
   return (
     <div className=" py-4 relative mainContiner flex flex-col  w-full items-center justify-center  bg-no-repeat bg-cover bg-center ">
@@ -44,8 +135,7 @@ const BookParcel = () => {
               type="text"
               name="user_name"
               id="user_name"
-              // value={foodName}
-              // onChange={(e) => setfoodName(e.target.value)}
+              value={userName}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               placeholder="User name"
               required=""
@@ -66,8 +156,8 @@ const BookParcel = () => {
               type="text"
               name="user_email"
               id="user_email"
-              // value={foodImage}
-              // onChange={(e) => setfoodImage(e.target.value)}
+              value={userEmail}
+              readOnly
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               placeholder="user email"
               required=""
@@ -85,11 +175,12 @@ const BookParcel = () => {
               Phone number
             </label>
             <input
-              type="text"
+              type="number"
               name="user_number"
               id="user_number"
-              // value={foodOrigin}
-              // onChange={(e) => setfoodOrigin(e.target.value)}
+              onWheel={(e) => e.target.blur()}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               placeholder="Enter phone number"
               required=""
@@ -110,8 +201,8 @@ const BookParcel = () => {
               type="text"
               name="parcel_type"
               id="parcel_type"
-              // value={foodOrigin}
-              // onChange={(e) => setfoodOrigin(e.target.value)}
+              value={parcelType}
+              onChange={(e) => setParcelType(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               placeholder="Parcel type"
               required=""
@@ -126,15 +217,15 @@ const BookParcel = () => {
               htmlFor="parcel_weight"
               className="block mb-2 text-sm font-medium text-gray-900 "
             >
-              Parcel weight
+              Parcel weight (in kg)
             </label>
             <input
               onWheel={(e) => e.target.blur()}
               name="parcel_weight"
               type="number"
               id="parcel_weight"
-              // value={price}
-              // onChange={(e) => setprice(e.target.value)}
+              value={parcelWeight}
+              onChange={(e) => calculateCharge(e)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm remove-arrow rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               placeholder="Enter weight"
               required=""
@@ -154,8 +245,8 @@ const BookParcel = () => {
               type="text"
               name="receiver_name"
               id="receiver_name"
-              // value={foodName}
-              // onChange={(e) => setfoodName(e.target.value)}
+              value={receiverName}
+              onChange={(e) => setReceiverName(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               placeholder="receiver name"
               required=""
@@ -173,11 +264,12 @@ const BookParcel = () => {
               Receiver Phone number
             </label>
             <input
-              type="text"
+              type="number"
+              onWheel={(e) => e.target.blur()}
               name="receiver_number"
               id="receiver_number"
-              // value={foodOrigin}
-              // onChange={(e) => setfoodOrigin(e.target.value)}
+              value={receiverPhoneNumber}
+              onChange={(e) => setReceiverNumber(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               placeholder="Receiver phone number"
               required=""
@@ -195,7 +287,12 @@ const BookParcel = () => {
             >
               Delivery date
             </label>
-            <input type="date" id="delivery_date" name="delivery_date" />
+            <input
+              type="date"
+              id="delivery_date"
+              name="delivery_date"
+              onChange={(e) => setDeliveryDate(e.target.value)}
+            />
           </div>
 
           {/* parcel delivery date  */}
@@ -213,8 +310,8 @@ const BookParcel = () => {
               type="text"
               name="address_latitude"
               id="address_latitude"
-              // value={foodOrigin}
-              // onChange={(e) => setfoodOrigin(e.target.value)}
+              value={latitude}
+              onChange={(e) => setLatitude(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               placeholder="Address latitude"
               required=""
@@ -236,8 +333,8 @@ const BookParcel = () => {
               type="text"
               name="address_longitude"
               id="address_longitude"
-              // value={foodOrigin}
-              // onChange={(e) => setfoodOrigin(e.target.value)}
+              value={longitude}
+              onChange={(e) => setLongtide(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               placeholder="Address longitude"
               required=""
@@ -258,6 +355,8 @@ const BookParcel = () => {
             <textarea
               id="delivery_address"
               rows="3"
+              value={deliveryAddress}
+              onChange={(e) => setDeliveryAddress(e.target.value)}
               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Delivery address"
             ></textarea>
@@ -277,8 +376,7 @@ const BookParcel = () => {
               type="text"
               name="parcel_charge"
               id="parcel_charge"
-              // value={foodName}
-              // onChange={(e) => setfoodName(e.target.value)}
+              value={parcelCharge}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               placeholder="Parcel charge"
               required=""
@@ -292,7 +390,7 @@ const BookParcel = () => {
         <button
           type="submit"
           className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-violet-600 rounded-lg focus:ring-4 focus:ring-primary-200  hover:bg-violet-800"
-          //   onClick={() => handleSubmit()}
+          onClick={() => handleSubmit()}
         >
           Book now
         </button>

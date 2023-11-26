@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { updateProfile } from "firebase/auth";
-import UseAxios from "../Hooks/UseAxios";
+
 import UseAuth from "../Hooks/UseAuth";
 import {
   inputFieldError,
@@ -14,13 +14,14 @@ import {
   registerSuccessfully,
   termError,
 } from "../ToastFunc/ToastFunction";
+import UseAxiosPublic from "../Hooks/UseAxiosPublic";
 
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING;
 
 const imageHostingApi = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
 
 const Register = () => {
-  const [axiosUrl] = UseAxios();
+  const [axiosPublicUrl] = UseAxiosPublic();
   const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false); // for checkbox state
   const [imageInput, setImageInput] = useState();
@@ -67,11 +68,15 @@ const Register = () => {
     //   return passwordValidationError();
     // }
 
-    const imageResponse = await axiosUrl.post(imageHostingApi, imageFile, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const imageResponse = await axiosPublicUrl.post(
+      imageHostingApi,
+      imageFile,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
 
     if (imageResponse?.data?.success) {
       const photoUrl = imageResponse?.data?.data?.display_url;
