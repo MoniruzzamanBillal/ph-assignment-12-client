@@ -13,7 +13,7 @@ const MyParcel = () => {
   const { data: parcelData, isLoading: dataLoading } = useQuery({
     queryKey: ["parcelData"],
     queryFn: async () => {
-      return axiosPublicUrl.get(`/parcels?uid=${user?.uid}`);
+      return axiosPublicUrl.get(`/parcels?email=${user?.email}`);
     },
   });
 

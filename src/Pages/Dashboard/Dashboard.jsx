@@ -87,7 +87,7 @@ const Dashboard = () => {
   }
 
   // console.log("--------------------------");
-  // console.log(user);
+  console.log(user);
   // console.log("--------------------------");
 
   return (

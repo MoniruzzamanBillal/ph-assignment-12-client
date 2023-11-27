@@ -6,6 +6,17 @@ const axiosSecure = axios.create({
 });
 
 const UseAxiosSecure = () => {
+  axiosSecure.interceptors.request,
+    use(
+      (config) => {
+        console.log("stoped by interceptor");
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+
   return [axiosSecure];
 };
 
