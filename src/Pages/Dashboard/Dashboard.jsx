@@ -67,12 +67,13 @@ const userMenu = [
 const deliveryManMenu = [
   {
     title: "My delivery",
-    path: "/",
+    path: "/dashboard/mydelivery",
     icon: <BsGraphUpArrow />,
   },
   {
     title: "My review",
-    path: "/",
+    path: "/dashboard/myreview",
+
     icon: <BsGraphUpArrow />,
   },
 ];
@@ -84,7 +85,10 @@ const Dashboard = () => {
   const { user, loading } = UseAuth();
   const [isAdmin, isAdminLoading] = UseRole();
 
-  console.log(isAdmin?.role);
+  // console.log(user);
+  // console.log(isAdmin);
+  // console.log(isAdmin?.role);
+  // deliveryman
 
   if (loading || isAdminLoading) {
     return <Loading />;
@@ -185,6 +189,26 @@ const Dashboard = () => {
               {/* normal user side links ends  */}
               {/*  */}
               {/*  */}
+
+              {/* delivary man menu  */}
+
+              {isAdmin.role === "deliveryman" &&
+                deliveryManMenu.map((ele, ind) => (
+                  <NavLink
+                    to={ele.path}
+                    key={ind}
+                    className={`flex rounded-md py-3 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
+                  >
+                    <div className="icon text-lg">{ele.icon}</div>
+                    <h1
+                      className={`hidden gap-1  origin-left duration-200 w-full sm:flex`}
+                    >
+                      {ele.title}
+                    </h1>
+                  </NavLink>
+                ))}
+
+              {/* delivary man menu  */}
 
               {/*  */}
             </div>

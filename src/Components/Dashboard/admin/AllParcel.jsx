@@ -1,6 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import UseAuth from "../../../Hooks/UseAuth";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../../Loading/Loading";
+
+import { Button, Checkbox, Label, Modal, TextInput } from "flowbite-react";
+import UseDelivaryMan from "../../../Hooks/UseDelivaryMan";
 
 const AllParcel = () => {
+  const navigate = useNavigate();
+  const [axiosPublicUrl] = UseAxiosPublic();
+  const [axiosSecure] = UseAxiosSecure();
+  const { user } = UseAuth();
+  const [openModal, setOpenModal] = useState(false);
+  const [email, setEmail] = useState("");
+  // const [delivarymans, setDelivarymans] = useState([]);
+  const [delivaryMans, delivaryManloading] = UseDelivaryMan();
+
+  console.log(delivaryMans);
+
+  const {
+    data: Allparcel,
+    isLoading: dataLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["allParcel"],
+    queryFn: async () => {
+      // return axiosPublicUrl.get(`/parcels?email=${user?.email}`, {
+      return axiosSecure.get(`/parcels`);
+    },
+  });
+
+  const handleManage = (id) => {
+    console.log("manage click");
+    console.log(id);
+    setOpenModal(true);
+  };
+
+  function onCloseModal() {
+    setOpenModal(false);
+    setEmail("");
+  }
+
+  if (dataLoading || delivaryManloading) {
+    return <Loading />;
+  }
+
+  // console.log(Allparcel.data);
+
   return (
     <div>
       <div className=" bg-red-400 w-[95%] m-auto    ">
@@ -52,163 +101,125 @@ const AllParcel = () => {
               </tr>
             </thead>
             <tbody className="bg-white">
-              <tr>
-                <td className="  py-2 text-left leading-4    border-b border-gray-500">
-                  <div className="flex items-center justify-center ">
-                    <div>
-                      <div className="text-sm leading-5 text-gray-800">
-                        parcel type
+              {Allparcel?.data &&
+                Allparcel?.data.map((parcel, ind) => (
+                  <tr key={ind}>
+                    <td className="  py-2 text-left leading-4    border-b border-gray-500">
+                      <div className="flex items-center justify-center ">
+                        <div>
+                          <div className="text-sm leading-5 text-gray-800">
+                            {parcel?.parcelType}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="py-2 text-left leading-4  border-b border-gray-500">
-                  <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
-                    requested delivery date
-                  </div>
-                </td>
-                <td className="py-2 text-left leading-4  border-b border-gray-500 ">
-                  <div className="flex items-center justify-center">
-                    approximate delivary date
-                  </div>
-                </td>
-                <td className="py-2 text-left leading-4  border-b border-gray-500">
-                  <div className="flex items-center justify-center">
-                    booking date
-                  </div>
-                </td>
-                <td className="py-2 text-left leading-4  border-b border-gray-500">
-                  <div className="flex items-center justify-center">
-                    delivary man id
-                  </div>
-                </td>
-                <td className="py-2 text-left leading-4  border-b border-gray-500">
-                  <div className="flex items-center justify-center">
-                    pending ...
-                  </div>
-                </td>
-                <td className="py-2 text-left leading-4 border-b border-gray-500">
-                  <div className="flex items-center justify-center">
-                    update or cancel
-                  </div>
-                </td>
-              </tr>
-              {/*  */}
-              {/*  */}
-              {/*  */}
-              {/*  */}
-              {/*  */}
-              <tr>
-                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                  <div className="flex items-center">
+                    </td>
+                    <td className="py-2 text-center leading-4  border-b border-gray-500">
+                      <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
+                        User image
+                      </div>
+                    </td>
+                    <td className="py-2 text-center leading-4  border-b border-gray-500 ">
+                      <div className="flex items-center justify-center">
+                        {parcel?.bookingDate}
+                      </div>
+                    </td>
+                    <td className="py-2 text-center leading-4  border-b border-gray-500">
+                      <div className="flex items-center justify-center">
+                        {parcel?.requestedDate}
+                      </div>
+                    </td>
+                    <td className="py-2 text-center leading-4  border-b border-gray-500">
+                      <div className="flex items-center justify-center">
+                        {parcel?.parcelCharge}
+                      </div>
+                    </td>
+                    <td className="py-2 text-center leading-4  border-b border-gray-500">
+                      <div className="flex items-center justify-center">
+                        {parcel?.status}
+                      </div>
+                    </td>
+                    <td className="py-2 text-center leading-4 border-b border-gray-500">
+                      <div
+                        className="flex items-center justify-center text-gray-700 cursor-pointer bg-blue-300 py-1.5 rounded active:scale-95 "
+                        onClick={() => handleManage(parcel?._id)}
+                      >
+                        Manage
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+
+              {/* modal  */}
+              {/* modal  */}
+              <Modal show={openModal} size="md" onClose={onCloseModal} popup>
+                <Modal.Header />
+                <Modal.Body>
+                  <div className="space-y-6">
+                    <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                      Sign in to our platform
+                    </h3>
                     <div>
-                      <div className="text-sm leading-5 text-gray-800">#1</div>
+                      <div className="mb-2 block">
+                        <Label
+                          htmlFor="deliveryman"
+                          value="Select delivery man"
+                        />
+                      </div>
+                      {/*  */}
+                      {/*  */}
+                      <select
+                        id="deliveryman"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 "
+                      >
+                        <option>select delivary man</option>
+                        {delivaryMans &&
+                          delivaryMans.map((delivaryman, ind) => (
+                            // <option  value="deliveryman">
+                            <option key={ind} value={delivaryman?._id}>
+                              {delivaryman?.name}
+                            </option>
+                          ))}
+                      </select>
+                      {/*  */}
+                      {/*  */}
                     </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                  <div className="text-sm leading-5 text-blue-900">
-                    Damilare Anjorin
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                  damilareanjorin1@gmail.com
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                  +2348106420637
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                  <span className="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                    <span
-                      aria-hidden
-                      className="absolute inset-0 bg-red-200 opacity-50 rounded-full"
-                    ></span>
-                    <span className="relative text-xs">not active</span>
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">
-                  September 12
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                  <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
-                    View Details
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                  <div className="flex items-center">
                     <div>
-                      <div className="text-sm leading-5 text-gray-800">#1</div>
+                      <div className="mb-2 block">
+                        <Label
+                          htmlFor="date"
+                          value="Approximate delivery date"
+                        />
+                      </div>
+                      <input type="date" name="" id="date" />
+                    </div>
+
+                    <div className="mb-2 block">
+                      <Label htmlFor="status" value="delivery status : " />
+
+                      <input
+                        type="text"
+                        name=""
+                        id="status"
+                        value={"on the way"}
+                        readOnly
+                        className="border-none outline-none focus:outline-none "
+                      />
+                    </div>
+
+                    <div className="w-full">
+                      <Button>Log in to your account</Button>
                     </div>
                   </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                  <div className="text-sm leading-5 text-blue-900">
-                    Damilare Anjorin
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                  damilareanjorin1@gmail.com
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                  +2348106420637
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                  <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                    <span
-                      aria-hidden
-                      className="absolute inset-0 bg-green-200 opacity-50 rounded-full"
-                    ></span>
-                    <span className="relative text-xs">active</span>
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">
-                  September 12
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                  <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
-                    View Details
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                  <div className="flex items-center">
-                    <div>
-                      <div className="text-sm leading-5 text-gray-800">#1</div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                  <div className="text-sm leading-5 text-blue-900">
-                    Damilare Anjorin
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                  damilareanjorin1@gmail.com
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                  +2348106420637
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                  <span className="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
-                    <span
-                      aria-hidden
-                      className="absolute inset-0 bg-orange-200 opacity-50 rounded-full"
-                    ></span>
-                    <span className="relative text-xs">disabled</span>
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">
-                  September 12
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                  <button className="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
-                    View Details
-                  </button>
-                </td>
-              </tr>
+                </Modal.Body>
+              </Modal>
+              {/* modal  */}
+              {/* modal  */}
+
+              {/*  */}
+              {/*  */}
+              {/*  */}
+              {/*  */}
+              {/*  */}
             </tbody>
           </table>
           <div className="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">

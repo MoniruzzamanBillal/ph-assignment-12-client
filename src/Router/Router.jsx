@@ -12,6 +12,8 @@ import AllDeliveryMan from "../Components/Dashboard/admin/AllDeliveryMan";
 import AllUsers from "../Components/Dashboard/admin/AllUsers";
 import UpdateParcel from "../Components/Dashboard/UpdateParcel";
 import Test from "../Components/Loading/Test";
+import MyDelivery from "../Components/Dashboard/DeliveryMan/MyDelivery";
+import MyReview from "../Components/Dashboard/DeliveryMan/MyReview";
 
 const Router = createBrowserRouter([
   {
@@ -58,7 +60,7 @@ const Router = createBrowserRouter([
       },
       {
         path: "/dashboard/statistics",
-        element: <p> book parcel </p>,
+        element: <p> Statistics </p>,
       },
       {
         path: "/dashboard/parcels",
@@ -71,6 +73,14 @@ const Router = createBrowserRouter([
       {
         path: "/dashboard/deliverymans",
         element: <AllDeliveryMan />,
+      },
+      {
+        path: "/dashboard/mydelivery",
+        element: <MyDelivery />,
+      },
+      {
+        path: "/dashboard/myreview",
+        element: <MyReview />,
       },
     ],
   },

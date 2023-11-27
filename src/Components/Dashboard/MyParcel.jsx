@@ -20,12 +20,6 @@ const MyParcel = () => {
     },
   });
 
-  // {
-  //   headers: {
-  //     authorization: `Bearer ${localStorage.getItem("access-token")}`,
-  //   },
-  // }
-
   const userData = parcelData?.data;
 
   // console.log(userData);
