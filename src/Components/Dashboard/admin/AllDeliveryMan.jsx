@@ -61,7 +61,9 @@ const AllDeliveryMan = () => {
                     {/*  */}
                     <td className="py-2 px-3 text-left leading-4  border-b border-gray-500">
                       <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
-                        phone number
+                        {delivaryman?.phoneNumber
+                          ? delivaryman?.phoneNumber
+                          : "phoneNumber"}
                       </div>
                     </td>
                     {/*  */}

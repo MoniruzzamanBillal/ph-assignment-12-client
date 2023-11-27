@@ -35,7 +35,7 @@ const AllParcel = () => {
     queryKey: ["allParcel"],
     queryFn: async () => {
       // return axiosPublicUrl.get(`/parcels?email=${user?.email}`, {
-      return axiosSecure.get(`/parcels`);
+      return axiosPublicUrl.get(`/parcels`);
     },
   });
 

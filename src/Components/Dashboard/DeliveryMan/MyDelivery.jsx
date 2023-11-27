@@ -1,6 +1,57 @@
 import React from "react";
-
+import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
+import UseRole from "../../../Hooks/UseRole";
+import { useQuery } from "@tanstack/react-query";
+import UseAuth from "../../../Hooks/UseAuth";
+import Loading from "../../Loading/Loading";
+import { Avatar } from "flowbite-react";
 const MyDelivery = () => {
+  const { user, loading } = UseAuth();
+  const [axiosPublicUrl] = UseAxiosPublic();
+  const [isAdmin, isAdminLoading] = UseRole();
+
+  console.log(isAdmin?.id);
+
+  const {
+    data: myDelivary,
+    isLoading: myDelivaryLoading,
+    refetch: myDelivaryReFetch,
+  } = useQuery({
+    queryKey: ["myDelivary"],
+
+    queryFn: async () => {
+      const res = await axiosPublicUrl.get(`/mydelivery/${isAdmin?.id}`);
+
+      return res.data;
+    },
+  });
+
+  console.log(myDelivary);
+
+  // delivery function
+  const handleDelivery = (id) => {
+    console.log("delivery  click");
+    console.log(id);
+
+    const additionalData = { status: "delivered" };
+
+    axiosPublicUrl
+      .patch(`/parcel/${id}`, additionalData)
+      .then((response) => {
+        console.log(response?.data);
+        if (response?.data?.acknowledged) {
+          // refetch();
+          // dataAddedSuccessFully();
+          myDelivaryReFetch();
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  if (loading || myDelivaryLoading) {
+    return <Loading />;
+  }
+
   return (
     <div>
       <div className=" bg-red-400 w-[95%] m-auto    ">
@@ -68,57 +119,70 @@ const MyDelivery = () => {
               </tr>
             </thead>
             <tbody className="bg-white">
-              <tr>
-                <td className="  py-2 px-2 text-left leading-4    border-b border-gray-500">
-                  <div className="flex items-center justify-center ">
-                    <div>
-                      <div className="text-sm leading-5 text-gray-800">
-                        Booked user name
+              {myDelivary &&
+                myDelivary.map((delivary, ind) => (
+                  <tr key={ind}>
+                    <td className="  py-2 px-2 text-center leading-4    border-b border-gray-500">
+                      <div className="flex items-center justify-center ">
+                        <div>
+                          <div className="text-sm leading-5 text-gray-800">
+                            {delivary?.userName}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="py-2 px-2 text-center leading-4  border-b border-gray-500">
-                  <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
-                    Receiver name
-                  </div>
-                </td>
-                <td className="py-2 px-2 text-center leading-4  border-b border-gray-500 ">
-                  <div className="flex items-center justify-center">
-                    Booked user photo
-                  </div>
-                </td>
-                <td className="py-2 px-2 text-center leading-4  border-b border-gray-500">
-                  <div className="flex items-center justify-center">
-                    Requested Delivery Date
-                  </div>
-                </td>
-                <td className="py-2 px-2 text-center leading-4  border-b border-gray-500">
-                  <div className="flex items-center justify-center">
-                    Approximate Delivery Date
-                  </div>
-                </td>
-                <td className="py-2 px-2 text-center leading-4  border-b border-gray-500">
-                  <div className="flex items-center justify-center">
-                    Recievers phone number
-                  </div>
-                </td>
-                <td className="py-2 px-2 text-center leading-4 border-b border-gray-500">
-                  <div className="flex items-center justify-center">
-                    Receivers Address
-                  </div>
-                </td>
-                <td className="py-2 px-2 text-center leading-4 border-b border-gray-500">
-                  <div className="flex items-center justify-center">
-                    Cancel Button
-                  </div>
-                </td>
-                <td className="py-2 px-2 text-center leading-4 border-b border-gray-500">
-                  <div className="flex items-center justify-center">
-                    Cancel Button
-                  </div>
-                </td>
-              </tr>
+                    </td>
+                    <td className="py-2 px-2 text-center leading-4  border-b border-gray-500">
+                      <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
+                        {delivary?.receiverName}
+                      </div>
+                    </td>
+                    <td className="py-2 px-2 text-center leading-4  border-b border-gray-500 ">
+                      <div className="flex items-center justify-center">
+                        {delivary?.phoneNumber}
+                      </div>
+                    </td>
+                    <td className="py-2 px-2 text-center leading-4  border-b border-gray-500">
+                      <div className="flex items-center justify-center">
+                        {delivary?.requestedDate}
+                      </div>
+                    </td>
+                    <td className="py-2 px-2 text-center leading-4  border-b border-gray-500">
+                      <div className="flex items-center justify-center">
+                        {delivary?.approximateDelivery}
+                      </div>
+                    </td>
+                    <td className="py-2 px-2 text-center leading-4  border-b border-gray-500">
+                      <div className="flex items-center justify-center">
+                        {delivary?.receiverPhoneNumber}
+                      </div>
+                    </td>
+                    <td className="py-2 px-2 text-center leading-4 border-b border-gray-500">
+                      <div className="flex items-center justify-center">
+                        {delivary?.deliveryAddress}
+                      </div>
+                    </td>
+                    <td className="py-2 px-2 text-center leading-4 border-b border-gray-500">
+                      <div className="flex items-center justify-center py-2 bg-violet-500 rounded-md text-sm font-semibold text-gray-100 cursor-pointer active:scale-95 ">
+                        Cancel
+                      </div>
+                    </td>
+                    <td className="py-2 px-2 text-center leading-4 border-b border-gray-500">
+                      {delivary?.status === "delivered" ? (
+                        <div className="flex items-center justify-center font-bold text-green-500 ">
+                          delivered
+                        </div>
+                      ) : (
+                        <div
+                          className="flex items-center justify-center py-2 bg-orange-500 rounded-md text-sm font-semibold text-gray-100 cursor-pointer active:scale-95 "
+                          onClick={() => handleDelivery(delivary?._id)}
+                        >
+                          Make delivary
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+
               {/*  */}
               {/*  */}
               {/*  */}
