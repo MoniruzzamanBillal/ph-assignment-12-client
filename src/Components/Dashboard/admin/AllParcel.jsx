@@ -5,9 +5,12 @@ import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import UseAuth from "../../../Hooks/UseAuth";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../Loading/Loading";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { Button, Checkbox, Label, Modal, TextInput } from "flowbite-react";
 import UseDelivaryMan from "../../../Hooks/UseDelivaryMan";
+import { dataAddedSuccessFully } from "../../../ToastFunc/ToastFunction";
 
 const AllParcel = () => {
   const navigate = useNavigate();
@@ -16,10 +19,13 @@ const AllParcel = () => {
   const { user } = UseAuth();
   const [openModal, setOpenModal] = useState(false);
   const [email, setEmail] = useState("");
-  // const [delivarymans, setDelivarymans] = useState([]);
   const [delivaryMans, delivaryManloading] = UseDelivaryMan();
+  const [manageID, setManageId] = useState(null);
+  const [delivartManId, setDeliveryManId] = useState(null);
+  const [deliveryDate, setDeliveryDate] = useState("");
+  const [status, setStatus] = useState("on the way");
 
-  console.log(delivaryMans);
+  // console.log(delivaryMans);
 
   const {
     data: Allparcel,
@@ -34,8 +40,7 @@ const AllParcel = () => {
   });
 
   const handleManage = (id) => {
-    console.log("manage click");
-    console.log(id);
+    setManageId(id);
     setOpenModal(true);
   };
 
@@ -43,6 +48,32 @@ const AllParcel = () => {
     setOpenModal(false);
     setEmail("");
   }
+
+  // submit functionality of modal
+  const handleSubmit = () => {
+    const parcelID = manageID;
+    const partDate = deliveryDate.split("-");
+
+    const approximateDelivery = `${partDate[2]}-${partDate[1]}-${partDate[0]}`;
+
+    const additionalData = {
+      delivartManId,
+      approximateDelivery,
+      status,
+    };
+
+    axiosPublicUrl
+      .patch(`/parcel/${parcelID}`, additionalData)
+      .then((response) => {
+        // console.log(response?.data);
+        if (response?.data?.acknowledged) {
+          refetch();
+          dataAddedSuccessFully();
+          onCloseModal();
+        }
+      })
+      .catch((error) => console.log(error));
+  };
 
   if (dataLoading || delivaryManloading) {
     return <Loading />;
@@ -145,73 +176,90 @@ const AllParcel = () => {
                       >
                         Manage
                       </div>
+                      <Modal
+                        show={openModal}
+                        size="md"
+                        onClose={onCloseModal}
+                        popup
+                      >
+                        <Modal.Header />
+                        <Modal.Body>
+                          <div className="space-y-6">
+                            <div>
+                              <div className="mb-2 block">
+                                <Label
+                                  htmlFor="deliveryman"
+                                  value="Select delivery man"
+                                />
+                              </div>
+                              {/*  */}
+                              {/*  */}
+                              <select
+                                id="deliveryman"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 "
+                                onChange={(e) =>
+                                  setDeliveryManId(e.target.value)
+                                }
+                              >
+                                <option>select delivary man</option>
+                                {delivaryMans &&
+                                  delivaryMans.map((delivaryman, ind) => (
+                                    <option key={ind} value={delivaryman?._id}>
+                                      {delivaryman?.name}
+                                    </option>
+                                  ))}
+                              </select>
+                              {/*  */}
+                              {/*  */}
+                            </div>
+                            <div>
+                              <div className="mb-2 block">
+                                <Label
+                                  htmlFor="date"
+                                  value="Approximate delivery date"
+                                />
+                              </div>
+                              <input
+                                type="date"
+                                name=""
+                                id="date"
+                                onChange={(e) =>
+                                  setDeliveryDate(e.target.value)
+                                }
+                              />
+                            </div>
+
+                            <div className="mb-2 block">
+                              <Label
+                                htmlFor="status"
+                                value="delivery status : "
+                              />
+
+                              <input
+                                type="text"
+                                name=""
+                                id="status"
+                                value={status}
+                                readOnly
+                                className="border-none outline-none focus:outline-none "
+                              />
+                            </div>
+
+                            <div className="w-full">
+                              <Button onClick={() => handleSubmit()}>
+                                Submit
+                              </Button>
+                            </div>
+                          </div>
+                        </Modal.Body>
+                      </Modal>
                     </td>
                   </tr>
                 ))}
 
               {/* modal  */}
               {/* modal  */}
-              <Modal show={openModal} size="md" onClose={onCloseModal} popup>
-                <Modal.Header />
-                <Modal.Body>
-                  <div className="space-y-6">
-                    <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                      Sign in to our platform
-                    </h3>
-                    <div>
-                      <div className="mb-2 block">
-                        <Label
-                          htmlFor="deliveryman"
-                          value="Select delivery man"
-                        />
-                      </div>
-                      {/*  */}
-                      {/*  */}
-                      <select
-                        id="deliveryman"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 "
-                      >
-                        <option>select delivary man</option>
-                        {delivaryMans &&
-                          delivaryMans.map((delivaryman, ind) => (
-                            // <option  value="deliveryman">
-                            <option key={ind} value={delivaryman?._id}>
-                              {delivaryman?.name}
-                            </option>
-                          ))}
-                      </select>
-                      {/*  */}
-                      {/*  */}
-                    </div>
-                    <div>
-                      <div className="mb-2 block">
-                        <Label
-                          htmlFor="date"
-                          value="Approximate delivery date"
-                        />
-                      </div>
-                      <input type="date" name="" id="date" />
-                    </div>
 
-                    <div className="mb-2 block">
-                      <Label htmlFor="status" value="delivery status : " />
-
-                      <input
-                        type="text"
-                        name=""
-                        id="status"
-                        value={"on the way"}
-                        readOnly
-                        className="border-none outline-none focus:outline-none "
-                      />
-                    </div>
-
-                    <div className="w-full">
-                      <Button>Log in to your account</Button>
-                    </div>
-                  </div>
-                </Modal.Body>
-              </Modal>
               {/* modal  */}
               {/* modal  */}
 
@@ -299,6 +347,7 @@ const AllParcel = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

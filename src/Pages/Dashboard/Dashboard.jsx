@@ -148,7 +148,7 @@ const Dashboard = () => {
               {/*  */}
               {/* admin menu  */}
 
-              {isAdmin.role === "admin" &&
+              {isAdmin?.role === "admin" &&
                 adminMenu.map((ele, ind) => (
                   <NavLink
                     to={ele.path}
@@ -170,7 +170,7 @@ const Dashboard = () => {
 
               {/* normal user side links  */}
 
-              {isAdmin.role === "user" &&
+              {isAdmin?.role === "user" &&
                 userMenu.map((ele, ind) => (
                   <NavLink
                     to={ele.path}
@@ -192,7 +192,7 @@ const Dashboard = () => {
 
               {/* delivary man menu  */}
 
-              {isAdmin.role === "deliveryman" &&
+              {isAdmin?.role === "deliveryman" &&
                 deliveryManMenu.map((ele, ind) => (
                   <NavLink
                     to={ele.path}
