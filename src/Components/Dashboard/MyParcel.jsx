@@ -4,22 +4,31 @@ import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 import UseAuth from "../../Hooks/UseAuth";
 import Loading from "../Loading/Loading";
 import { useNavigate } from "react-router-dom";
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 
 const MyParcel = () => {
   const navigate = useNavigate();
   const [axiosPublicUrl] = UseAxiosPublic();
+  const [axiosSecure] = UseAxiosSecure();
   const { user } = UseAuth();
 
   const { data: parcelData, isLoading: dataLoading } = useQuery({
     queryKey: ["parcelData"],
     queryFn: async () => {
-      return axiosPublicUrl.get(`/parcels?email=${user?.email}`);
+      // return axiosPublicUrl.get(`/parcels?email=${user?.email}`, {
+      return axiosSecure.get(`/parcels?email=${user?.email}`);
     },
   });
 
+  // {
+  //   headers: {
+  //     authorization: `Bearer ${localStorage.getItem("access-token")}`,
+  //   },
+  // }
+
   const userData = parcelData?.data;
 
-  console.log(userData);
+  // console.log(userData);
 
   const handleUpdate = (id) => {
     console.log("id on update = ", id);

@@ -17,6 +17,7 @@ import UseAuth from "../../Hooks/UseAuth";
 import Loading from "../../Components/Loading/Loading";
 import { IoStatsChart } from "react-icons/io5";
 import { FaUserAstronaut } from "react-icons/fa6";
+import UseRole from "../../Hooks/UseRole";
 
 // global variables:
 
@@ -81,13 +82,16 @@ const Dashboard = () => {
 
   const [isSidebarActive, setIsSidebarActive] = useState(false);
   const { user, loading } = UseAuth();
+  const [isAdmin, isAdminLoading] = UseRole();
 
-  if (loading) {
+  console.log(isAdmin?.role);
+
+  if (loading || isAdminLoading) {
     return <Loading />;
   }
 
   // console.log("--------------------------");
-  console.log(user);
+  // console.log(user);
   // console.log("--------------------------");
 
   return (
@@ -140,41 +144,44 @@ const Dashboard = () => {
               {/*  */}
               {/* admin menu  */}
 
-              {/* {adminMenu.map((ele, ind) => (
-                <NavLink
-                  to={ele.path}
-                  key={ind}
-                  className={`flex rounded-md py-3 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
-                >
-                  <div className="icon text-lg">{ele.icon}</div>
-                  <h1
-                    className={`hidden gap-1  origin-left duration-200 w-full sm:flex`}
+              {isAdmin.role === "admin" &&
+                adminMenu.map((ele, ind) => (
+                  <NavLink
+                    to={ele.path}
+                    key={ind}
+                    className={`flex rounded-md py-3 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
                   >
-                    {ele.title}
-                  </h1>
-                </NavLink>
-              ))} */}
+                    <div className="icon text-lg">{ele.icon}</div>
+                    <h1
+                      className={`hidden gap-1  origin-left duration-200 w-full sm:flex`}
+                    >
+                      {ele.title}
+                    </h1>
+                  </NavLink>
+                ))}
+
               {/* admin menu  */}
               {/*  */}
               {/*  */}
 
-              {/*  */}
-              {/*  */}
               {/* normal user side links  */}
-              {userMenu.map((ele, ind) => (
-                <NavLink
-                  to={ele.path}
-                  key={ind}
-                  className={`flex rounded-md py-3 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
-                >
-                  <div className="icon text-lg">{ele.icon}</div>
-                  <h1
-                    className={`hidden gap-1  origin-left duration-200 w-full sm:flex`}
+
+              {isAdmin.role === "user" &&
+                userMenu.map((ele, ind) => (
+                  <NavLink
+                    to={ele.path}
+                    key={ind}
+                    className={`flex rounded-md py-3 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
                   >
-                    {ele.title}
-                  </h1>
-                </NavLink>
-              ))}
+                    <div className="icon text-lg">{ele.icon}</div>
+                    <h1
+                      className={`hidden gap-1  origin-left duration-200 w-full sm:flex`}
+                    >
+                      {ele.title}
+                    </h1>
+                  </NavLink>
+                ))}
+
               {/* normal user side links ends  */}
               {/*  */}
               {/*  */}

@@ -27,10 +27,10 @@ const Loading = () => {
       {/* spinner  */}
 
       <h1
-        data-text="Ship Ease...."
+        data-text="ShipEase...."
         className=" loadingText text-7xl font-semibold relative text-blue-900 uppercase textStroke "
       >
-        Ship Ease....
+        ShipEase....
       </h1>
     </div>
   );

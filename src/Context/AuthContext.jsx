@@ -43,9 +43,25 @@ const AppProvider = ({ children }) => {
       setUser(currentUser);
 
       if (currentUser) {
-        axiosPublicUrl.post("/jwt").then((tokenResponse) => {
-          console.log(tokenResponse.data);
-        });
+        const userInfo = {
+          email: currentUser?.email,
+        };
+
+        axiosPublicUrl
+          .post("/jwt", userInfo)
+          .then((response) => {
+            console.log(response.data);
+            if (response?.data?.token) {
+              localStorage.setItem("access-token", response?.data?.token);
+            }
+          })
+          .catch((error) => console.log(error));
+
+        // axiosPublicUrl.post("/jwt", userInfo).then((tokenResponse) => {
+        //   console.log(tokenResponse.data);
+        // });
+      } else {
+        localStorage.removeItem("access-token");
       }
 
       setLoading(false);
