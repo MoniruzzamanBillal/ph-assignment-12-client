@@ -8,6 +8,7 @@ const UseRole = () => {
   const { user, loading } = UseAuth();
   const [axiosSecure] = UseAxiosSecure();
   // console.log(loading);
+  console.log(user);
 
   const { data: isAdmin, isLoading: isAdminLoading } = useQuery({
     queryKey: ["findRole"],

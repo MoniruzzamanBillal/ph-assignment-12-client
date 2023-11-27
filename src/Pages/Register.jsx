@@ -28,6 +28,7 @@ const Register = () => {
   const [imageInput, setImageInput] = useState();
   const [imageUrl, setImageUrl] = useState("");
   const [role, setRole] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(null);
   const { registerFunction, user, logoutFunction } = UseAuth();
 
   const nameInput = UseInput();
@@ -103,6 +104,7 @@ const Register = () => {
             uid,
             role,
             name,
+            phoneNumber,
           };
 
           // console.log(userData);
@@ -244,6 +246,31 @@ const Register = () => {
               />
             </div>
           </motion.div>
+
+          {/* phone number  */}
+          <motion.div
+            initial={{ x: "-100", opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="nameInput"
+          >
+            <div className="inputComponent mt-3  w-full mb-1  ">
+              <label
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                for="file_input"
+              >
+                Enter your phone number
+              </label>
+              <input
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                id="file_input"
+                type="number"
+                onWheel={(e) => e.target.blur()}
+              />
+            </div>
+          </motion.div>
+          {/* phone number  */}
 
           {/* category  */}
           <div>

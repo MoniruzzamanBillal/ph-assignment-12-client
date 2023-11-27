@@ -1,6 +1,16 @@
 import React from "react";
+import UseDelivaryMan from "../../../Hooks/UseDelivaryMan";
+import Loading from "../../Loading/Loading";
 
 const AllDeliveryMan = () => {
+  const [delivaryMans, delivaryManloading] = UseDelivaryMan();
+
+  console.log(delivaryMans);
+
+  if (delivaryManloading) {
+    return <Loading />;
+  }
+
   return (
     <div>
       <div className=" bg-red-400 w-[95%] m-auto    ">
@@ -34,37 +44,41 @@ const AllDeliveryMan = () => {
               </tr>
             </thead>
             <tbody className="bg-white">
-              <tr>
-                {/*  */}
-                <td className="  py-2 px-3 text-left leading-4    border-b border-gray-500">
-                  <div className="flex items-center justify-center ">
-                    <div>
-                      <div className="text-sm leading-5 text-gray-800">
-                        delivery man name
+              {delivaryMans &&
+                delivaryMans.map((delivaryman, ind) => (
+                  <tr>
+                    {/*  */}
+                    <td className="  py-2 px-3 text-left leading-4    border-b border-gray-500">
+                      <div className="flex items-center justify-center ">
+                        <div>
+                          <div className="text-sm leading-5 text-gray-800">
+                            {delivaryman?.name}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </td>
-                {/*  */}
-                {/*  */}
-                <td className="py-2 px-3 text-left leading-4  border-b border-gray-500">
-                  <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
-                    phone number
-                  </div>
-                </td>
-                {/*  */}
-                {/*  */}
-                <td className="py-2 px-3 text-left leading-4  border-b border-gray-500 ">
-                  <div className="flex items-center justify-center">50</div>
-                </td>
-                {/*  */}
-                {/*  */}
-                <td className="py-2 px-3 text-left leading-4  border-b border-gray-500">
-                  <div className="flex items-center justify-center">4</div>
-                </td>
-                {/*  */}
-                {/*  */}
-              </tr>
+                    </td>
+                    {/*  */}
+                    {/*  */}
+                    <td className="py-2 px-3 text-left leading-4  border-b border-gray-500">
+                      <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
+                        phone number
+                      </div>
+                    </td>
+                    {/*  */}
+                    {/*  */}
+                    <td className="py-2 px-3 text-left leading-4  border-b border-gray-500 ">
+                      <div className="flex items-center justify-center">50</div>
+                    </td>
+                    {/*  */}
+                    {/*  */}
+                    <td className="py-2 px-3 text-left leading-4  border-b border-gray-500">
+                      <div className="flex items-center justify-center">4</div>
+                    </td>
+                    {/*  */}
+                    {/*  */}
+                  </tr>
+                ))}
+
               {/*  */}
               {/*  */}
               {/*  */}

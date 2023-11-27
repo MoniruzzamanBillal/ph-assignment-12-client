@@ -1,6 +1,37 @@
 import React from "react";
+import UseUser from "../../../Hooks/UseUser";
+import Loading from "../../Loading/Loading";
+import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
+import { makeDelivarymanSuccessFully } from "../../../ToastFunc/ToastFunction";
 
 const AllUsers = () => {
+  const [users, userLoading, userRefetch] = UseUser();
+  const [axiosPublicUrl] = UseAxiosPublic();
+
+  console.log(users);
+
+  // making user delivary man
+  const makeDeliveryMan = (id) => {
+    console.log(" user id in delivary func =  ", id);
+    // /delivaryman/user/:id
+    axiosPublicUrl.patch(`/delivaryman/user/${id}`).then((response) => {
+      console.log(response.data);
+      if (response?.data?.acknowledged) {
+        makeDelivarymanSuccessFully();
+
+        setTimeout(() => {
+          userRefetch();
+        }, 500);
+      }
+    });
+  };
+
+  if (userLoading) {
+    return <Loading />;
+  }
+
+  // console.log(users);
+
   return (
     <div>
       <div className=" bg-red-400 w-[95%] m-auto    ">
@@ -40,40 +71,48 @@ const AllUsers = () => {
               </tr>
             </thead>
             <tbody className="bg-white">
-              <tr>
-                <td className="  py-2 text-left leading-4    border-b border-gray-500">
-                  <div className="flex items-center justify-center ">
-                    <div>
-                      <div className="text-sm leading-5 text-gray-800">
-                        parcel type
+              {users &&
+                users.map((user, ind) => (
+                  <tr key={ind}>
+                    <td className="  py-2 px-2 text-left leading-4    border-b border-gray-500">
+                      <div className="flex items-center justify-center ">
+                        <div>
+                          <div className="text-sm leading-5 text-gray-800">
+                            {user?.name}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="py-2 text-left leading-4  border-b border-gray-500">
-                  <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
-                    requested delivery date
-                  </div>
-                </td>
-                <td className="py-2 text-left leading-4  border-b border-gray-500 ">
-                  <div className="flex items-center justify-center">
-                    approximate delivary date
-                  </div>
-                </td>
-                <td className="py-2 text-left leading-4  border-b border-gray-500">
-                  <div className="flex items-center justify-center">
-                    booking date
-                  </div>
-                </td>
-                <td className="py-2 text-left leading-4  border-b border-gray-500">
-                  <div className="flex items-center justify-center">
-                    delivary man id
-                  </div>
-                </td>
-                {/*  */}
-              </tr>
+                    </td>
+                    <td className="py-2 px-2  text-left leading-4  border-b border-gray-500">
+                      <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
+                        requested delivery date
+                      </div>
+                    </td>
+                    <td className="py-2 px-2  text-left leading-4  border-b border-gray-500 ">
+                      <div className="flex items-center justify-center">
+                        approximate delivary date
+                      </div>
+                    </td>
+                    <td className="py-2 px-2 text-left leading-4  border-b border-gray-500">
+                      <div
+                        className="flex items-center justify-center bg-violet-500 py-2 rounded-md text-sm font-semibold cursor-pointer active:scale-95 "
+                        onClick={() => makeDeliveryMan(user?._id)}
+                      >
+                        Make delivery man
+                      </div>
+                    </td>
+                    <td className="py-2 px-2  text-left leading-4  border-b border-gray-500">
+                      <div className="flex items-center justify-center bg-green-500 py-2 rounded-md text-sm font-semibold  cursor-pointer active:scale-95 ">
+                        Make Admin
+                      </div>
+                    </td>
+                    {/*  */}
+                  </tr>
+                ))}
               {/*  */}
               {/*  */}
+              {/*  */}
+
               {/*  */}
               {/*  */}
               {/*  */}

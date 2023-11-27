@@ -41,7 +41,7 @@ const UseAxiosSecure = () => {
           //   .then((res) => console.log(res))
           //   .catch((err) => console.log(err));
           // navigate("/login");
-          alert("logout the user ");
+          // alert("logout the user ");
         }
         return Promise.reject(error);
       }
