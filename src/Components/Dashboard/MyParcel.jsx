@@ -5,6 +5,13 @@ import UseAuth from "../../Hooks/UseAuth";
 import Loading from "../Loading/Loading";
 import { useNavigate } from "react-router-dom";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import {
+  cancelSuccessFully,
+  reviewSuccessFully,
+} from "../../ToastFunc/ToastFunction";
 
 const MyParcel = () => {
   const navigate = useNavigate();
@@ -12,7 +19,11 @@ const MyParcel = () => {
   const [axiosSecure] = UseAxiosSecure();
   const { user } = UseAuth();
 
-  const { data: parcelData, isLoading: dataLoading } = useQuery({
+  const {
+    data: parcelData,
+    isLoading: dataLoading,
+    refetch: myParcelRefetch,
+  } = useQuery({
     queryKey: ["parcelData"],
     queryFn: async () => {
       // return axiosPublicUrl.get(`/parcels?email=${user?.email}`, {
@@ -22,12 +33,25 @@ const MyParcel = () => {
 
   const userData = parcelData?.data;
 
-  // console.log(userData);
+  console.log(userData);
 
   const handleUpdate = (id) => {
     console.log("id on update = ", id);
 
     navigate(`/dashboard/updateparcel/${id}`);
+  };
+
+  // cancel parcel data
+  const handleCancel = (id) => {
+    console.log("cancel click ", id);
+    axiosSecure.delete(`/parcel/delete/${id}`).then((deleteResponse) => {
+      console.log(deleteResponse.data);
+
+      if (deleteResponse?.data?.deletedCount > 0) {
+        cancelSuccessFully();
+        myParcelRefetch();
+      }
+    });
   };
 
   if (dataLoading) {
@@ -84,11 +108,17 @@ const MyParcel = () => {
                   </th>
                   {/*Booking Status  */}
 
-                  {/* Booking Status */}
+                  {/* action Status */}
                   <th className="px-2 py-2 border-b-2 border-gray-300 text-center leading-4 text-blue-500">
                     Action
                   </th>
-                  {/*Booking Status  */}
+                  {/*action Status  */}
+
+                  {/* cancel  */}
+                  <th className="px-2 py-2 border-b-2 border-gray-300 text-center leading-4 text-blue-500">
+                    Cancel
+                  </th>
+                  {/* cancel  */}
                 </tr>
               </thead>
               <tbody className="bg-white">
@@ -119,22 +149,56 @@ const MyParcel = () => {
                           {data?.bookingDate}
                         </div>
                       </td>
-                      <td className="py-2 text-left leading-4  border-b border-gray-500">
-                        <div className="flex items-center justify-center">
-                          delivary man id
+                      <td className="py-2 text-center leading-4  border-b border-gray-500">
+                        <div className="flex items-center justify-center text-xs ">
+                          {data?.delivartManId ? data?.delivartManId : "..."}
                         </div>
                       </td>
                       <td className="py-2 text-left leading-4  border-b border-gray-500">
-                        <div className="flex items-center justify-center">
+                        <div
+                          className={`flex items-center font-bold justify-center ${
+                            data?.status === "delivered"
+                              ? "text-green-500"
+                              : data?.status === "canceled"
+                              ? "text-red-500"
+                              : "text-yellow-400"
+                          } `}
+                        >
                           {data?.status}
                         </div>
                       </td>
-                      <td className="py-2 text-left leading-4 border-b border-gray-500">
-                        <div
-                          className="flex items-center justify-center"
-                          onClick={() => handleUpdate(data?._id)}
-                        >
-                          update or cancel
+
+                      <td className="py-2 px-2 text-center leading-4 border-b border-gray-500">
+                        <div className="flex items-center justify-center">
+                          {data?.status === "delivered" ? (
+                            <button className="bg-green-500 py-1.5 px-2 font-bold rounded-md text-gray-200 text-xs">
+                              Review
+                            </button>
+                          ) : data?.status === "on the way" ? (
+                            "."
+                          ) : (
+                            <button
+                              className="bg-orange-500 py-1.5 px-2 font-bold rounded-md text-gray-200 text-xs"
+                              onClick={() => handleUpdate(data?._id)}
+                            >
+                              update
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                      <td className="py-2 px-2 text-center leading-4 border-b border-gray-500">
+                        <div className="flex items-center justify-center">
+                          {data?.status === "delivered" ||
+                          data?.status === "on the way" ? (
+                            "."
+                          ) : (
+                            <button
+                              className="bg-red-500 py-1.5 px-2 font-bold rounded-md text-gray-200 text-xs"
+                              onClick={() => handleCancel(data?._id)}
+                            >
+                              Cancel
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -228,6 +292,7 @@ const MyParcel = () => {
         {/*  */}
         {/*  */}
       </div>
+      <ToastContainer />
     </div>
   );
 };

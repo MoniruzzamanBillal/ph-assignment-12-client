@@ -166,11 +166,13 @@ const AllParcel = () => {
                     </td>
                     <td className="py-2 text-center leading-4  border-b border-gray-500">
                       <div
-                        className={`flex items-center justify-center ${
+                        className={`flex items-center justify-center font-bold  ${
                           parcel?.status === "delivered"
-                            ? "text-green-600 font-bold "
-                            : ""
-                        }`}
+                            ? "text-green-500"
+                            : parcel?.status === "canceled"
+                            ? "text-red-600"
+                            : "text-yellow-400"
+                        }  `}
                       >
                         {parcel?.status}
                       </div>

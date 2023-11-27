@@ -168,3 +168,39 @@ export const cancelDelivary = () =>
     progress: undefined,
     theme: "colored",
   });
+
+// successfully review
+export const reviewSuccessFully = () =>
+  toast.success(" Review added successfully ", {
+    position: "top-center",
+    autoClose: 1200,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });
+
+// cancel successfully
+export const cancelSuccessFully = () =>
+  toast.success(" parcel canceled  successfully ", {
+    position: "top-center",
+    autoClose: 1200,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });
+
+// if(data?.status==='cancel' ||data?.status==='red' ){
+//   color = red
+// }
+// else if(data?.status==='delivered'){
+//   color = green
+// }
+// else{
+//   color = yellow
+// }

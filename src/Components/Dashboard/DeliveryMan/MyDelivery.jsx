@@ -16,7 +16,7 @@ const MyDelivery = () => {
   const [axiosPublicUrl] = UseAxiosPublic();
   const [isAdmin, isAdminLoading] = UseRole();
 
-  console.log(isAdmin?.id);
+  // console.log(isAdmin?.id);
 
   const {
     data: myDelivary,
@@ -32,7 +32,7 @@ const MyDelivery = () => {
     },
   });
 
-  console.log(myDelivary);
+  // console.log(myDelivary);
 
   // delivery function
   const handleDelivery = (id) => {
@@ -46,8 +46,6 @@ const MyDelivery = () => {
       .then((response) => {
         console.log(response?.data);
         if (response?.data?.acknowledged) {
-          // refetch();
-          // dataAddedSuccessFully();
           myDelivaryReFetch();
           deliveredSuccessFully();
         }
@@ -67,8 +65,6 @@ const MyDelivery = () => {
       .then((response) => {
         console.log(response?.data);
         if (response?.data?.acknowledged) {
-          // refetch();
-          // dataAddedSuccessFully();
           myDelivaryReFetch();
           cancelDelivary();
         }
@@ -196,19 +192,23 @@ const MyDelivery = () => {
                         </div>
                       ) : (
                         <div className={`flex items-center justify-center    `}>
-                          <button
-                            onClick={() => handleCancel(delivary?._id)}
-                            className={`py-2 px-2 bg-violet-500 rounded-md text-sm font-semibold text-gray-100  active:scale-95 ${
-                              delivary?.status === "delivered"
-                                ? "cursor-not-allowed"
-                                : "cursor-pointer"
-                            }   `}
-                            disabled={
-                              delivary?.status === "delivered" ? true : false
-                            }
-                          >
-                            Cancel
-                          </button>
+                          {delivary?.status === "delivered" ? (
+                            "."
+                          ) : (
+                            <button
+                              onClick={() => handleCancel(delivary?._id)}
+                              className={`py-2 px-2 bg-violet-500 rounded-md text-sm font-semibold text-gray-100  active:scale-95 ${
+                                delivary?.status === "delivered"
+                                  ? "cursor-not-allowed"
+                                  : "cursor-pointer"
+                              }   `}
+                              disabled={
+                                delivary?.status === "delivered" ? true : false
+                              }
+                            >
+                              Cancel
+                            </button>
+                          )}
                         </div>
                       )}
                     </td>
@@ -219,19 +219,23 @@ const MyDelivery = () => {
                         </div>
                       ) : (
                         <div className="flex items-center justify-center py-2 ">
-                          <button
-                            onClick={() => handleDelivery(delivary?._id)}
-                            className={`py-2 px-2 bg-orange-500 rounded-md text-sm font-semibold text-gray-100  active:scale-95 ${
-                              delivary?.status === "canceled"
-                                ? "cursor-not-allowed"
-                                : "cursor-pointer"
-                            }   `}
-                            disabled={
-                              delivary?.status === "canceled" ? true : false
-                            }
-                          >
-                            make delivart
-                          </button>
+                          {delivary?.status === "canceled" ? (
+                            "."
+                          ) : (
+                            <button
+                              onClick={() => handleDelivery(delivary?._id)}
+                              className={`py-2 px-2 bg-orange-500 rounded-md text-sm font-semibold text-gray-100  active:scale-95 ${
+                                delivary?.status === "canceled"
+                                  ? "cursor-not-allowed"
+                                  : "cursor-pointer"
+                              }   `}
+                              disabled={
+                                delivary?.status === "canceled" ? true : false
+                              }
+                            >
+                              make delivart
+                            </button>
+                          )}
                         </div>
                       )}
                     </td>
