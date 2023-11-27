@@ -131,3 +131,15 @@ export const makeDelivarymanSuccessFully = () =>
     progress: undefined,
     theme: "colored",
   });
+
+export const makeAdminSuccessFully = () =>
+  toast.success(" Successfully make admin", {
+    position: "top-center",
+    autoClose: 1200,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });

@@ -1,8 +1,13 @@
 import React from "react";
 import UseUser from "../../../Hooks/UseUser";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Loading from "../../Loading/Loading";
 import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
-import { makeDelivarymanSuccessFully } from "../../../ToastFunc/ToastFunction";
+import {
+  makeAdminSuccessFully,
+  makeDelivarymanSuccessFully,
+} from "../../../ToastFunc/ToastFunction";
 
 const AllUsers = () => {
   const [users, userLoading, userRefetch] = UseUser();
@@ -21,7 +26,23 @@ const AllUsers = () => {
 
         setTimeout(() => {
           userRefetch();
-        }, 500);
+        }, 800);
+      }
+    });
+  };
+
+  // make admin function
+  const makeAdmin = (id) => {
+    console.log(" user id in admin func =  ", id);
+    // /delivaryman/user/:id
+    axiosPublicUrl.patch(`/admin/user/${id}`).then((response) => {
+      console.log(response.data);
+      if (response?.data?.acknowledged) {
+        makeAdminSuccessFully();
+
+        setTimeout(() => {
+          userRefetch();
+        }, 800);
       }
     });
   };
@@ -102,7 +123,10 @@ const AllUsers = () => {
                       </div>
                     </td>
                     <td className="py-2 px-2  text-left leading-4  border-b border-gray-500">
-                      <div className="flex items-center justify-center bg-green-500 py-2 rounded-md text-sm font-semibold  cursor-pointer active:scale-95 ">
+                      <div
+                        className="flex items-center justify-center bg-green-500 py-2 rounded-md text-sm font-semibold  cursor-pointer active:scale-95 "
+                        onClick={() => makeAdmin(user?._id)}
+                      >
                         Make Admin
                       </div>
                     </td>
@@ -195,6 +219,7 @@ const AllUsers = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
