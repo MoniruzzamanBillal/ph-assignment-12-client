@@ -34,8 +34,8 @@ const AllParcel = () => {
   } = useQuery({
     queryKey: ["allParcel"],
     queryFn: async () => {
-      // return axiosPublicUrl.get(`/parcels?email=${user?.email}`, {
-      return axiosPublicUrl.get(`/parcels`);
+      return axiosSecure.get(`/parcels`);
+      // return axiosPublicUrl.get(`/parcels`);
     },
   });
 
@@ -165,7 +165,13 @@ const AllParcel = () => {
                       </div>
                     </td>
                     <td className="py-2 text-center leading-4  border-b border-gray-500">
-                      <div className="flex items-center justify-center">
+                      <div
+                        className={`flex items-center justify-center ${
+                          parcel?.status === "delivered"
+                            ? "text-green-600 font-bold "
+                            : ""
+                        }`}
+                      >
                         {parcel?.status}
                       </div>
                     </td>
