@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Button, Checkbox, Label, Modal, TextInput } from "flowbite-react";
+import { useState } from "react";
 
 import {
   cancelSuccessFully,
@@ -18,6 +20,11 @@ const MyParcel = () => {
   const [axiosPublicUrl] = UseAxiosPublic();
   const [axiosSecure] = UseAxiosSecure();
   const { user } = UseAuth();
+  const [openModal, setOpenModal] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const [rating, setRating] = useState(null);
+  const [feedback, setFeedBack] = useState("");
 
   const {
     data: parcelData,
@@ -35,11 +42,51 @@ const MyParcel = () => {
 
   console.log(userData);
 
+  // update functionality
   const handleUpdate = (id) => {
     console.log("id on update = ", id);
 
     navigate(`/dashboard/updateparcel/${id}`);
   };
+
+  // review functionality
+  const handleReview = () => {
+    setOpenModal(true);
+    console.log("review click");
+  };
+
+  // submit review
+  const submitReview = (data) => {
+    console.log("review submit click");
+    // console.log(data);
+
+    const userName = data?.userName;
+    const userImg = "image url ";
+    const delivartManId = data?.delivartManId;
+
+    const reviewData = {
+      userName,
+      userImg,
+      rating,
+      feedback,
+      delivartManId,
+    };
+
+    console.log(reviewData);
+    axiosPublicUrl.post("/review", reviewData).then((reviewResponse) => {
+      console.log(reviewResponse.data);
+
+      if (reviewResponse?.data?.acknowledged) {
+        reviewSuccessFully();
+        setOpenModal(false);
+      }
+    });
+  };
+
+  function onCloseModal() {
+    setOpenModal(false);
+    setEmail("");
+  }
 
   // cancel parcel data
   const handleCancel = (id) => {
@@ -171,7 +218,10 @@ const MyParcel = () => {
                       <td className="py-2 px-2 text-center leading-4 border-b border-gray-500">
                         <div className="flex items-center justify-center">
                           {data?.status === "delivered" ? (
-                            <button className="bg-green-500 py-1.5 px-2 font-bold rounded-md text-gray-200 text-xs">
+                            <button
+                              className="bg-green-500 py-1.5 px-2 font-bold rounded-md text-gray-200 text-xs"
+                              onClick={() => handleReview()}
+                            >
                               Review
                             </button>
                           ) : data?.status === "on the way" ? (
@@ -185,6 +235,120 @@ const MyParcel = () => {
                             </button>
                           )}
                         </div>
+                        {/* modal  */}
+                        {/* modal  */}
+                        <Modal
+                          show={openModal}
+                          size="md"
+                          onClose={onCloseModal}
+                          popup
+                        >
+                          <Modal.Header />
+                          <Modal.Body>
+                            <div className="space-y-6">
+                              {/* user name field  */}
+                              <div>
+                                <div className="mb-2 block">
+                                  <Label htmlFor="userName" value="User name" />
+                                </div>
+                                <TextInput
+                                  id="userName"
+                                  readOnly
+                                  placeholder="username"
+                                  value={data?.userName}
+                                  required
+                                />
+                              </div>
+                              {/* user name field  */}
+
+                              {/* user image field  */}
+                              <div>
+                                <div className="mb-2 block">
+                                  <Label
+                                    htmlFor="userImage"
+                                    value="User image"
+                                  />
+                                </div>
+                                <TextInput
+                                  id="userName"
+                                  readOnly
+                                  placeholder="user image "
+                                  value={"user image "}
+                                  required
+                                />
+                              </div>
+                              {/* user image field  */}
+
+                              {/* rating field  */}
+
+                              <div>
+                                <div className="mb-2 block">
+                                  <Label
+                                    htmlFor="rating"
+                                    value="Give rating between 1-5 "
+                                  />
+                                </div>
+                                <TextInput
+                                  id="rating"
+                                  type="number"
+                                  required
+                                  value={rating}
+                                  onChange={(e) => setRating(e.target.value)}
+                                  onWheel={(e) => e.target.blur()}
+                                />
+                              </div>
+
+                              {/* rating field  */}
+
+                              {/* feedback field  */}
+                              <div>
+                                <label
+                                  for="message"
+                                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                >
+                                  Your message
+                                </label>
+                                <textarea
+                                  id="message"
+                                  rows="3"
+                                  value={feedback}
+                                  onChange={(e) => setFeedBack(e.target.value)}
+                                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                  placeholder="Leave a comment..."
+                                ></textarea>
+                              </div>
+                              {/* feedback field  */}
+
+                              {/* delivary man id  */}
+
+                              <div>
+                                <div className="mb-2 block">
+                                  <Label
+                                    htmlFor="id"
+                                    value="Delivary man id "
+                                  />
+                                </div>
+                                <TextInput
+                                  id="id"
+                                  type="text"
+                                  required
+                                  value={data?.delivartManId}
+                                  readOnly
+                                />
+                              </div>
+
+                              {/* delivary man id  */}
+
+                              <div className="w-full">
+                                <Button onClick={() => submitReview(data)}>
+                                  Submit review
+                                </Button>
+                              </div>
+                            </div>
+                          </Modal.Body>
+                        </Modal>
+                        {/* modal  */}
+                        {/* modal  */}
                       </td>
                       <td className="py-2 px-2 text-center leading-4 border-b border-gray-500">
                         <div className="flex items-center justify-center">

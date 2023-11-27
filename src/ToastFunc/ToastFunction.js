@@ -195,6 +195,8 @@ export const cancelSuccessFully = () =>
     theme: "colored",
   });
 
+// review added success fully
+
 // if(data?.status==='cancel' ||data?.status==='red' ){
 //   color = red
 // }
