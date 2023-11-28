@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import UseUser from "../../../Hooks/UseUser";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,16 +8,70 @@ import {
   makeAdminSuccessFully,
   makeDelivarymanSuccessFully,
 } from "../../../ToastFunc/ToastFunction";
+import UserCountHook from "../../../Hooks/UserCountHook";
+import UseAuth from "../../../Hooks/UseAuth";
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 
 const AllUsers = () => {
+  const { user } = UseAuth();
   const [users, userLoading, userRefetch] = UseUser();
   const [axiosPublicUrl] = UseAxiosPublic();
+  const [axiosSecure] = UseAxiosSecure();
+  const [userCount, userCountLoading, userCountRefetch] = UserCountHook();
 
-  console.log(users);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productCount, setProductsCount] = useState(0);
+  const [perPageItem, setPerPageItem] = useState(5);
+  const Totalpage = Math.ceil(productCount / perPageItem);
+
+  const [userData, setUserData] = useState([]);
+  const pages = [...Array(Totalpage).keys()];
+
+  // page number click functionality
+  const handlePageClick = (page) => {
+    setCurrentPage(page + 1);
+  };
+
+  // function for handle previous button in pagination
+  const handlePrev = () => {
+    if (currentPage <= 1) {
+      return setCurrentPage(1);
+    }
+    setCurrentPage(currentPage - 1);
+  };
+
+  // function for handle next button in pagination
+  const handleNextCurrent = () => {
+    if (currentPage >= Totalpage) {
+      return setCurrentPage(Totalpage);
+    }
+    setCurrentPage(currentPage + 1);
+  };
+
+  useEffect(() => {
+    if (userCount?.count) {
+      setProductsCount(userCount?.count);
+    }
+  }, [userCount]);
+
+  // effect for getting user data
+  useEffect(() => {
+    axiosSecure
+      .get(`/admin/userOnly?page=${currentPage}&pagePerItem=${perPageItem}`)
+      .then((dataResponse) => {
+        setUserData(dataResponse?.data);
+      });
+  }, [currentPage, perPageItem, user?.email, axiosPublicUrl, axiosSecure]);
+
+  console.log(userData);
+
+  // console.log(userCount);
+
+  // console.log(users);
 
   // making user delivary man
   const makeDeliveryMan = (id) => {
-    console.log(" user id in delivary func =  ", id);
+    // console.log(" user id in delivary func =  ", id);
     // /delivaryman/user/:id
     axiosPublicUrl.patch(`/delivaryman/user/${id}`).then((response) => {
       console.log(response.data);
@@ -46,10 +100,6 @@ const AllUsers = () => {
       }
     });
   };
-
-  if (userLoading) {
-    return <Loading />;
-  }
 
   // console.log(users);
 
@@ -92,8 +142,8 @@ const AllUsers = () => {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {users &&
-                users.map((user, ind) => (
+              {userData &&
+                userData.map((user, ind) => (
                   <tr key={ind}>
                     <td className="  py-2 px-2 text-left leading-4    border-b border-gray-500">
                       <div className="flex items-center justify-center ">
@@ -142,80 +192,33 @@ const AllUsers = () => {
               {/*  */}
             </tbody>
           </table>
-          <div className="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">
-            <div>
-              <p className="text-sm leading-5 text-blue-700">
-                Showing
-                <span className="font-medium">1</span>
-                to
-                <span className="font-medium">200</span>
-                of
-                <span className="font-medium">2000</span>
-                results
-              </p>
-            </div>
-            <div>
-              <div className="relative z-0 inline-flex shadow-sm">
-                <div>
-                  <a
-                    href="#"
-                    className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
-                    aria-label="Previous"
-                  >
-                    <svg
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </a>
-                </div>
-                <div>
-                  <a
-                    href="#"
-                    className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-700 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
-                  >
-                    1
-                  </a>
-                  <a
-                    href="#"
-                    className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
-                  >
-                    2
-                  </a>
-                  <a
-                    href="#"
-                    className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
-                  >
-                    3
-                  </a>
-                </div>
-                <div v-if="pagination.current_page < pagination.last_page">
-                  <a
-                    href="#"
-                    className="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
-                    aria-label="Next"
-                  >
-                    <svg
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            </div>
+
+          <div className="pagination   mt-3 py-4 text-center text-xs xsm:text-sm sm:text-base  ">
+            <button
+              onClick={() => handlePrev()}
+              className=" py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 border-r border-gray-600 text-white bg-gray-500  hover:bg-gray-700   "
+            >
+              Prev
+            </button>
+            {pages.map((page, ind) => (
+              <button
+                onClick={() => handlePageClick(page)}
+                className={` py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white   ${
+                  currentPage - 1 === page
+                    ? "bg-[#e4c590] hover:bg-amber-300 "
+                    : "bg-gray-500  hover:bg-gray-700"
+                } border-r border-gray-600 `}
+              >
+                {" "}
+                {page + 1}{" "}
+              </button>
+            ))}
+            <button
+              onClick={() => handleNextCurrent()}
+              className="py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white bg-gray-500  hover:bg-gray-700   "
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>

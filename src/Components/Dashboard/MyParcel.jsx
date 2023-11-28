@@ -472,8 +472,6 @@ const MyParcel = () => {
                 </button>
                 {pages.map((page, ind) => (
                   <button
-                    // onClick={() => setCurrentPage(page + 1)}
-
                     onClick={() => handlePageClick(page)}
                     className={` py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white   ${
                       currentPage - 1 === page

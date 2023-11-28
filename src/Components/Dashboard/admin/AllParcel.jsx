@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Button, Checkbox, Label, Modal, TextInput } from "flowbite-react";
 import UseDelivaryMan from "../../../Hooks/UseDelivaryMan";
 import { dataAddedSuccessFully } from "../../../ToastFunc/ToastFunction";
+import UseParcelCountHook from "../../../Hooks/UseParcelCountHook";
 
 const AllParcel = () => {
   const navigate = useNavigate();
@@ -24,20 +25,58 @@ const AllParcel = () => {
   const [delivartManId, setDeliveryManId] = useState(null);
   const [deliveryDate, setDeliveryDate] = useState("");
   const [status, setStatus] = useState("on the way");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+  const [pacelCount, parcelCountLoading, parcelCountRefetch] =
+    UseParcelCountHook();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productCount, setProductsCount] = useState(0);
+  const [perPageItem, setPerPageItem] = useState(5);
+  const Totalpage = Math.ceil(productCount / perPageItem);
+
+  const [parcelsData, setParcelsData] = useState([]);
+  const pages = [...Array(Totalpage).keys()];
+
+  // page number click functionality
+  const handlePageClick = (page) => {
+    setCurrentPage(page + 1);
+  };
+
+  // function for handle previous button in pagination
+  const handlePrev = () => {
+    if (currentPage <= 1) {
+      return setCurrentPage(1);
+    }
+    setCurrentPage(currentPage - 1);
+  };
+
+  // function for handle next button in pagination
+  const handleNextCurrent = () => {
+    if (currentPage >= Totalpage) {
+      return setCurrentPage(Totalpage);
+    }
+    setCurrentPage(currentPage + 1);
+  };
+
+  useEffect(() => {
+    if (pacelCount?.count) {
+      setProductsCount(pacelCount?.count);
+    }
+  }, [pacelCount]);
 
   // console.log(delivaryMans);
 
-  const {
-    data: Allparcel,
-    isLoading: dataLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["allParcel"],
-    queryFn: async () => {
-      return axiosSecure.get(`/parcels`);
-      // return axiosPublicUrl.get(`/parcels`);
-    },
-  });
+  // effect for getting parcel data
+  useEffect(() => {
+    axiosSecure
+      .get(`/admin/parcels?page=${currentPage}&pagePerItem=${perPageItem}`)
+      .then((dataResponse) => {
+        setParcelsData(dataResponse?.data);
+      });
+  }, [currentPage, perPageItem, user?.email, axiosSecure, status]);
+
+  // console.log(parcelsData);
 
   const handleManage = (id) => {
     setManageId(id);
@@ -75,7 +114,12 @@ const AllParcel = () => {
       .catch((error) => console.log(error));
   };
 
-  if (dataLoading || delivaryManloading) {
+  const handleSearch = () => {
+    console.log(fromDate);
+    console.log(toDate);
+  };
+
+  if (delivaryManloading) {
     return <Loading />;
   }
 
@@ -85,6 +129,64 @@ const AllParcel = () => {
     <div>
       <div className=" bg-red-400 w-[95%] m-auto    ">
         <div className=" flex flex-col justify-center items-center h-screen  shadow  bg-gray-50  px-2 pt-3">
+          <div className="search  pb-2 ">
+            <h1 className="font-semibold text-xl mb-2 ">
+              Search requested delivary :{" "}
+            </h1>
+
+            {/*  */}
+            {/* requested date from  */}
+            <div className=" flex justify-center items-center gap-x-2 mb-2 ">
+              <label
+                htmlFor="delivery_address"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              >
+                From
+              </label>
+              <input
+                type="date"
+                id="delivery_date"
+                name="delivery_date"
+                className="text-xs"
+                onChange={(e) => setFromDate(e.target.value)}
+              />
+            </div>
+
+            {/* requested date from  */}
+            {/*  */}
+
+            {/*  */}
+            {/* requested date to  */}
+            <div className=" flex justify-center items-center gap-x-2 mb-2 ">
+              <label
+                htmlFor="delivery_address"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              >
+                To
+              </label>
+              <input
+                type="date"
+                id="delivery_date"
+                name="delivery_date"
+                className="text-xs"
+                onChange={(e) => setToDate(e.target.value)}
+              />
+            </div>
+            {/* requested date to  */}
+            {/*  */}
+
+            {/* search button  */}
+            <div className="searchBtn  text-center ">
+              <button
+                className=" py-2 px-4 bg-gray-400 font-semibold rounded "
+                onClick={() => handleSearch()}
+              >
+                Search
+              </button>
+            </div>
+            {/* search button  */}
+          </div>
+          {/*  */}
           <table className=" ">
             <thead>
               <tr>
@@ -132,8 +234,8 @@ const AllParcel = () => {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {Allparcel?.data &&
-                Allparcel?.data.map((parcel, ind) => (
+              {parcelsData &&
+                parcelsData.map((parcel, ind) => (
                   <tr key={ind}>
                     <td className="  py-2 text-left leading-4    border-b border-gray-500">
                       <div className="flex items-center justify-center ">
@@ -278,81 +380,37 @@ const AllParcel = () => {
               {/*  */}
             </tbody>
           </table>
-          <div className="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">
-            <div>
-              <p className="text-sm leading-5 text-blue-700">
-                Showing
-                <span className="font-medium">1</span>
-                to
-                <span className="font-medium">200</span>
-                of
-                <span className="font-medium">2000</span>
-                results
-              </p>
-            </div>
-            <div>
-              <div className="relative z-0 inline-flex shadow-sm">
-                <div>
-                  <a
-                    href="#"
-                    className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
-                    aria-label="Previous"
-                  >
-                    <svg
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </a>
-                </div>
-                <div>
-                  <a
-                    href="#"
-                    className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-700 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
-                  >
-                    1
-                  </a>
-                  <a
-                    href="#"
-                    className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
-                  >
-                    2
-                  </a>
-                  <a
-                    href="#"
-                    className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
-                  >
-                    3
-                  </a>
-                </div>
-                <div v-if="pagination.current_page < pagination.last_page">
-                  <a
-                    href="#"
-                    className="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
-                    aria-label="Next"
-                  >
-                    <svg
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            </div>
+
+          {/*  */}
+
+          <div className="pagination   mt-3 py-4 text-center text-xs xsm:text-sm sm:text-base  ">
+            <button
+              onClick={() => handlePrev()}
+              className=" py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 border-r border-gray-600 text-white bg-gray-500  hover:bg-gray-700   "
+            >
+              Prev
+            </button>
+            {pages.map((page, ind) => (
+              <button
+                onClick={() => handlePageClick(page)}
+                className={` py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white   ${
+                  currentPage - 1 === page
+                    ? "bg-[#e4c590] hover:bg-amber-300 "
+                    : "bg-gray-500  hover:bg-gray-700"
+                } border-r border-gray-600 `}
+              >
+                {" "}
+                {page + 1}{" "}
+              </button>
+            ))}
+            <button
+              onClick={() => handleNextCurrent()}
+              className="py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white bg-gray-500  hover:bg-gray-700   "
+            >
+              Next
+            </button>
           </div>
+          {/*  */}
         </div>
       </div>
       <ToastContainer />

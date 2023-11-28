@@ -14,7 +14,7 @@ const UseUser = () => {
     queryKey: ["users"],
     queryFn: async () => {
       const userData = await axiosPublicUrl.get("/userOnly");
-      console.log(userData);
+      // console.log(userData);
       return userData?.data;
     },
   });
