@@ -34,7 +34,7 @@ const StatisticsCard = ({ counter }) => {
       {/* bottom right line  */}
 
       <div className="  text-gray-800 group-hover:text-orange-500 dark:text-gray-400   pb-2 text-sm xsm:text-lg sm:text-xl md:text-2xl xmd:text-3xl font-semibold     ">
-        <h3 className="counterNumber  ">{number}+</h3>
+        <h3 className="counterNumber  ">{number}</h3>
       </div>
       <div className="  text-center text-gray-800 group-hover:text-orange-500 text-sm xsm:text-lg sm:text-xl md:text-xl xmd:text-2xl  font-semibold    ">
         <h4 className="counterTitle  ">{text}</h4>

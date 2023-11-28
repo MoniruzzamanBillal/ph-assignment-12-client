@@ -98,6 +98,7 @@ const Register = () => {
         if (registerResponse?.user) {
           // console.log(registerResponse?.user);
           const uid = registerResponse?.user?.uid;
+          const userImg = photoUrl;
           // console.log(uid);
           const userData = {
             email,
@@ -105,6 +106,7 @@ const Register = () => {
             role,
             name,
             phoneNumber,
+            userImg,
           };
 
           // console.log(userData);

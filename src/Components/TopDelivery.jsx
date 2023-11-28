@@ -1,7 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DeliveryManCard from "./DeliveryManCard";
+import { useQuery } from "@tanstack/react-query";
+import UseAxiosPublic from "../Hooks/UseAxiosPublic";
 
 const TopDelivery = () => {
+  const [sortedData, setSortedData] = useState([]);
+
+  const [axiosPublicUrl] = UseAxiosPublic();
+
+  const { data: delivaryMans, isLoading } = useQuery({
+    queryKey: ["topDelivaryMan"],
+    queryFn: async () => {
+      const result = await axiosPublicUrl.get("/user/delivaryman");
+      const actualData = result.data.filter((man) => {
+        if (man?.delivaryDone) {
+          return man;
+        }
+      });
+      return actualData;
+      // return result.data;
+    },
+  });
+
+  console.log(delivaryMans);
+
+  useEffect(() => {
+    const resultSort = delivaryMans.sort(
+      (a, b) => b.delivaryDone - a.delivaryDone
+    );
+
+    console.log(resultSort);
+
+    const sliceData = resultSort.slice(0, 5);
+
+    console.log(sliceData);
+
+    setSortedData(sliceData);
+  }, [delivaryMans]);
+
   return (
     <div className="TopDeliveryContainer bg-yellow-50 py-4 ">
       <div className="TopDeliveryWrapper  w-[96%] sm:w-[93%] md:w-[90%] m-auto ">

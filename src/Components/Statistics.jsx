@@ -1,22 +1,31 @@
 import React from "react";
 import StatisticsCard from "./StatisticsCard";
-
-const CounterData = [
-  {
-    number: "5k",
-    text: "Parcel Booked",
-  },
-  {
-    number: "4.9k",
-    text: "Parcel Delivered",
-  },
-  {
-    number: "90",
-    text: "Happy Customers",
-  },
-];
+import UserCountHook from "../Hooks/UserCountHook";
+import UseParcelCountHook from "../Hooks/UseParcelCountHook";
+import DeliveredCountHook from "../Hooks/DeliveredCountHook";
 
 const Statistics = () => {
+  const [userCount] = UserCountHook();
+  const [pacelCount] = UseParcelCountHook();
+  const [deliveredCount] = DeliveredCountHook();
+
+  // console.log(deliveredCount);
+
+  const CounterData = [
+    {
+      number: `${pacelCount?.count}`,
+      text: "Parcel Booked",
+    },
+    {
+      number: `${deliveredCount?.count}`,
+      text: "Parcel Delivered",
+    },
+    {
+      number: `${userCount?.count}`,
+      text: "Happy Customers",
+    },
+  ];
+
   return (
     <div className="CounterContainer bg-blue-200 py-8 ">
       <div className="counterWrapper ">

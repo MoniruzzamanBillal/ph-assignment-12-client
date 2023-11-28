@@ -12,7 +12,7 @@ const UseParcelCountHook = () => {
     queryKey: ["parcelCount"],
     queryFn: async () => {
       const response = await axiosSecure.get("/parcel/count");
-
+      // console.log(response);
       return response.data;
     },
   });

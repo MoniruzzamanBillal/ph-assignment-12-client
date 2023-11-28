@@ -38,8 +38,14 @@ const MyParcel = () => {
   const [perPageItem, setPerPageItem] = useState(5);
   const Totalpage = Math.ceil(productCount / perPageItem);
   const [userData, setuserData] = useState([]);
+  const [selectedData, setSelectedData] = useState([]);
+  // console.log(userData);
 
   const pages = [...Array(Totalpage).keys()];
+
+  // userData.map((data) => {
+  //   console.log(data.delivartManId);
+  // });
 
   // update functionality
   const handleUpdate = (id) => {
@@ -49,19 +55,30 @@ const MyParcel = () => {
   };
 
   // review functionality
-  const handleReview = () => {
+  const handleReview = (data) => {
     setOpenModal(true);
     console.log("review click");
+    setSelectedData(data);
   };
 
-  // submit review
-  const submitReview = (data) => {
-    console.log("review submit click");
-    // console.log(data);
+  // console.log(selectedData);
 
-    const userName = data?.userName;
-    const userImg = "image url ";
-    const delivartManId = data?.delivartManId;
+  // submit review
+  const submitReview = () => {
+    console.log("review submit click");
+    // console.log(selectedData);
+
+    const userName = selectedData?.userName;
+    const userImg = selectedData?.userImg;
+    const delivartManId = selectedData?.delivartManId;
+    const today = new Date();
+    const date = today.getDate();
+    const month = today.getMonth();
+    const year = today.getFullYear();
+
+    const reviewGivingDate = `${date}-${month}-${year}`;
+
+    // console.log(reviewGivingDate);
 
     const reviewData = {
       userName,
@@ -69,9 +86,10 @@ const MyParcel = () => {
       rating,
       feedback,
       delivartManId,
+      reviewGivingDate,
     };
 
-    console.log(reviewData);
+    // console.log(reviewData);
     axiosPublicUrl.post("/review", reviewData).then((reviewResponse) => {
       console.log(reviewResponse.data);
 
@@ -95,12 +113,10 @@ const MyParcel = () => {
 
   // cancel parcel data
   const handleCancel = (id) => {
-    console.log("cancel click ", id);
     axiosSecure.delete(`/parcel/delete/${id}`).then((deleteResponse) => {
-      console.log(deleteResponse.data);
-
       if (deleteResponse?.data?.deletedCount > 0) {
         cancelSuccessFully();
+        fetchParcelData();
       }
     });
   };
@@ -138,7 +154,7 @@ const MyParcel = () => {
     console.log("next page = ", currentPage);
   };
 
-  console.log(status);
+  // console.log(status);
 
   useEffect(() => {
     if (pacelCount?.count) {
@@ -148,6 +164,11 @@ const MyParcel = () => {
 
   //
   useEffect(() => {
+    fetchParcelData();
+  }, [currentPage, perPageItem, user?.email, axiosSecure, status]);
+
+  // get parcel data
+  const fetchParcelData = () => {
     axiosSecure
       .get(
         `/parcels?email=${user?.email}&page=${currentPage}&pagePerItem=${perPageItem}&status=${status}`
@@ -156,7 +177,7 @@ const MyParcel = () => {
         // console.log(dataResponse?.data);
         setuserData(dataResponse?.data);
       });
-  }, [currentPage, perPageItem, user?.email, axiosSecure, status]);
+  };
 
   return (
     <div className="MyParcelContainer">
@@ -168,7 +189,7 @@ const MyParcel = () => {
 
         <div className=" bg-red-400    ">
           {/* <div className="align-middle  inline-block min-w-full shadow overflow-hidden bg-gray-600 shadow-dashboard px-8 pt-3"> */}
-          <div className=" flex flex-col justify-center items-center h-screen  shadow  bg-gray-50  px-2 pt-3">
+          <div className=" flex flex-col justify-center items-center shadow  bg-gray-50  px-2 pt-3">
             <table className=" ">
               <thead>
                 <tr>
@@ -292,7 +313,7 @@ const MyParcel = () => {
                           {data?.status === "delivered" ? (
                             <button
                               className="bg-green-500 py-1.5 px-2 font-bold rounded-md text-gray-200 text-xs"
-                              onClick={() => handleReview()}
+                              onClick={() => handleReview(data)}
                             >
                               Review
                             </button>
@@ -307,121 +328,118 @@ const MyParcel = () => {
                             </button>
                           )}
                         </div>
-                        {/* modal  */}
-                        {/* modal  */}
-                        <Modal
-                          show={openModal}
-                          size="md"
-                          onClose={onCloseModal}
-                          popup
-                        >
-                          <Modal.Header />
-                          <Modal.Body>
-                            <div className="space-y-6">
-                              {/* user name field  */}
-                              <div>
-                                <div className="mb-2 block">
-                                  <Label htmlFor="userName" value="User name" />
-                                </div>
-                                <TextInput
-                                  id="userName"
-                                  readOnly
-                                  placeholder="username"
-                                  value={data?.userName}
-                                  required
-                                />
-                              </div>
-                              {/* user name field  */}
-
-                              {/* user image field  */}
-                              <div>
-                                <div className="mb-2 block">
-                                  <Label
-                                    htmlFor="userImage"
-                                    value="User image"
-                                  />
-                                </div>
-                                <TextInput
-                                  id="userName"
-                                  readOnly
-                                  placeholder="user image "
-                                  value={"user image "}
-                                  required
-                                />
-                              </div>
-                              {/* user image field  */}
-
-                              {/* rating field  */}
-
-                              <div>
-                                <div className="mb-2 block">
-                                  <Label
-                                    htmlFor="rating"
-                                    value="Give rating between 1-5 "
-                                  />
-                                </div>
-                                <TextInput
-                                  id="rating"
-                                  type="number"
-                                  required
-                                  value={rating}
-                                  onChange={(e) => setRating(e.target.value)}
-                                  onWheel={(e) => e.target.blur()}
-                                />
-                              </div>
-
-                              {/* rating field  */}
-
-                              {/* feedback field  */}
-                              <div>
-                                <label
-                                  for="message"
-                                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  Your message
-                                </label>
-                                <textarea
-                                  id="message"
-                                  rows="3"
-                                  value={feedback}
-                                  onChange={(e) => setFeedBack(e.target.value)}
-                                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                  placeholder="Leave a comment..."
-                                ></textarea>
-                              </div>
-                              {/* feedback field  */}
-
-                              {/* delivary man id  */}
-
-                              <div>
-                                <div className="mb-2 block">
-                                  <Label
-                                    htmlFor="id"
-                                    value="Delivary man id "
-                                  />
-                                </div>
-                                <TextInput
-                                  id="id"
-                                  type="text"
-                                  required
-                                  value={data?.delivartManId}
-                                  readOnly
-                                />
-                              </div>
-
-                              {/* delivary man id  */}
-
-                              <div className="w-full">
-                                <Button onClick={() => submitReview(data)}>
-                                  Submit review
-                                </Button>
-                              </div>
-                            </div>
-                          </Modal.Body>
-                        </Modal>
-                        {/* modal  */}
-                        {/* modal  */}
                       </td>
+                      {/* modal  */}
+                      {/* modal  */}
+                      <Modal
+                        show={openModal}
+                        size="md"
+                        onClose={onCloseModal}
+                        popup
+                      >
+                        <Modal.Header />
+                        <Modal.Body>
+                          <div className="space-y-6">
+                            {/* user name field  */}
+                            <div>
+                              <div className="mb-2 block">
+                                <Label htmlFor="userName" value="User name" />
+                              </div>
+                              <TextInput
+                                id="userName"
+                                readOnly
+                                placeholder="username"
+                                value={selectedData?.userName}
+                                required
+                              />
+                            </div>
+                            {/* user name field  */}
+
+                            {/* user image field  */}
+                            <div>
+                              <div className="mb-2 block">
+                                <Label htmlFor="userImage" value="User image" />
+                              </div>
+                              <img
+                                className="w-10 h-10 rounded"
+                                src={selectedData?.userImg}
+                                alt="Default avatar"
+                              />
+                            </div>
+                            {/* user image field  */}
+
+                            {/* rating field  */}
+
+                            <div>
+                              <div className="mb-2 block">
+                                <Label
+                                  htmlFor="rating"
+                                  value="Give rating between 1-5 "
+                                />
+                              </div>
+                              <TextInput
+                                id="rating"
+                                type="number"
+                                required
+                                value={rating}
+                                onChange={(e) => setRating(e.target.value)}
+                                onWheel={(e) => e.target.blur()}
+                              />
+                            </div>
+
+                            {/* rating field  */}
+
+                            {/* feedback field  */}
+                            <div>
+                              <label
+                                for="message"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              >
+                                Your message
+                              </label>
+                              <textarea
+                                id="message"
+                                rows="3"
+                                value={feedback}
+                                onChange={(e) => setFeedBack(e.target.value)}
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Leave a comment..."
+                              ></textarea>
+                            </div>
+                            {/* feedback field  */}
+
+                            {/* delivary man id  */}
+
+                            <div>
+                              <div className="mb-2 block">
+                                <Label htmlFor="id" value="Delivary man id " />
+                              </div>
+                              {/*  */}
+
+                              <TextInput
+                                id="delivaryMan"
+                                readOnly
+                                placeholder="delivary man id "
+                                value={selectedData?.delivartManId}
+                                required
+                              />
+
+                              {/*  */}
+                            </div>
+
+                            {/* delivary man id  */}
+
+                            <div className="w-full">
+                              <Button onClick={() => submitReview()}>
+                                Submit review
+                              </Button>
+                            </div>
+                          </div>
+                        </Modal.Body>
+                      </Modal>
+                      {/* modal  */}
+                      {/* modal  */}
+
                       <td className="py-2 px-2 text-center leading-4 border-b border-gray-500">
                         <div className="flex items-center justify-center">
                           {data?.status === "delivered" ||

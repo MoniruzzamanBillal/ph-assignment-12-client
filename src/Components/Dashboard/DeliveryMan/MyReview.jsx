@@ -87,12 +87,16 @@ const MyReview = () => {
                     </td>
                     <td className="py-2 px-2 text-center leading-4  border-b border-gray-500">
                       <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
-                        {review?.userImg}
+                        <img
+                          className="w-10 h-10 rounded"
+                          src={review?.userImg}
+                          alt="Default avatar"
+                        />
                       </div>
                     </td>
                     <td className="py-2 px-2 text-center leading-4  border-b border-gray-500 ">
                       <div className="flex items-center justify-center">
-                        review giving date
+                        {review?.reviewGivingDate}
                       </div>
                     </td>
                     <td className="py-2 px-2 text-center leading-4  border-b border-gray-500">

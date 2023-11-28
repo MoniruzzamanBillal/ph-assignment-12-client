@@ -8,7 +8,14 @@ import Loading from "../../Loading/Loading";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { Button, Checkbox, Label, Modal, TextInput } from "flowbite-react";
+import {
+  Avatar,
+  Button,
+  Checkbox,
+  Label,
+  Modal,
+  TextInput,
+} from "flowbite-react";
 import UseDelivaryMan from "../../../Hooks/UseDelivaryMan";
 import { dataAddedSuccessFully } from "../../../ToastFunc/ToastFunction";
 import UseParcelCountHook from "../../../Hooks/UseParcelCountHook";
@@ -37,6 +44,8 @@ const AllParcel = () => {
 
   const [parcelsData, setParcelsData] = useState([]);
   const pages = [...Array(Totalpage).keys()];
+
+  console.log(parcelsData);
 
   // page number click functionality
   const handlePageClick = (page) => {
@@ -74,7 +83,7 @@ const AllParcel = () => {
       .then((dataResponse) => {
         setParcelsData(dataResponse?.data);
       });
-  }, [currentPage, perPageItem, user?.email, axiosSecure, status]);
+  }, [currentPage, perPageItem, user?.email, axiosSecure, status, openModal]);
 
   // console.log(parcelsData);
 
@@ -106,7 +115,6 @@ const AllParcel = () => {
       .then((response) => {
         // console.log(response?.data);
         if (response?.data?.acknowledged) {
-          refetch();
           dataAddedSuccessFully();
           onCloseModal();
         }
@@ -241,14 +249,18 @@ const AllParcel = () => {
                       <div className="flex items-center justify-center ">
                         <div>
                           <div className="text-sm leading-5 text-gray-800">
-                            {parcel?.parcelType}
+                            {parcel?.userName}
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className="py-2 text-center leading-4  border-b border-gray-500">
                       <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
-                        User image
+                        <img
+                          className="w-10 h-10 rounded"
+                          src={parcel?.userImg}
+                          alt="Default avatar"
+                        />
                       </div>
                     </td>
                     <td className="py-2 text-center leading-4  border-b border-gray-500 ">

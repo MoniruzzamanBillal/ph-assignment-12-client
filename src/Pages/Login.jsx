@@ -60,17 +60,19 @@ const Login = () => {
     signInWithPopup(auth, provider).then((response) => {
       // console.log(response?.user);
       // name  role uid email
-
+      // console.log(response.user);
       const name = response?.user?.displayName;
       const email = response?.user?.email;
       const uid = response?.user?.uid;
       const role = "user";
+      const userImg = response?.user?.photoURL;
 
       const userData = {
         name,
         email,
         uid,
         role,
+        userImg,
       };
 
       axiosPublicUrl.post("/user", userData).then((userResponse) => {

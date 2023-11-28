@@ -30,8 +30,10 @@ const BookParcel = () => {
   const [deliveryAddress, setDeliveryAddress] = useState("");
   const [parcelCharge, setParcelCharge] = useState("");
   const [status, setStatus] = useState("pending");
-
+  // console.log(user);
+  //
   const userName = user?.displayName;
+  const userImg = user?.photoURL;
   const userEmail = user?.email;
   const uid = user?.uid;
   const date2 = new Date();
@@ -96,6 +98,7 @@ const BookParcel = () => {
       status,
       uid,
       bookingDate,
+      userImg,
     };
 
     // console.log(parcelObj);

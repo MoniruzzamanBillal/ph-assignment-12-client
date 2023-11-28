@@ -56,12 +56,6 @@ const AllDeliveryMan = () => {
       });
   }, [currentPage, perPageItem, user?.email, axiosPublicUrl, axiosSecure]);
 
-  console.log(delivaryMandata);
-
-  // console.log(delivaryManCount);
-
-  // console.log(delivaryMans);
-
   return (
     <div>
       <div className=" bg-red-400 w-[95%] m-auto    ">
