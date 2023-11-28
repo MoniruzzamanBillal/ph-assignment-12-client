@@ -24,7 +24,7 @@ const Login = () => {
   const location = useLocation();
   const { user, loginFunction, loading } = UseAuth();
 
-  console.log("location in login = ", location);
+  // console.log("location in login = ", location);
 
   // email login
   const handleLogin = async () => {

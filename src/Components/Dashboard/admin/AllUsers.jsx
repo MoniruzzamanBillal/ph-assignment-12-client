@@ -56,12 +56,16 @@ const AllUsers = () => {
 
   // effect for getting user data
   useEffect(() => {
+    getAllUsers();
+  }, [currentPage, perPageItem, user?.email, axiosPublicUrl, axiosSecure]);
+
+  const getAllUsers = () => {
     axiosSecure
       .get(`/admin/userOnly?page=${currentPage}&pagePerItem=${perPageItem}`)
       .then((dataResponse) => {
         setUserData(dataResponse?.data);
       });
-  }, [currentPage, perPageItem, user?.email, axiosPublicUrl, axiosSecure]);
+  };
 
   console.log(userData);
 
@@ -79,7 +83,7 @@ const AllUsers = () => {
         makeDelivarymanSuccessFully();
 
         setTimeout(() => {
-          userRefetch();
+          getAllUsers();
         }, 800);
       }
     });
@@ -95,7 +99,7 @@ const AllUsers = () => {
         makeAdminSuccessFully();
 
         setTimeout(() => {
-          userRefetch();
+          getAllUsers();
         }, 800);
       }
     });
@@ -105,8 +109,8 @@ const AllUsers = () => {
 
   return (
     <div>
-      <div className=" bg-red-400 w-[95%] m-auto    ">
-        <div className=" flex flex-col justify-center items-center h-screen  shadow  bg-gray-50  px-2 pt-3">
+      <div className=" bg-red-400 w-[95%] m-auto   ">
+        <div className=" flex flex-col justify-center items-center h-screen  shadow   bg-gray-50  px-2 pt-3">
           <table className=" ">
             <thead>
               <tr>
@@ -156,12 +160,12 @@ const AllUsers = () => {
                     </td>
                     <td className="py-2 px-2  text-left leading-4  border-b border-gray-500">
                       <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
-                        requested delivery date
+                        {user?.phoneNumber}
                       </div>
                     </td>
                     <td className="py-2 px-2  text-left leading-4  border-b border-gray-500 ">
                       <div className="flex items-center justify-center">
-                        approximate delivary date
+                        {user?.parcelBook ? user?.parcelBook : "0"}
                       </div>
                     </td>
                     <td className="py-2 px-2 text-left leading-4  border-b border-gray-500">

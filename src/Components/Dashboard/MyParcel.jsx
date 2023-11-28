@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Swal from "sweetalert2";
 import { useQuery } from "@tanstack/react-query";
 import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 import UseAuth from "../../Hooks/UseAuth";
@@ -39,15 +40,10 @@ const MyParcel = () => {
   const Totalpage = Math.ceil(productCount / perPageItem);
   const [userData, setuserData] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
-  // console.log(userData);
+  console.log(userData);
 
   const pages = [...Array(Totalpage).keys()];
 
-  // userData.map((data) => {
-  //   console.log(data.delivartManId);
-  // });
-
-  // update functionality
   const handleUpdate = (id) => {
     console.log("id on update = ", id);
 
@@ -113,10 +109,23 @@ const MyParcel = () => {
 
   // cancel parcel data
   const handleCancel = (id) => {
-    axiosSecure.delete(`/parcel/delete/${id}`).then((deleteResponse) => {
-      if (deleteResponse?.data?.deletedCount > 0) {
-        cancelSuccessFully();
-        fetchParcelData();
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/parcel/delete/${id}`).then((deleteResponse) => {
+          console.log(deleteResponse?.data);
+          if (deleteResponse?.data?.deletedCount > 0) {
+            cancelSuccessFully();
+            fetchParcelData();
+          }
+        });
       }
     });
   };
@@ -281,7 +290,9 @@ const MyParcel = () => {
                       </td>
                       <td className="py-2 text-left leading-4  border-b border-gray-500 ">
                         <div className="flex items-center justify-center">
-                          approximate delivary date
+                          {data?.approximateDelivery
+                            ? data?.approximateDelivery
+                            : ".."}
                         </div>
                       </td>
                       <td className="py-2 text-left leading-4  border-b border-gray-500">

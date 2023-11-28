@@ -20,7 +20,7 @@ const MyProfile = () => {
 
   // update function
   const handleUpdate = async () => {
-    console.log("update button click");
+    // console.log("update button click");
 
     const formData = new FormData();
     formData.append("image", imageInput);
@@ -50,14 +50,13 @@ const MyProfile = () => {
     } catch (error) {
       console.error("Error uploading image:", error.message);
 
-      toast.error("Failed to upload image");
+      // toast.error("Failed to upload image");
     }
 
     //
   };
 
   useEffect(() => {
-    console.log("useeffect render");
     handleUpdate();
   }, [photoUrl]);
 

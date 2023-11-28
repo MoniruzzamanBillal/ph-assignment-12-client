@@ -65,10 +65,9 @@ const Register = () => {
       return inputFieldError();
     } else if (!isChecked) {
       return termError();
+    } else if (!isPasswordValid(password)) {
+      return passwordValidationError();
     }
-    //  else if (!isPasswordValid(password)) {
-    //   return passwordValidationError();
-    // }
 
     // !
 
@@ -96,7 +95,7 @@ const Register = () => {
         const registerResponse = await registerFunction(email, password);
 
         if (registerResponse?.user) {
-          // console.log(registerResponse?.user);
+          console.log(registerResponse?.user);
           const uid = registerResponse?.user?.uid;
           const userImg = photoUrl;
           // console.log(uid);

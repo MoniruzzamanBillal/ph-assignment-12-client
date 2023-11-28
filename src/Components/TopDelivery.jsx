@@ -22,18 +22,18 @@ const TopDelivery = () => {
     },
   });
 
-  console.log(delivaryMans);
+  // console.log(delivaryMans);
 
   useEffect(() => {
     const resultSort = delivaryMans?.sort(
       (a, b) => b.delivaryDone - a.delivaryDone
     );
 
-    console.log(resultSort);
+    // console.log(resultSort);
 
     const sliceData = resultSort?.slice(0, 5);
 
-    console.log(sliceData);
+    // console.log(sliceData);
 
     setSortedData(sliceData);
   }, [delivaryMans]);
@@ -66,12 +66,10 @@ const TopDelivery = () => {
 
         {/* delivery man card  */}
         <div className="deliveryManCard  grid grid-cols-1 xsm:grid-cols-2 xmd:grid-cols-3 gap-x-3 gap-y-5 ">
-          <DeliveryManCard />
-          <DeliveryManCard />
-          <DeliveryManCard />
-          <DeliveryManCard />
-          <DeliveryManCard />
-          <DeliveryManCard />
+          {sortedData &&
+            sortedData.map((delivaryman, ind) => (
+              <DeliveryManCard key={ind} delivaryman={delivaryman} />
+            ))}
         </div>
         {/* delivery man card ends  */}
 

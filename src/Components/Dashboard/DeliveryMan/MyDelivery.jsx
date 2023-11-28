@@ -37,7 +37,7 @@ const MyDelivery = () => {
   // delivery function
   const handleDelivery = (id) => {
     console.log("delivery  click");
-    console.log(id);
+    // console.log(id);
 
     const additionalData = { status: "delivered" };
 
@@ -51,6 +51,14 @@ const MyDelivery = () => {
             .then((delivaryUpdate) => {
               // console.log(delivaryUpdate.data);
             });
+
+          // setting parcel book number
+          axiosPublicUrl
+            .patch(`/user/parcelbooknum/${id}`)
+            .then((parcelNum) => {
+              console.log(parcelNum.data);
+            });
+
           // .catch((error) => console.log(error));
           myDelivaryReFetch();
           deliveredSuccessFully();
@@ -61,9 +69,6 @@ const MyDelivery = () => {
 
   // cancel function
   const handleCancel = (id) => {
-    // console.log("cancel  click");
-    // console.log(id);
-
     const additionalData = { status: "canceled" };
 
     axiosPublicUrl
