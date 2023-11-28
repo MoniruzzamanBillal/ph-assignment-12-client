@@ -14,6 +14,7 @@ import UpdateParcel from "../Components/Dashboard/UpdateParcel";
 import Test from "../Components/Loading/Test";
 import MyDelivery from "../Components/Dashboard/DeliveryMan/MyDelivery";
 import MyReview from "../Components/Dashboard/DeliveryMan/MyReview";
+import PrivateRoute from "./PrivateRoute";
 
 const Router = createBrowserRouter([
   {
@@ -40,47 +41,103 @@ const Router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    // element: <Dashboard />,
+    element: (
+      <PrivateRoute>
+        {" "}
+        <Dashboard />{" "}
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "/dashboard/myparcel",
-        element: <MyParcel />,
+        element: (
+          <PrivateRoute>
+            {" "}
+            <MyParcel />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/dashboard/bookparcel",
-        element: <BookParcel />,
+        element: (
+          <PrivateRoute>
+            {" "}
+            <BookParcel />{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "/dashboard/updateparcel/:id",
-        element: <UpdateParcel />,
+        element: (
+          <PrivateRoute>
+            {" "}
+            <UpdateParcel />{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "/dashboard/myprofile",
-        element: <MyProfile />,
+        element: (
+          <PrivateRoute>
+            {" "}
+            <MyProfile />{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "/dashboard/statistics",
-        element: <p> Statistics </p>,
+        element: (
+          <PrivateRoute>
+            {" "}
+            <p> Statistics </p>{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "/dashboard/parcels",
-        element: <AllParcel />,
+        element: (
+          <PrivateRoute>
+            {" "}
+            <AllParcel />{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "/dashboard/users",
-        element: <AllUsers />,
+        element: (
+          <PrivateRoute>
+            {" "}
+            <AllUsers />{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "/dashboard/deliverymans",
-        element: <AllDeliveryMan />,
+        element: (
+          <PrivateRoute>
+            {" "}
+            <AllDeliveryMan />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/dashboard/mydelivery",
-        element: <MyDelivery />,
+        element: (
+          <PrivateRoute>
+            {" "}
+            <MyDelivery />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/dashboard/myreview",
-        element: <MyReview />,
+        element: (
+          <PrivateRoute>
+            {" "}
+            <MyReview />
+          </PrivateRoute>
+        ),
       },
     ],
   },
