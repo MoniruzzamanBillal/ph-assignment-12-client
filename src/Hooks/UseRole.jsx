@@ -7,11 +7,10 @@ import Loading from "../Components/Loading/Loading";
 const UseRole = () => {
   const { user, loading } = UseAuth();
   const [axiosSecure] = UseAxiosSecure();
-  // console.log(loading);
-  // console.log(user);
 
   const { data: isAdmin, isLoading: isAdminLoading } = useQuery({
     queryKey: ["findRole"],
+    enabled: !!user?.email && !!localStorage.getItem("access-token"),
 
     queryFn: async () => {
       const res = await axiosSecure.get(`/user/role/${user?.email}`);

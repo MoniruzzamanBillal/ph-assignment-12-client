@@ -25,13 +25,13 @@ const TopDelivery = () => {
   console.log(delivaryMans);
 
   useEffect(() => {
-    const resultSort = delivaryMans.sort(
+    const resultSort = delivaryMans?.sort(
       (a, b) => b.delivaryDone - a.delivaryDone
     );
 
     console.log(resultSort);
 
-    const sliceData = resultSort.slice(0, 5);
+    const sliceData = resultSort?.slice(0, 5);
 
     console.log(sliceData);
 

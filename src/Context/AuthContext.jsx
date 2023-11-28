@@ -50,7 +50,7 @@ const AppProvider = ({ children }) => {
         axiosPublicUrl
           .post("/jwt", userInfo)
           .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             if (response?.data?.token) {
               localStorage.setItem("access-token", response?.data?.token);
             }
