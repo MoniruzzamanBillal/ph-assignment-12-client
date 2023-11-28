@@ -77,6 +77,12 @@ const MyParcel = () => {
       console.log(reviewResponse.data);
 
       if (reviewResponse?.data?.acknowledged) {
+        axiosPublicUrl
+          .patch(`/averagerating/rating/${delivartManId}`)
+          .then((ratingResponse) => {
+            console.log(ratingResponse.data);
+          })
+          .catch((error) => console.log(error));
         reviewSuccessFully();
         setOpenModal(false);
       }

@@ -69,12 +69,20 @@ const AllDeliveryMan = () => {
                     {/*  */}
                     {/*  */}
                     <td className="py-2 px-3 text-left leading-4  border-b border-gray-500 ">
-                      <div className="flex items-center justify-center">50</div>
+                      <div className="flex items-center justify-center">
+                        {delivaryman?.delivaryDone
+                          ? delivaryman?.delivaryDone
+                          : "0"}
+                      </div>
                     </td>
                     {/*  */}
                     {/*  */}
                     <td className="py-2 px-3 text-left leading-4  border-b border-gray-500">
-                      <div className="flex items-center justify-center">4</div>
+                      <div className="flex items-center justify-center">
+                        {delivaryman?.averageRating
+                          ? delivaryman?.averageRating
+                          : "0"}
+                      </div>
                     </td>
                     {/*  */}
                     {/*  */}

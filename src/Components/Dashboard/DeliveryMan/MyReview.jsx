@@ -16,8 +16,6 @@ const MyReview = () => {
 
   const loggedInDelivaryManID = isAdmin?.id;
 
-  // console.log(loggedInDelivaryManID);
-
   const { data: myReview, isLoading: reviewLoading } = useQuery({
     queryKey: ["reviewData"],
     queryFn: async () => {
