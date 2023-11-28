@@ -138,7 +138,7 @@ const MyParcel = () => {
     console.log("next page = ", currentPage);
   };
 
-  // console.log(status);
+  console.log(status);
 
   useEffect(() => {
     if (pacelCount?.count) {
@@ -147,24 +147,16 @@ const MyParcel = () => {
   }, [pacelCount]);
 
   //
-  //
-  //
-  //
   useEffect(() => {
     axiosSecure
       .get(
-        `/parcels?email=${user?.email}&page=${currentPage}&pagePerItem=${perPageItem}`
+        `/parcels?email=${user?.email}&page=${currentPage}&pagePerItem=${perPageItem}&status=${status}`
       )
       .then((dataResponse) => {
-        console.log(dataResponse?.data);
+        // console.log(dataResponse?.data);
         setuserData(dataResponse?.data);
       });
-  }, [currentPage, perPageItem, user?.email, axiosSecure]);
-  //
-  //
-  //
-  //
-  //
+  }, [currentPage, perPageItem, user?.email, axiosSecure, status]);
 
   return (
     <div className="MyParcelContainer">
@@ -212,21 +204,14 @@ const MyParcel = () => {
 
                   {/* Booking Status */}
                   <th className="px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500 text-center">
-                    Booking Status
                     {/* booking status  */}
                     <div>
-                      <label
-                        htmlFor="category"
-                        className="block mb-2 text-sm font-medium text-gray-900 "
-                      >
-                        User Role
-                      </label>
                       <select
                         id="category"
                         onChange={(e) => setStatus(e.target.value)}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 "
                       >
-                        <option value="">Status</option>
+                        <option value="null">Status</option>
                         <option value="on the way">on the way</option>
                         <option value="delivered">delivered</option>
                         <option value="canceled">canceled</option>
@@ -477,35 +462,6 @@ const MyParcel = () => {
             </table>
             <div className="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">
               {/*  */}
-              {/*  */}
-              {/* <div className="pagination py-2 text-center ">
-                <p>current page = {currentPage} </p>
-                {pages.map((page, ind) => (
-                  <button
-                    key={ind}
-                    onClick={() => handlePageClick(page)}
-                    className={` py-2 px-4 text-white   ${
-                      currentPage - 1 === page
-                        ? "bg-amber-300 hover:bg-amber-400 "
-                        : "bg-gray-500  hover:bg-gray-700"
-                    } `}
-                  >
-                    {" "}
-                    {page + 1}{" "}
-                  </button>
-                ))}
-                <select
-                  name=""
-                  value={perPageItem}
-                  onChange={handlePageItem}
-                  id=""
-                >
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option value="15">15</option>
-                  <option value="20">20</option>
-                </select>
-              </div> */}
 
               <div className="pagination   mt-3 py-4 text-center text-xs xsm:text-sm sm:text-base  ">
                 <button
