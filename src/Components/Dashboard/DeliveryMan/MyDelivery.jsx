@@ -44,8 +44,14 @@ const MyDelivery = () => {
     axiosPublicUrl
       .patch(`/parcel/${id}`, additionalData)
       .then((response) => {
-        console.log(response?.data);
+        // console.log(response?.data);
         if (response?.data?.acknowledged) {
+          axiosPublicUrl
+            .patch(`/delivared/${isAdmin?.id}`)
+            .then((delivaryUpdate) => {
+              // console.log(delivaryUpdate.data);
+            });
+          // .catch((error) => console.log(error));
           myDelivaryReFetch();
           deliveredSuccessFully();
         }
