@@ -101,7 +101,7 @@ const NavBar = () => {
                 } relative group  text-base lg:text-lg   text-gray-700 dark:text-[#E4F1FF] hover:text-blue-500    `}
               >
                 {ele.item}
-                nav
+
                 <span className="absolute -bottom-[.15rem] left-0 w-0 h-[.14rem] bg-blue-400 group-hover:w-full group-hover:transition-all"></span>
               </NavLink>
             ))}
