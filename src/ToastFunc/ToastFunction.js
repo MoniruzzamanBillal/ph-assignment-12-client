@@ -195,6 +195,19 @@ export const cancelSuccessFully = () =>
     theme: "colored",
   });
 
+// successfully payment added
+export const paymentSuccessFully = () =>
+  toast.success(" Payment done ", {
+    position: "top-center",
+    autoClose: 1200,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });
+
 // review added success fully
 
 // if(data?.status==='cancel' ||data?.status==='red' ){

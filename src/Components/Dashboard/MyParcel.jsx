@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 import UseAuth from "../../Hooks/UseAuth";
 import Loading from "../Loading/Loading";
 import { useNavigate } from "react-router-dom";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
+import UseParcelCountHook from "../../Hooks/UseParcelCountHook";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button, Checkbox, Label, Modal, TextInput } from "flowbite-react";
@@ -12,6 +14,7 @@ import { useState } from "react";
 
 import {
   cancelSuccessFully,
+  paymentSuccessFully,
   reviewSuccessFully,
 } from "../../ToastFunc/ToastFunction";
 
@@ -22,25 +25,21 @@ const MyParcel = () => {
   const { user } = UseAuth();
   const [openModal, setOpenModal] = useState(false);
   const [email, setEmail] = useState("");
+  const [status, setStatus] = useState(null);
+  // parcel count hook
+  const [pacelCount, parcelCountLoading, parcelCountRefetch] =
+    UseParcelCountHook();
+  // parcel count hook
 
+  const [currentPage, setCurrentPage] = useState(1);
   const [rating, setRating] = useState(null);
   const [feedback, setFeedBack] = useState("");
+  const [productCount, setProductsCount] = useState(0);
+  const [perPageItem, setPerPageItem] = useState(5);
+  const Totalpage = Math.ceil(productCount / perPageItem);
+  const [userData, setuserData] = useState([]);
 
-  const {
-    data: parcelData,
-    isLoading: dataLoading,
-    refetch: myParcelRefetch,
-  } = useQuery({
-    queryKey: ["parcelData"],
-    queryFn: async () => {
-      // return axiosPublicUrl.get(`/parcels?email=${user?.email}`, {
-      return axiosSecure.get(`/parcels?email=${user?.email}`);
-    },
-  });
-
-  const userData = parcelData?.data;
-
-  console.log(userData);
+  const pages = [...Array(Totalpage).keys()];
 
   // update functionality
   const handleUpdate = (id) => {
@@ -102,14 +101,70 @@ const MyParcel = () => {
 
       if (deleteResponse?.data?.deletedCount > 0) {
         cancelSuccessFully();
-        myParcelRefetch();
       }
     });
   };
 
-  if (dataLoading) {
-    return <Loading />;
-  }
+  const handlePay = () => {
+    paymentSuccessFully();
+  };
+
+  const handlePageClick = (page) => {
+    console.log("page without mod = ", page);
+    setCurrentPage(page + 1);
+    console.log("current page = ", currentPage);
+  };
+
+  // function for handle previous button in pagination
+  const handlePrev = () => {
+    if (currentPage <= 1) {
+      console.log("previous page = ", currentPage);
+      return setCurrentPage(1);
+    }
+    setCurrentPage(currentPage - 1);
+
+    console.log("previous page = ", currentPage);
+  };
+
+  // function for handle next button in pagination
+  const handleNextCurrent = () => {
+    if (currentPage >= Totalpage) {
+      console.log("next page = ", currentPage);
+      return setCurrentPage(Totalpage);
+    }
+    setCurrentPage(currentPage + 1);
+
+    // console.log(currentPage);
+    console.log("next page = ", currentPage);
+  };
+
+  // console.log(status);
+
+  useEffect(() => {
+    if (pacelCount?.count) {
+      setProductsCount(pacelCount?.count);
+    }
+  }, [pacelCount]);
+
+  //
+  //
+  //
+  //
+  useEffect(() => {
+    axiosSecure
+      .get(
+        `/parcels?email=${user?.email}&page=${currentPage}&pagePerItem=${perPageItem}`
+      )
+      .then((dataResponse) => {
+        console.log(dataResponse?.data);
+        setuserData(dataResponse?.data);
+      });
+  }, [currentPage, perPageItem, user?.email, axiosSecure]);
+  //
+  //
+  //
+  //
+  //
 
   return (
     <div className="MyParcelContainer">
@@ -158,6 +213,26 @@ const MyParcel = () => {
                   {/* Booking Status */}
                   <th className="px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500 text-center">
                     Booking Status
+                    {/* booking status  */}
+                    <div>
+                      <label
+                        htmlFor="category"
+                        className="block mb-2 text-sm font-medium text-gray-900 "
+                      >
+                        User Role
+                      </label>
+                      <select
+                        id="category"
+                        onChange={(e) => setStatus(e.target.value)}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 "
+                      >
+                        <option value="">Status</option>
+                        <option value="on the way">on the way</option>
+                        <option value="delivered">delivered</option>
+                        <option value="canceled">canceled</option>
+                      </select>
+                    </div>
+                    {/* booking status  */}
                   </th>
                   {/*Booking Status  */}
 
@@ -172,6 +247,12 @@ const MyParcel = () => {
                     Cancel
                   </th>
                   {/* cancel  */}
+
+                  {/* pay button  */}
+                  <th className="px-2 py-2 border-b-2 border-gray-300 text-center leading-4 text-blue-500">
+                    Pay
+                  </th>
+                  {/* pay button  */}
                 </tr>
               </thead>
               <tbody className="bg-white">
@@ -371,6 +452,19 @@ const MyParcel = () => {
                           )}
                         </div>
                       </td>
+
+                      {/* payment button  */}
+                      <td className="py-2 px-2 text-center leading-4 border-b border-gray-500">
+                        <div className="flex items-center justify-center">
+                          <button
+                            className="bg-green-500 py-1.5 px-2 font-bold rounded-md text-gray-200 text-xs"
+                            onClick={() => handlePay()}
+                          >
+                            Pay
+                          </button>
+                        </div>
+                      </td>
+                      {/* payment button  */}
                     </tr>
                   ))}
 
@@ -382,79 +476,68 @@ const MyParcel = () => {
               </tbody>
             </table>
             <div className="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">
-              <div>
-                <p className="text-sm leading-5 text-blue-700">
-                  Showing
-                  <span className="font-medium">1</span>
-                  to
-                  <span className="font-medium">200</span>
-                  of
-                  <span className="font-medium">2000</span>
-                  results
-                </p>
+              {/*  */}
+              {/*  */}
+              {/* <div className="pagination py-2 text-center ">
+                <p>current page = {currentPage} </p>
+                {pages.map((page, ind) => (
+                  <button
+                    key={ind}
+                    onClick={() => handlePageClick(page)}
+                    className={` py-2 px-4 text-white   ${
+                      currentPage - 1 === page
+                        ? "bg-amber-300 hover:bg-amber-400 "
+                        : "bg-gray-500  hover:bg-gray-700"
+                    } `}
+                  >
+                    {" "}
+                    {page + 1}{" "}
+                  </button>
+                ))}
+                <select
+                  name=""
+                  value={perPageItem}
+                  onChange={handlePageItem}
+                  id=""
+                >
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                </select>
+              </div> */}
+
+              <div className="pagination   mt-3 py-4 text-center text-xs xsm:text-sm sm:text-base  ">
+                <button
+                  onClick={() => handlePrev()}
+                  className=" py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 border-r border-gray-600 text-white bg-gray-500  hover:bg-gray-700   "
+                >
+                  Prev
+                </button>
+                {pages.map((page, ind) => (
+                  <button
+                    // onClick={() => setCurrentPage(page + 1)}
+
+                    onClick={() => handlePageClick(page)}
+                    className={` py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white   ${
+                      currentPage - 1 === page
+                        ? "bg-[#e4c590] hover:bg-amber-300 "
+                        : "bg-gray-500  hover:bg-gray-700"
+                    } border-r border-gray-600 `}
+                  >
+                    {" "}
+                    {page + 1}{" "}
+                  </button>
+                ))}
+                <button
+                  onClick={() => handleNextCurrent()}
+                  className="py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white bg-gray-500  hover:bg-gray-700   "
+                >
+                  Next
+                </button>
               </div>
-              <div>
-                <div className="relative z-0 inline-flex shadow-sm">
-                  <div>
-                    <a
-                      href="#"
-                      className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
-                      aria-label="Previous"
-                    >
-                      <svg
-                        className="h-5 w-5"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                  <div>
-                    <a
-                      href="#"
-                      className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-700 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
-                    >
-                      1
-                    </a>
-                    <a
-                      href="#"
-                      className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
-                    >
-                      2
-                    </a>
-                    <a
-                      href="#"
-                      className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
-                    >
-                      3
-                    </a>
-                  </div>
-                  <div v-if="pagination.current_page < pagination.last_page">
-                    <a
-                      href="#"
-                      className="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
-                      aria-label="Next"
-                    >
-                      <svg
-                        className="h-5 w-5"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
+              {/*  */}
+              {/*  */}
             </div>
           </div>
         </div>
