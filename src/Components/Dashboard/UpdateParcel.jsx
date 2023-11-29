@@ -2,13 +2,19 @@ import React, { useContext, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useParams } from "react-router-dom";
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 import UseAuth from "../../Hooks/UseAuth";
 import {
   inputFieldError,
   updatedSuccessFully,
 } from "../../ToastFunc/ToastFunction";
+import { Helmet } from "react-helmet";
 
 const UpdateParcel = () => {
   const { id } = useParams();
@@ -18,9 +24,10 @@ const UpdateParcel = () => {
   const orderDate = date2.getDate();
   const orderMonth = date2.getMonth() + 1;
   const orderYear = date2.getFullYear();
+  const location = useLocation();
 
   // !  states
-
+  const navigate = useNavigate();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [parcelType, setParcelType] = useState("");
   const [parcelWeight, setParcelWeigt] = useState("");
@@ -119,16 +126,8 @@ const UpdateParcel = () => {
     console.log(updateResponse?.data);
     if (updateResponse?.data?.acknowledged) {
       updatedSuccessFully();
+      navigate("/dashboard/myparcel");
     }
-
-    // console.log("--------------------------");
-    // console.log(parcelObj);
-    // console.log("--------------------------");
-
-    // console.log(requestedDate);
-    // console.log(bookingDate);
-
-    //
   };
 
   // calculating parcel charge function
@@ -148,6 +147,10 @@ const UpdateParcel = () => {
 
   return (
     <div className=" py-4 relative mainContiner flex flex-col  w-full items-center justify-center  bg-no-repeat bg-cover bg-center ">
+      <Helmet>
+        <title>Update parcel</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       <h1 className="   robotoFont font-semibold text-4xl mb-4 text-[#e4c590]  ">
         Book your parcel
       </h1>

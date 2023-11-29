@@ -3,13 +3,9 @@ import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 // importing icons:
-import { ImBook } from "react-icons/im";
-import { BsCash, BsGraphUpArrow } from "react-icons/bs";
-import { FaPiggyBank, FaBoxOpen, FaUsers } from "react-icons/fa";
-import { TbCurrencyTaka } from "react-icons/tb";
-import { GiReceiveMoney } from "react-icons/gi";
-import { AiFillCreditCard, AiOutlineShop } from "react-icons/ai";
-import { MdBusinessCenter, MdOutlineDiamond } from "react-icons/md";
+
+import { BsGraphUpArrow } from "react-icons/bs";
+import { FaBoxOpen, FaUsers } from "react-icons/fa";
 import { CiBookmarkCheck } from "react-icons/ci";
 import { RiProfileFill } from "react-icons/ri";
 import { IoIosHome } from "react-icons/io";
@@ -18,6 +14,7 @@ import Loading from "../../Components/Loading/Loading";
 import { IoStatsChart } from "react-icons/io5";
 import { FaUserAstronaut } from "react-icons/fa6";
 import UseRole from "../../Hooks/UseRole";
+import { Helmet } from "react-helmet";
 
 // global variables:
 
@@ -79,27 +76,20 @@ const deliveryManMenu = [
 ];
 
 const Dashboard = () => {
-  // states:
-
   const [isSidebarActive, setIsSidebarActive] = useState(false);
   const { user, loading } = UseAuth();
   const [isAdmin, isAdminLoading] = UseRole();
-
-  // console.log(user);
-  // console.log(isAdmin);
-  // console.log(isAdmin?.role);
-  // deliveryman
 
   if (loading || isAdminLoading) {
     return <Loading />;
   }
 
-  // console.log("--------------------------");
-  // console.log(user);
-  // console.log("--------------------------");
-
   return (
     <section className="relative flex justify-end">
+      <Helmet>
+        <title>Dashboard</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       {/* sidebar container starts  */}
       <div
         className={`fixed top-0 ${
@@ -126,7 +116,6 @@ const Dashboard = () => {
             {/* top account container ends */}
 
             {/* bottom list items start  */}
-            {/* bottom list items start  */}
 
             <Link
               to={"/"}
@@ -136,9 +125,7 @@ const Dashboard = () => {
                 {" "}
                 <IoIosHome />{" "}
               </div>
-              <h1
-                className={`hidden gap-1  origin-left duration-200 w-full sm:flex`}
-              >
+              <h1 className={` gap-1  origin-left duration-200 w-full `}>
                 Home
               </h1>
             </Link>
@@ -156,16 +143,13 @@ const Dashboard = () => {
                     className={`flex rounded-md py-3 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
                   >
                     <div className="icon text-lg">{ele.icon}</div>
-                    <h1
-                      className={`hidden gap-1  origin-left duration-200 w-full sm:flex`}
-                    >
+                    <h1 className={` gap-1  origin-left duration-200 w-full `}>
                       {ele.title}
                     </h1>
                   </NavLink>
                 ))}
 
               {/* admin menu  */}
-              {/*  */}
               {/*  */}
 
               {/* normal user side links  */}
@@ -178,9 +162,7 @@ const Dashboard = () => {
                     className={`flex rounded-md py-3 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
                   >
                     <div className="icon text-lg">{ele.icon}</div>
-                    <h1
-                      className={`hidden gap-1  origin-left duration-200 w-full sm:flex`}
-                    >
+                    <h1 className={` gap-1  origin-left duration-200 w-full `}>
                       {ele.title}
                     </h1>
                   </NavLink>
@@ -200,9 +182,7 @@ const Dashboard = () => {
                     className={`flex rounded-md py-3 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
                   >
                     <div className="icon text-lg">{ele.icon}</div>
-                    <h1
-                      className={`hidden gap-1  origin-left duration-200 w-full sm:flex`}
-                    >
+                    <h1 className={` gap-1  origin-left duration-200 w-full `}>
                       {ele.title}
                     </h1>
                   </NavLink>
@@ -225,7 +205,7 @@ const Dashboard = () => {
       {/* hamburger menu */}
       <div
         onClick={() => setIsSidebarActive(!isSidebarActive)}
-        className="fixed bottom-[20px] h-[50px] right-[20px] md:hidden flex flex-col justify-center gap-2 bg-[#1a171733] p-2 rounded cursor-pointer z-[20] "
+        className="fixed bottom-[20px] h-[50px] right-[20px] md:hidden flex flex-col justify-center gap-2 bg-gray-500 p-2 rounded cursor-pointer z-[20] "
       >
         <div
           className={`line duration-300 h-[5px] w-[40px] bg-white rounded ${
@@ -245,10 +225,6 @@ const Dashboard = () => {
       </div>
       {/* hamburger emnu ends  */}
       {/* hamburger emnu ends  */}
-
-      {/* sidebar child components starts */}
-      {/* <div className="h-screen p-5 ml-64 duration-300"> */}
-      {/* child components starts  */}
 
       <div className="w-[100%] md:w-[calc(100%-16rem)]  bg-slate-400">
         <Outlet />

@@ -13,6 +13,7 @@ import {
 } from "../../ToastFunc/ToastFunction";
 import axios from "axios";
 import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
+import { Helmet } from "react-helmet";
 
 const BookParcel = () => {
   const navigate = useNavigate();
@@ -117,6 +118,7 @@ const BookParcel = () => {
       setReceiverNumber("");
       setLatitude("");
       setLongtide("");
+      setDeliveryAddress("");
     }
   };
 
@@ -125,6 +127,10 @@ const BookParcel = () => {
 
   return (
     <div className=" py-4 relative mainContiner flex flex-col  w-full items-center justify-center  bg-no-repeat bg-cover bg-center ">
+      <Helmet>
+        <title>Book parcels</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       <h1 className="   robotoFont font-semibold text-4xl mb-4 text-[#e4c590]  ">
         Book your parcel
       </h1>

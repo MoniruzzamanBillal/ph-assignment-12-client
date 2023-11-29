@@ -15,6 +15,7 @@ import {
   termError,
 } from "../ToastFunc/ToastFunction";
 import UseAxiosPublic from "../Hooks/UseAxiosPublic";
+import { Helmet } from "react-helmet";
 
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING;
 
@@ -180,6 +181,11 @@ const Register = () => {
   return (
     <div className="   ">
       {/* <!-- component --> */}
+
+      <Helmet>
+        <title>Registration</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
 
       <div
         className=" py-4 relative mainContiner flex  w-full items-center justify-center bg-gray-900 bg-no-repeat bg-cover bg-center  "

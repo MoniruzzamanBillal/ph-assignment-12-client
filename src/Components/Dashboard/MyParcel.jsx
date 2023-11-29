@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 import UseAuth from "../../Hooks/UseAuth";
 import Loading from "../Loading/Loading";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 import UseParcelCountHook from "../../Hooks/UseParcelCountHook";
 
@@ -18,6 +18,7 @@ import {
   paymentSuccessFully,
   reviewSuccessFully,
 } from "../../ToastFunc/ToastFunction";
+import { Helmet } from "react-helmet";
 
 const MyParcel = () => {
   const navigate = useNavigate();
@@ -31,6 +32,8 @@ const MyParcel = () => {
   const [pacelCount, parcelCountLoading, parcelCountRefetch] =
     UseParcelCountHook();
   // parcel count hook
+
+  const location = useLocation();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rating, setRating] = useState(null);
@@ -190,6 +193,10 @@ const MyParcel = () => {
 
   return (
     <div className="MyParcelContainer">
+      <Helmet>
+        <title>my parcel</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       <div className="myParcelWrapper">
         {/*  */}
         {/*  */}

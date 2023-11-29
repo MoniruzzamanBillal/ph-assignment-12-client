@@ -5,6 +5,7 @@ import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import DelivaryManCountHook from "../../../Hooks/DelivaryManCountHook";
 import UseAuth from "../../../Hooks/UseAuth";
+import { Helmet } from "react-helmet";
 
 const AllDeliveryMan = () => {
   const { user } = UseAuth();
@@ -58,6 +59,10 @@ const AllDeliveryMan = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>Delivary mans</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       <div className=" bg-red-400 w-[95%] m-auto    ">
         <div className=" flex flex-col justify-center items-center h-screen  shadow  bg-gray-50  px-2 pt-3">
           <table className=" ">

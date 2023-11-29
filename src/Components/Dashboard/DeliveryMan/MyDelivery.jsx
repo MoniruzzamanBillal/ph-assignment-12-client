@@ -11,6 +11,7 @@ import {
   cancelDelivary,
   deliveredSuccessFully,
 } from "../../../ToastFunc/ToastFunction";
+import { Helmet } from "react-helmet";
 const MyDelivery = () => {
   const { user, loading } = UseAuth();
   const [axiosPublicUrl] = UseAxiosPublic();
@@ -89,6 +90,10 @@ const MyDelivery = () => {
 
   return (
     <div>
+      <Helmet>
+        <title> My delivary </title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       <div className=" bg-red-400 w-[95%] m-auto    ">
         <div className=" flex flex-col justify-center items-center  shadow  bg-gray-50  px-2 pt-3">
           <table className="   ">

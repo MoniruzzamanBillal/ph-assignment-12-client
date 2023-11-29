@@ -53,7 +53,6 @@ const Router = createBrowserRouter([
         path: "/dashboard/myparcel",
         element: (
           <PrivateRoute>
-            {" "}
             <MyParcel />
           </PrivateRoute>
         ),

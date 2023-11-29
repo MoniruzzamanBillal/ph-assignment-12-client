@@ -4,19 +4,17 @@ import { Link } from "react-router-dom";
 const DeliveryManCard = ({ delivaryman }) => {
   // console.log(Object.keys(delivaryman).join(","));
 
-  const { _id, email, uid, role, name, delivaryDone, averageRating } =
+  console.log(delivaryman);
+
+  const { _id, email, uid, role, name, delivaryDone, averageRating, userImg } =
     delivaryman;
 
   return (
-    <div className="max-w-sm m-auto xsm:m-0  group  bg-white  border border-gray-200 rounded-lg shadow dark:bg-gray-600 dark:border-gray-700 overflow-hidden ">
-      <div className="cardImg  h-[12rem] flex justify-center items-center self-center group-hover:scale-105 duration-500  ">
-        <img
-          className="rounded-t-lg   "
-          src="https://i.ibb.co/gmpq1Vj/member3-removebg-preview.png"
-          alt=""
-        />
+    <div className="max-w-sm m-auto xsm:m-0  group  bg-white   border border-gray-200 rounded-lg shadow dark:bg-gray-600 dark:border-gray-700 overflow-hidden ">
+      <div className="cardImg   flex justify-center items-center self-center group-hover:scale-105 duration-500  ">
+        <img className="rounded-t-lg   " src={userImg} alt="" />
       </div>
-      <div className=" cardBody p-3 sm:p-2 md:p-3 bg-gray-100 dark:bg-gray-500 flex flex-col  ">
+      <div className=" cardBody  p-3 sm:p-2 md:p-3 bg-gray-100 dark:bg-gray-500 flex flex-col  ">
         {/* \ */}
 
         {/* card row 1  */}

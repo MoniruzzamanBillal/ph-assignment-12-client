@@ -19,6 +19,7 @@ import {
 import UseDelivaryMan from "../../../Hooks/UseDelivaryMan";
 import { dataAddedSuccessFully } from "../../../ToastFunc/ToastFunction";
 import UseParcelCountHook from "../../../Hooks/UseParcelCountHook";
+import { Helmet } from "react-helmet";
 
 const AllParcel = () => {
   const navigate = useNavigate();
@@ -135,6 +136,10 @@ const AllParcel = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>All Parcels</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       <div className=" bg-red-400 w-[95%] m-auto    ">
         <div className=" flex flex-col justify-center items-center h-screen  shadow  bg-gray-50  px-2 pt-3">
           <div className="search  pb-2 ">

@@ -32,9 +32,6 @@ const Login = () => {
       const email = emailInput.value;
       const password = passwordInput.value;
 
-      console.log(email);
-      console.log(password);
-
       if (!email.trim() || !password.trim()) {
         return inputFieldError();
       }
@@ -60,9 +57,6 @@ const Login = () => {
     const provider = new GoogleAuthProvider();
 
     signInWithPopup(auth, provider).then((response) => {
-      // console.log(response?.user);
-      // name  role uid email
-      // console.log(response.user);
       const name = response?.user?.displayName;
       const email = response?.user?.email;
       const uid = response?.user?.uid;
@@ -126,7 +120,7 @@ const Login = () => {
               <div className="mb-4">
                 <div className=" relative ">
                   <input
-                    type="text"
+                    type="password"
                     id="login-with-bg-password"
                     {...passwordInput}
                     className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-1 xsm:py-1.5 px-3 sm:py-2 sm:px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"

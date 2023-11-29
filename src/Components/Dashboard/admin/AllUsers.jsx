@@ -11,6 +11,7 @@ import {
 import UserCountHook from "../../../Hooks/UserCountHook";
 import UseAuth from "../../../Hooks/UseAuth";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import { Helmet } from "react-helmet";
 
 const AllUsers = () => {
   const { user } = UseAuth();
@@ -69,14 +70,8 @@ const AllUsers = () => {
 
   console.log(userData);
 
-  // console.log(userCount);
-
-  // console.log(users);
-
   // making user delivary man
   const makeDeliveryMan = (id) => {
-    // console.log(" user id in delivary func =  ", id);
-    // /delivaryman/user/:id
     axiosPublicUrl.patch(`/delivaryman/user/${id}`).then((response) => {
       console.log(response.data);
       if (response?.data?.acknowledged) {
@@ -109,6 +104,10 @@ const AllUsers = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>All Users</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       <div className=" bg-red-400 w-[95%] m-auto   ">
         <div className=" flex flex-col justify-center items-center h-screen  shadow   bg-gray-50  px-2 pt-3">
           <table className=" ">

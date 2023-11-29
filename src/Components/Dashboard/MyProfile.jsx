@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 import { updateProfile } from "firebase/auth";
+import { Helmet } from "react-helmet";
 
 //
 const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING;
@@ -75,6 +76,10 @@ const MyProfile = () => {
 
   return (
     <div className="MyProfileContainer ">
+      <Helmet>
+        <title> profile</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
       <div className="myProfileWrapper  w-[95%] xsm:w-[90%] sm:w-[85%] md:w-[95%] lg:w-[85%] m-auto ">
         {/*  */}
         {/*  */}
