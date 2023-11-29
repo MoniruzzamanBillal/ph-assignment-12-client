@@ -109,6 +109,14 @@ const BookParcel = () => {
 
     if (bookResponse?.data?.insertedId) {
       insertSuccessfully();
+
+      setPhoneNumber("");
+      setParcelType("");
+      setParcelWeigt("");
+      setReceiverName("");
+      setReceiverNumber("");
+      setLatitude("");
+      setLongtide("");
     }
   };
 

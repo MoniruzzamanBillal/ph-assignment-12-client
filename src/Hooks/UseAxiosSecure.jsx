@@ -11,7 +11,7 @@ const axiosSecure = axios.create({
 
 const UseAxiosSecure = () => {
   const navigate = useNavigate();
-  const { loading } = UseAuth();
+  const { loading, logoutFunction } = UseAuth();
   // console.log(loading);
 
   if (!loading) {
@@ -38,11 +38,10 @@ const UseAxiosSecure = () => {
       (error) => {
         const status = error?.response?.status;
         if (status == "401" || status == "403") {
-          // logOut()
-          //   .then((res) => console.log(res))
-          //   .catch((err) => console.log(err));
-          // navigate("/login");
-          // alert("logout the user ");
+          logoutFunction()
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
+          navigate("/login");
         }
         return Promise.reject(error);
       }
