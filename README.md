@@ -48,7 +48,7 @@
 
 ---
 
-admin email : abc@d.com
-admin password : 123456
-delivary mans email : delivaryman1@gmail.com
-delivary mans password : ImbiLLaL@3018
+- admin email : abc@d.com
+- admin password : 123456
+- delivary mans email : delivaryman1@gmail.com
+- delivary mans password : ImbiLLaL@3018
