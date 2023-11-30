@@ -10,19 +10,19 @@ const StatisticsCard = ({ counter }) => {
 
       {/* top line  */}
       {/* top line  */}
-      <div className="topBorder absolute top-0 left-0 bg-orange-500 w-[0rem] h-[6px] group-hover:w-[6rem] origin-right  duration-500 group-hover:transition-all  "></div>
+      <div className="topBorder absolute top-0 left-0 bg-orange-500 w-[0rem] h-[6px] group-hover:w-[4rem]   xsm:group-hover:w-[6rem] origin-right  duration-500 group-hover:transition-all  "></div>
       {/* top line  */}
       {/* top line  */}
 
       {/* top left line  */}
       {/* top left line  */}
-      <div className="topBorder absolute top-[2.6rem] left-[0rem] transform -translate-x-1/2 -translate-y-1/2 rotate-90 bg-orange-500 origin-bottom w-[0rem] h-[6px] group-hover:w-[5rem] duration-500 group-hover:transition-all  "></div>
+      <div className="topBorder absolute top-[1.6rem] xsm:top-[2.6rem] left-[0rem] transform -translate-x-1/2 -translate-y-1/2 rotate-90 bg-orange-500 origin-bottom w-[0rem] h-[6px] group-hover:w-[3rem] xsm:group-hover:w-[5rem] duration-500 group-hover:transition-all  "></div>
       {/* top left line  */}
       {/* top left line  */}
 
       {/* bottom line  */}
       {/* bottom line  */}
-      <div className="topBorder absolute bottom-[0rem] right-[0rem] bg-orange-500  w-[0rem] h-[6px] group-hover:w-[6rem]   duration-500 group-hover:transition-all  "></div>
+      <div className="topBorder absolute bottom-[0rem] right-[0rem] bg-orange-500  w-[0rem] h-[6px] group-hover:w-[3.5rem]  xsm:group-hover:w-[6rem]  duration-500 group-hover:transition-all  "></div>
       {/* bottom line  */}
       {/* bottom line  */}
 
@@ -30,7 +30,7 @@ const StatisticsCard = ({ counter }) => {
       {/*  */}
       {/* bottom right line  */}
       {/* bottom right line  */}
-      <div className="topBorder absolute bottom-[0rem] right-[0rem] bg-orange-500  w-[6px] h-[0rem] group-hover:h-[6rem] duration-500 group-hover:transition-all  "></div>
+      <div className="topBorder absolute bottom-[0rem] right-[0rem] bg-orange-500  w-[6px] h-[0rem] group-hover:h-[3rem] xsm:group-hover:h-[6rem] duration-500 group-hover:transition-all  "></div>
       {/* bottom right line  */}
       {/* bottom right line  */}
 

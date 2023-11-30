@@ -42,10 +42,3 @@ const Statistics = () => {
 };
 
 export default Statistics;
-
-{
-  /* <h3 className="counterNumber mb-1.5 ">{ele.number}+</h3> */
-}
-{
-  /* <h4 className="counterTitle  ">{ele.text}</h4> */
-}
