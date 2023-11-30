@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import DeliveryManCard from "./DeliveryManCard";
 import { useQuery } from "@tanstack/react-query";
 import UseAxiosPublic from "../Hooks/UseAxiosPublic";
+import Loading from "./Loading/Loading";
 
 const TopDelivery = () => {
   const [sortedData, setSortedData] = useState([]);
@@ -38,6 +39,10 @@ const TopDelivery = () => {
     setSortedData(sliceData);
   }, [delivaryMans]);
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="TopDeliveryContainer bg-yellow-50 py-4 ">
       <div className="TopDeliveryWrapper  w-[96%] sm:w-[93%] md:w-[90%] m-auto ">
@@ -51,7 +56,7 @@ const TopDelivery = () => {
 
             {/* sepoerator image  */}
 
-            <div className="seperatorImg  m-auto w-[8rem] lg:w-[10rem] flex justify-center items-center mb-6 ">
+            <div className="seperatorImg  m-auto w-[8rem] lg:w-[10rem] flex justify-center items-center mb-6   ">
               <img
                 src="https://i.ibb.co/pr3Ryq7/separator.png"
                 className="  w-full h-full "

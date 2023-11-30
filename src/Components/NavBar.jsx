@@ -3,8 +3,11 @@ import { Link, NavLink } from "react-router-dom";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
 import { RiMenu3Fill, RiCloseFill, RiXingLine } from "react-icons/ri";
 import { MdOutlineNotifications } from "react-icons/md";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import UseAuth from "../Hooks/UseAuth";
 import Loading from "./Loading/Loading";
+import { logoutSuccessFully } from "../ToastFunc/ToastFunction";
 
 const navLink = [
   {
@@ -52,16 +55,14 @@ const NavBar = () => {
   const handleLogout = () => {
     setToggleAvatar(!toggleAvatar);
     logoutFunction();
+    logoutSuccessFully();
   };
-
-  // console.log("--------------------------");
-  // console.log(user);
-  // console.log("--------------------------");
 
   return (
     <div
       className={` navContainer  z-50 py-2.5  bg-gray-100 dark:bg-gray-400  fixed w-full drop-shadow-lg `}
     >
+      <ToastContainer />
       <div className="navWrapper flex justify-between w-[98%] xsm:w-[97%] lg:w-[96%] m-auto items-center ">
         {/* nav left  */}
         <div className="navLeft  ">

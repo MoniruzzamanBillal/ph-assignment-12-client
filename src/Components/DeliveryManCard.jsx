@@ -4,15 +4,15 @@ import { Link } from "react-router-dom";
 const DeliveryManCard = ({ delivaryman }) => {
   // console.log(Object.keys(delivaryman).join(","));
 
-  console.log(delivaryman);
+  // console.log(delivaryman);
 
   const { _id, email, uid, role, name, delivaryDone, averageRating, userImg } =
     delivaryman;
 
   return (
     <div className="max-w-sm m-auto xsm:m-0  group  bg-white   border border-gray-200 rounded-lg shadow dark:bg-gray-600 dark:border-gray-700 overflow-hidden ">
-      <div className="cardImg   flex justify-center items-center self-center group-hover:scale-105 duration-500  ">
-        <img className="rounded-t-lg   " src={userImg} alt="" />
+      <div className="cardImg   flex justify-center items-center self-center group-hover:scale-105 duration-500 h-[18rem]   ">
+        <img className="rounded-t-lg  w-full h-full " src={userImg} alt="" />
       </div>
       <div className=" cardBody  p-3 sm:p-2 md:p-3 bg-gray-100 dark:bg-gray-500 flex flex-col  ">
         {/* \ */}

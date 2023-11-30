@@ -208,14 +208,15 @@ export const paymentSuccessFully = () =>
     theme: "colored",
   });
 
-// review added success fully
-
-// if(data?.status==='cancel' ||data?.status==='red' ){
-//   color = red
-// }
-// else if(data?.status==='delivered'){
-//   color = green
-// }
-// else{
-//   color = yellow
-// }
+// successfully payment added
+export const logoutSuccessFully = () =>
+  toast.success(" Logout successfully ", {
+    position: "top-center",
+    autoClose: 1200,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });
