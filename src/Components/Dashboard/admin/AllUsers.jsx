@@ -12,6 +12,7 @@ import UserCountHook from "../../../Hooks/UserCountHook";
 import UseAuth from "../../../Hooks/UseAuth";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import { Helmet } from "react-helmet";
+import { AnimatePresence, motion } from "framer-motion";
 
 const AllUsers = () => {
   const { user } = UseAuth();
@@ -103,130 +104,144 @@ const AllUsers = () => {
   // console.log(users);
 
   return (
-    <div>
-      <Helmet>
-        <title>All Users</title>
-        <meta name="description" content="Helmet application" />
-      </Helmet>
-      <div className=" bg-red-400 w-[95%] m-auto   ">
-        <div className=" flex flex-col justify-center items-center h-screen  shadow   bg-gray-50  px-2 pt-3">
-          <table className=" ">
-            <thead>
-              <tr>
-                {/* parcel type  */}
-                <th className=" text-center px-2 py-2 border-b-2 border-gray-300 leading-4 text-blue-500 ">
-                  User name
-                </th>
-                {/* parcel type  */}
+    <AnimatePresence>
+      <motion.div
+        initial={{ x: "-1000" }}
+        animate={{
+          x: 0,
+        }}
+        exit={{
+          x: "1000",
+          transition: {
+            duration: 0.2,
+          },
+        }}
+        transition={{ duration: 1 }}
+      >
+        <Helmet>
+          <title>All Users</title>
+          <meta name="description" content="Helmet application" />
+        </Helmet>
+        <div className=" bg-red-400 w-[95%] m-auto   ">
+          <div className=" flex flex-col justify-center items-center h-screen  shadow   bg-gray-50  px-2 pt-3">
+            <table className=" ">
+              <thead>
+                <tr>
+                  {/* parcel type  */}
+                  <th className=" text-center px-2 py-2 border-b-2 border-gray-300 leading-4 text-blue-500 ">
+                    User name
+                  </th>
+                  {/* parcel type  */}
 
-                {/* requested deliveryc date  */}
-                <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
-                  Phone numbere
-                </th>
-                {/* requested deliveryc date  */}
+                  {/* requested deliveryc date  */}
+                  <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
+                    Phone numbere
+                  </th>
+                  {/* requested deliveryc date  */}
 
-                {/* approximate delivery date  */}
-                <th className=" text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
-                  Number of parcel booked
-                </th>
-                {/* approximate delivery date  */}
+                  {/* approximate delivery date  */}
+                  <th className=" text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
+                    Number of parcel booked
+                  </th>
+                  {/* approximate delivery date  */}
 
-                {/* Booking Date delivery date  */}
-                <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
-                  Make delivery man
-                </th>
-                {/* Booking Date delivery date  */}
+                  {/* Booking Date delivery date  */}
+                  <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
+                    Make delivery man
+                  </th>
+                  {/* Booking Date delivery date  */}
 
-                {/* Delivery Men ID  */}
-                <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
-                  Make admin
-                </th>
-                {/*Delivery Men ID  */}
-              </tr>
-            </thead>
-            <tbody className="bg-white">
-              {userData &&
-                userData.map((user, ind) => (
-                  <tr key={ind}>
-                    <td className="  py-2 px-2 text-left leading-4    border-b border-gray-500">
-                      <div className="flex items-center justify-center ">
-                        <div>
-                          <div className="text-sm leading-5 text-gray-800">
-                            {user?.name}
+                  {/* Delivery Men ID  */}
+                  <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
+                    Make admin
+                  </th>
+                  {/*Delivery Men ID  */}
+                </tr>
+              </thead>
+              <tbody className="bg-white">
+                {userData &&
+                  userData.map((user, ind) => (
+                    <tr key={ind}>
+                      <td className="  py-2 px-2 text-left leading-4    border-b border-gray-500">
+                        <div className="flex items-center justify-center ">
+                          <div>
+                            <div className="text-sm leading-5 text-gray-800">
+                              {user?.name}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="py-2 px-2  text-left leading-4  border-b border-gray-500">
-                      <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
-                        {user?.phoneNumber}
-                      </div>
-                    </td>
-                    <td className="py-2 px-2  text-left leading-4  border-b border-gray-500 ">
-                      <div className="flex items-center justify-center">
-                        {user?.parcelBook ? user?.parcelBook : "0"}
-                      </div>
-                    </td>
-                    <td className="py-2 px-2 text-left leading-4  border-b border-gray-500">
-                      <div
-                        className="flex items-center justify-center bg-violet-500 py-2 rounded-md text-sm font-semibold cursor-pointer active:scale-95 "
-                        onClick={() => makeDeliveryMan(user?._id)}
-                      >
-                        Make delivery man
-                      </div>
-                    </td>
-                    <td className="py-2 px-2  text-left leading-4  border-b border-gray-500">
-                      <div
-                        className="flex items-center justify-center bg-green-500 py-2 rounded-md text-sm font-semibold  cursor-pointer active:scale-95 "
-                        onClick={() => makeAdmin(user?._id)}
-                      >
-                        Make Admin
-                      </div>
-                    </td>
-                    {/*  */}
-                  </tr>
-                ))}
-              {/*  */}
-              {/*  */}
-              {/*  */}
+                      </td>
+                      <td className="py-2 px-2  text-left leading-4  border-b border-gray-500">
+                        <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
+                          {user?.phoneNumber}
+                        </div>
+                      </td>
+                      <td className="py-2 px-2  text-left leading-4  border-b border-gray-500 ">
+                        <div className="flex items-center justify-center">
+                          {user?.parcelBook ? user?.parcelBook : "0"}
+                        </div>
+                      </td>
+                      <td className="py-2 px-2 text-left leading-4  border-b border-gray-500">
+                        <div
+                          className="flex items-center justify-center bg-violet-500 py-2 rounded-md text-sm font-semibold cursor-pointer active:scale-95 "
+                          onClick={() => makeDeliveryMan(user?._id)}
+                        >
+                          Make delivery man
+                        </div>
+                      </td>
+                      <td className="py-2 px-2  text-left leading-4  border-b border-gray-500">
+                        <div
+                          className="flex items-center justify-center bg-green-500 py-2 rounded-md text-sm font-semibold  cursor-pointer active:scale-95 "
+                          onClick={() => makeAdmin(user?._id)}
+                        >
+                          Make Admin
+                        </div>
+                      </td>
+                      {/*  */}
+                    </tr>
+                  ))}
+                {/*  */}
+                {/*  */}
+                {/*  */}
 
-              {/*  */}
-              {/*  */}
-              {/*  */}
-            </tbody>
-          </table>
+                {/*  */}
+                {/*  */}
+                {/*  */}
+              </tbody>
+            </table>
 
-          <div className="pagination   mt-3 py-4 text-center text-xs xsm:text-sm sm:text-base  ">
-            <button
-              onClick={() => handlePrev()}
-              className=" py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 border-r border-gray-600 text-white bg-gray-500  hover:bg-gray-700   "
-            >
-              Prev
-            </button>
-            {pages.map((page, ind) => (
+            <div className="pagination   mt-3 py-4 text-center text-xs xsm:text-sm sm:text-base  ">
               <button
-                onClick={() => handlePageClick(page)}
-                className={` py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white   ${
-                  currentPage - 1 === page
-                    ? "bg-[#e4c590] hover:bg-amber-300 "
-                    : "bg-gray-500  hover:bg-gray-700"
-                } border-r border-gray-600 `}
+                onClick={() => handlePrev()}
+                className=" py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 border-r border-gray-600 text-white bg-gray-500  hover:bg-gray-700   "
               >
-                {" "}
-                {page + 1}{" "}
+                Prev
               </button>
-            ))}
-            <button
-              onClick={() => handleNextCurrent()}
-              className="py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white bg-gray-500  hover:bg-gray-700   "
-            >
-              Next
-            </button>
+              {pages.map((page, ind) => (
+                <button
+                  onClick={() => handlePageClick(page)}
+                  className={` py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white   ${
+                    currentPage - 1 === page
+                      ? "bg-[#e4c590] hover:bg-amber-300 "
+                      : "bg-gray-500  hover:bg-gray-700"
+                  } border-r border-gray-600 `}
+                >
+                  {" "}
+                  {page + 1}{" "}
+                </button>
+              ))}
+              <button
+                onClick={() => handleNextCurrent()}
+                className="py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white bg-gray-500  hover:bg-gray-700   "
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <ToastContainer />
-    </div>
+        <ToastContainer />
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

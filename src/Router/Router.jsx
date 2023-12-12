@@ -15,6 +15,7 @@ import Test from "../Components/Loading/Test";
 import MyDelivery from "../Components/Dashboard/DeliveryMan/MyDelivery";
 import MyReview from "../Components/Dashboard/DeliveryMan/MyReview";
 import PrivateRoute from "./PrivateRoute";
+import Reviniew from "../Components/Dashboard/admin/Reviniew";
 
 const Router = createBrowserRouter([
   {
@@ -88,8 +89,7 @@ const Router = createBrowserRouter([
         path: "/dashboard/statistics",
         element: (
           <PrivateRoute>
-            {" "}
-            <p> Statistics </p>{" "}
+            <Reviniew />
           </PrivateRoute>
         ),
       },

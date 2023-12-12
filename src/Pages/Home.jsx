@@ -4,10 +4,26 @@ import Feature from "../Components/Feature";
 import Statistics from "../Components/Statistics";
 import TopDelivery from "../Components/TopDelivery";
 import { Helmet } from "react-helmet";
+import { motion } from "framer-motion";
 
 const Home = () => {
   return (
-    <div className="homeContainer  pt-[4rem] ">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{
+        opacity: 1,
+        transition: {
+          duration: 1,
+        },
+      }}
+      exit={{
+        opacity: 1,
+        transition: {
+          duration: 2,
+        },
+      }}
+      className="homeContainer  pt-[4rem] "
+    >
       <Helmet>
         <title>Home</title>
         <meta name="description" content="Helmet application" />
@@ -39,7 +55,7 @@ const Home = () => {
 
         {/*  */}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

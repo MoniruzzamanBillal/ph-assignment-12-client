@@ -20,6 +20,7 @@ import UseDelivaryMan from "../../../Hooks/UseDelivaryMan";
 import { dataAddedSuccessFully } from "../../../ToastFunc/ToastFunction";
 import UseParcelCountHook from "../../../Hooks/UseParcelCountHook";
 import { Helmet } from "react-helmet";
+import { AnimatePresence, motion } from "framer-motion";
 
 const AllParcel = () => {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ const AllParcel = () => {
   const [parcelsData, setParcelsData] = useState([]);
   const pages = [...Array(Totalpage).keys()];
 
-  console.log(parcelsData);
+  // console.log(parcelsData);
 
   // page number click functionality
   const handlePageClick = (page) => {
@@ -135,303 +136,320 @@ const AllParcel = () => {
   // console.log(Allparcel.data);
 
   return (
-    <div>
-      <Helmet>
-        <title>All Parcels</title>
-        <meta name="description" content="Helmet application" />
-      </Helmet>
-      <div className=" bg-red-400 w-[95%] m-auto    ">
-        <div className=" flex flex-col justify-center items-center h-screen  shadow  bg-gray-50  px-2 pt-3">
-          <div className="search  pb-2 ">
-            <h1 className="font-semibold text-xl mb-2 ">
-              Search requested delivary :{" "}
-            </h1>
+    <AnimatePresence>
+      <motion.div
+        initial={{ x: "-1000" }}
+        animate={{
+          x: 0,
+        }}
+        exit={{
+          x: "1000",
+          transition: {
+            duration: 0.1,
+          },
+        }}
+        transition={{ duration: 1 }}
+      >
+        <Helmet>
+          <title>All Parcels</title>
+          <meta name="description" content="Helmet application" />
+        </Helmet>
+        <div className=" bg-red-400 w-[95%] m-auto    ">
+          <div className=" flex flex-col justify-center items-center h-screen  shadow  bg-gray-50  px-2 pt-3">
+            <div className="search  pb-2 ">
+              <h1 className="font-semibold text-xl mb-2 ">
+                Search requested delivary :{" "}
+              </h1>
 
-            {/*  */}
-            {/* requested date from  */}
-            <div className=" flex justify-center items-center gap-x-2 mb-2 ">
-              <label
-                htmlFor="delivery_address"
-                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-              >
-                From
-              </label>
-              <input
-                type="date"
-                id="delivery_date"
-                name="delivery_date"
-                className="text-xs"
-                onChange={(e) => setFromDate(e.target.value)}
-              />
+              {/*  */}
+              {/* requested date from  */}
+              <div className=" flex justify-center items-center gap-x-2 mb-2 ">
+                <label
+                  htmlFor="delivery_address"
+                  className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+                >
+                  From
+                </label>
+                <input
+                  type="date"
+                  id="delivery_date"
+                  name="delivery_date"
+                  className="text-xs"
+                  onChange={(e) => setFromDate(e.target.value)}
+                />
+              </div>
+
+              {/* requested date from  */}
+              {/*  */}
+
+              {/*  */}
+              {/* requested date to  */}
+              <div className=" flex justify-center items-center gap-x-2 mb-2 ">
+                <label
+                  htmlFor="delivery_address"
+                  className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+                >
+                  To
+                </label>
+                <input
+                  type="date"
+                  id="delivery_date"
+                  name="delivery_date"
+                  className="text-xs"
+                  onChange={(e) => setToDate(e.target.value)}
+                />
+              </div>
+              {/* requested date to  */}
+              {/*  */}
+
+              {/* search button  */}
+              <div className="searchBtn  text-center ">
+                <button
+                  className=" py-2 px-4 bg-gray-400 font-semibold rounded "
+                  onClick={() => handleSearch()}
+                >
+                  Search
+                </button>
+              </div>
+              {/* search button  */}
             </div>
-
-            {/* requested date from  */}
             {/*  */}
+            <table className=" ">
+              <thead>
+                <tr>
+                  {/* parcel type  */}
+                  <th className=" text-center px-2 py-2 border-b-2 border-gray-300 leading-4 text-blue-500 ">
+                    Booked by
+                  </th>
+                  {/* parcel type  */}
 
-            {/*  */}
-            {/* requested date to  */}
-            <div className=" flex justify-center items-center gap-x-2 mb-2 ">
-              <label
-                htmlFor="delivery_address"
-                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
-              >
-                To
-              </label>
-              <input
-                type="date"
-                id="delivery_date"
-                name="delivery_date"
-                className="text-xs"
-                onChange={(e) => setToDate(e.target.value)}
-              />
-            </div>
-            {/* requested date to  */}
-            {/*  */}
+                  {/* requested deliveryc date  */}
+                  <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
+                    User image
+                  </th>
+                  {/* requested deliveryc date  */}
 
-            {/* search button  */}
-            <div className="searchBtn  text-center ">
-              <button
-                className=" py-2 px-4 bg-gray-400 font-semibold rounded "
-                onClick={() => handleSearch()}
-              >
-                Search
-              </button>
-            </div>
-            {/* search button  */}
-          </div>
-          {/*  */}
-          <table className=" ">
-            <thead>
-              <tr>
-                {/* parcel type  */}
-                <th className=" text-center px-2 py-2 border-b-2 border-gray-300 leading-4 text-blue-500 ">
-                  Booked by
-                </th>
-                {/* parcel type  */}
+                  {/* approximate delivery date  */}
+                  <th className=" text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
+                    Booking Date
+                  </th>
+                  {/* approximate delivery date  */}
 
-                {/* requested deliveryc date  */}
-                <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
-                  User image
-                </th>
-                {/* requested deliveryc date  */}
+                  {/* Booking Date delivery date  */}
+                  <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
+                    Requested Delivery Date
+                  </th>
+                  {/* Booking Date delivery date  */}
 
-                {/* approximate delivery date  */}
-                <th className=" text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
-                  Booking Date
-                </th>
-                {/* approximate delivery date  */}
+                  {/* Delivery Men ID  */}
+                  <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
+                    Cost
+                  </th>
+                  {/*Delivery Men ID  */}
 
-                {/* Booking Date delivery date  */}
-                <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
-                  Requested Delivery Date
-                </th>
-                {/* Booking Date delivery date  */}
+                  {/* Booking Status */}
+                  <th className="px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500 text-center">
+                    Booking Status
+                  </th>
+                  {/*Booking Status  */}
 
-                {/* Delivery Men ID  */}
-                <th className="text-center px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500">
-                  Cost
-                </th>
-                {/*Delivery Men ID  */}
-
-                {/* Booking Status */}
-                <th className="px-2 py-2 border-b-2 border-gray-300  leading-4 text-blue-500 text-center">
-                  Booking Status
-                </th>
-                {/*Booking Status  */}
-
-                {/* Booking Status */}
-                <th className="px-2 py-2 border-b-2 border-gray-300 text-center leading-4 text-blue-500">
-                  Manage
-                </th>
-                {/*Booking Status  */}
-              </tr>
-            </thead>
-            <tbody className="bg-white">
-              {parcelsData &&
-                parcelsData.map((parcel, ind) => (
-                  <tr key={ind}>
-                    <td className="  py-2 text-left leading-4    border-b border-gray-500">
-                      <div className="flex items-center justify-center ">
-                        <div>
-                          <div className="text-sm leading-5 text-gray-800">
-                            {parcel?.userName}
+                  {/* Booking Status */}
+                  <th className="px-2 py-2 border-b-2 border-gray-300 text-center leading-4 text-blue-500">
+                    Manage
+                  </th>
+                  {/*Booking Status  */}
+                </tr>
+              </thead>
+              <tbody className="bg-white">
+                {parcelsData &&
+                  parcelsData.map((parcel, ind) => (
+                    <tr key={ind}>
+                      <td className="  py-2 text-left leading-4    border-b border-gray-500">
+                        <div className="flex items-center justify-center ">
+                          <div>
+                            <div className="text-sm leading-5 text-gray-800">
+                              {parcel?.userName}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="py-2 text-center leading-4  border-b border-gray-500">
-                      <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
-                        <img
-                          className="w-10 h-10 rounded"
-                          src={parcel?.userImg}
-                          alt="Default avatar"
-                        />
-                      </div>
-                    </td>
-                    <td className="py-2 text-center leading-4  border-b border-gray-500 ">
-                      <div className="flex items-center justify-center">
-                        {parcel?.bookingDate}
-                      </div>
-                    </td>
-                    <td className="py-2 text-center leading-4  border-b border-gray-500">
-                      <div className="flex items-center justify-center">
-                        {parcel?.requestedDate}
-                      </div>
-                    </td>
-                    <td className="py-2 text-center leading-4  border-b border-gray-500">
-                      <div className="flex items-center justify-center">
-                        {parcel?.parcelCharge}
-                      </div>
-                    </td>
-                    <td className="py-2 text-center leading-4  border-b border-gray-500">
-                      <div
-                        className={`flex items-center justify-center font-bold  ${
-                          parcel?.status === "delivered"
-                            ? "text-green-500"
-                            : parcel?.status === "canceled"
-                            ? "text-red-600"
-                            : "text-yellow-400"
-                        }  `}
-                      >
-                        {parcel?.status}
-                      </div>
-                    </td>
-                    <td className="py-2 text-center leading-4 border-b border-gray-500">
-                      <div
-                        className="flex items-center justify-center text-gray-700 cursor-pointer bg-blue-300 py-1.5 rounded active:scale-95 "
-                        onClick={() => handleManage(parcel?._id)}
-                      >
-                        Manage
-                      </div>
-                      <Modal
-                        show={openModal}
-                        size="md"
-                        onClose={onCloseModal}
-                        popup
-                      >
-                        <Modal.Header />
-                        <Modal.Body>
-                          <div className="space-y-6">
-                            <div>
-                              <div className="mb-2 block">
-                                <Label
-                                  htmlFor="deliveryman"
-                                  value="Select delivery man"
+                      </td>
+                      <td className="py-2 text-center leading-4  border-b border-gray-500">
+                        <div className="text-sm leading-5 text-blue-900 flex items-center justify-center">
+                          <img
+                            className="w-10 h-10 rounded"
+                            src={parcel?.userImg}
+                            alt="Default avatar"
+                          />
+                        </div>
+                      </td>
+                      <td className="py-2 text-center leading-4  border-b border-gray-500 ">
+                        <div className="flex items-center justify-center">
+                          {parcel?.bookingDate}
+                        </div>
+                      </td>
+                      <td className="py-2 text-center leading-4  border-b border-gray-500">
+                        <div className="flex items-center justify-center">
+                          {parcel?.requestedDate}
+                        </div>
+                      </td>
+                      <td className="py-2 text-center leading-4  border-b border-gray-500">
+                        <div className="flex items-center justify-center">
+                          {parcel?.parcelCharge}
+                        </div>
+                      </td>
+                      <td className="py-2 text-center leading-4  border-b border-gray-500">
+                        <div
+                          className={`flex items-center justify-center font-bold  ${
+                            parcel?.status === "delivered"
+                              ? "text-green-500"
+                              : parcel?.status === "canceled"
+                              ? "text-red-600"
+                              : "text-yellow-400"
+                          }  `}
+                        >
+                          {parcel?.status}
+                        </div>
+                      </td>
+                      <td className="py-2 text-center leading-4 border-b border-gray-500">
+                        <div
+                          className="flex items-center justify-center text-gray-700 cursor-pointer bg-blue-300 py-1.5 rounded active:scale-95 "
+                          onClick={() => handleManage(parcel?._id)}
+                        >
+                          Manage
+                        </div>
+                        <Modal
+                          show={openModal}
+                          size="md"
+                          onClose={onCloseModal}
+                          popup
+                        >
+                          <Modal.Header />
+                          <Modal.Body>
+                            <div className="space-y-6">
+                              <div>
+                                <div className="mb-2 block">
+                                  <Label
+                                    htmlFor="deliveryman"
+                                    value="Select delivery man"
+                                  />
+                                </div>
+                                {/*  */}
+                                {/*  */}
+                                <select
+                                  id="deliveryman"
+                                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 "
+                                  onChange={(e) =>
+                                    setDeliveryManId(e.target.value)
+                                  }
+                                >
+                                  <option>select delivary man</option>
+                                  {delivaryMans &&
+                                    delivaryMans.map((delivaryman, ind) => (
+                                      <option
+                                        key={ind}
+                                        value={delivaryman?._id}
+                                      >
+                                        {delivaryman?.name}
+                                      </option>
+                                    ))}
+                                </select>
+                                {/*  */}
+                                {/*  */}
+                              </div>
+                              <div>
+                                <div className="mb-2 block">
+                                  <Label
+                                    htmlFor="date"
+                                    value="Approximate delivery date"
+                                  />
+                                </div>
+                                <input
+                                  type="date"
+                                  name=""
+                                  id="date"
+                                  onChange={(e) =>
+                                    setDeliveryDate(e.target.value)
+                                  }
                                 />
                               </div>
-                              {/*  */}
-                              {/*  */}
-                              <select
-                                id="deliveryman"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 "
-                                onChange={(e) =>
-                                  setDeliveryManId(e.target.value)
-                                }
-                              >
-                                <option>select delivary man</option>
-                                {delivaryMans &&
-                                  delivaryMans.map((delivaryman, ind) => (
-                                    <option key={ind} value={delivaryman?._id}>
-                                      {delivaryman?.name}
-                                    </option>
-                                  ))}
-                              </select>
-                              {/*  */}
-                              {/*  */}
-                            </div>
-                            <div>
+
                               <div className="mb-2 block">
                                 <Label
-                                  htmlFor="date"
-                                  value="Approximate delivery date"
+                                  htmlFor="status"
+                                  value="delivery status : "
+                                />
+
+                                <input
+                                  type="text"
+                                  name=""
+                                  id="status"
+                                  value={status}
+                                  readOnly
+                                  className="border-none outline-none focus:outline-none "
                                 />
                               </div>
-                              <input
-                                type="date"
-                                name=""
-                                id="date"
-                                onChange={(e) =>
-                                  setDeliveryDate(e.target.value)
-                                }
-                              />
+
+                              <div className="w-full">
+                                <Button onClick={() => handleSubmit()}>
+                                  Submit
+                                </Button>
+                              </div>
                             </div>
+                          </Modal.Body>
+                        </Modal>
+                      </td>
+                    </tr>
+                  ))}
 
-                            <div className="mb-2 block">
-                              <Label
-                                htmlFor="status"
-                                value="delivery status : "
-                              />
+                {/* modal  */}
+                {/* modal  */}
 
-                              <input
-                                type="text"
-                                name=""
-                                id="status"
-                                value={status}
-                                readOnly
-                                className="border-none outline-none focus:outline-none "
-                              />
-                            </div>
+                {/* modal  */}
+                {/* modal  */}
 
-                            <div className="w-full">
-                              <Button onClick={() => handleSubmit()}>
-                                Submit
-                              </Button>
-                            </div>
-                          </div>
-                        </Modal.Body>
-                      </Modal>
-                    </td>
-                  </tr>
-                ))}
+                {/*  */}
+                {/*  */}
+                {/*  */}
+                {/*  */}
+                {/*  */}
+              </tbody>
+            </table>
 
-              {/* modal  */}
-              {/* modal  */}
+            {/*  */}
 
-              {/* modal  */}
-              {/* modal  */}
-
-              {/*  */}
-              {/*  */}
-              {/*  */}
-              {/*  */}
-              {/*  */}
-            </tbody>
-          </table>
-
-          {/*  */}
-
-          <div className="pagination   mt-3 py-4 text-center text-xs xsm:text-sm sm:text-base  ">
-            <button
-              onClick={() => handlePrev()}
-              className=" py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 border-r border-gray-600 text-white bg-gray-500  hover:bg-gray-700   "
-            >
-              Prev
-            </button>
-            {pages.map((page, ind) => (
+            <div className="pagination   mt-3 py-4 text-center text-xs xsm:text-sm sm:text-base  ">
               <button
-                onClick={() => handlePageClick(page)}
-                className={` py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white   ${
-                  currentPage - 1 === page
-                    ? "bg-[#e4c590] hover:bg-amber-300 "
-                    : "bg-gray-500  hover:bg-gray-700"
-                } border-r border-gray-600 `}
+                onClick={() => handlePrev()}
+                className=" py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 border-r border-gray-600 text-white bg-gray-500  hover:bg-gray-700   "
               >
-                {" "}
-                {page + 1}{" "}
+                Prev
               </button>
-            ))}
-            <button
-              onClick={() => handleNextCurrent()}
-              className="py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white bg-gray-500  hover:bg-gray-700   "
-            >
-              Next
-            </button>
+              {pages.map((page, ind) => (
+                <button
+                  onClick={() => handlePageClick(page)}
+                  className={` py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white   ${
+                    currentPage - 1 === page
+                      ? "bg-[#e4c590] hover:bg-amber-300 "
+                      : "bg-gray-500  hover:bg-gray-700"
+                  } border-r border-gray-600 `}
+                >
+                  {" "}
+                  {page + 1}{" "}
+                </button>
+              ))}
+              <button
+                onClick={() => handleNextCurrent()}
+                className="py-1.5 xsm:py-2.5 px-2.5 xsm:px-3 sm:px-4 text-white bg-gray-500  hover:bg-gray-700   "
+              >
+                Next
+              </button>
+            </div>
+            {/*  */}
           </div>
-          {/*  */}
         </div>
-      </div>
-      <ToastContainer />
-    </div>
+        <ToastContainer />
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

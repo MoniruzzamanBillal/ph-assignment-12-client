@@ -1,6 +1,6 @@
 // importing libraries:
 import { useState } from "react";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 
 // importing icons:
 
@@ -15,6 +15,7 @@ import { IoStatsChart } from "react-icons/io5";
 import { FaUserAstronaut } from "react-icons/fa6";
 import UseRole from "../../Hooks/UseRole";
 import { Helmet } from "react-helmet";
+import { AnimatePresence, motion } from "framer-motion";
 
 // global variables:
 
@@ -84,8 +85,27 @@ const Dashboard = () => {
     return <Loading />;
   }
 
+  const location = useLocation();
+
+  console.log(location);
+
   return (
-    <section className="relative flex justify-end">
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{
+        opacity: 1,
+        transition: {
+          duration: 1,
+        },
+      }}
+      exit={{
+        opacity: 1,
+        transition: {
+          duration: 2,
+        },
+      }}
+      className="relative flex justify-end"
+    >
       <Helmet>
         <title>Dashboard</title>
         <meta name="description" content="Helmet application" />
@@ -137,16 +157,22 @@ const Dashboard = () => {
 
               {isAdmin?.role === "admin" &&
                 adminMenu.map((ele, ind) => (
-                  <NavLink
-                    to={ele.path}
-                    key={ind}
-                    className={`flex rounded-md py-3 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
-                  >
-                    <div className="icon text-lg">{ele.icon}</div>
-                    <h1 className={` gap-1  origin-left duration-200 w-full `}>
-                      {ele.title}
-                    </h1>
-                  </NavLink>
+                  <AnimatePresence>
+                    <NavLink
+                      location={location}
+                      to={ele.path}
+                      key={location.pathname}
+                      // key={ind}
+                      className={`flex rounded-md py-3 px-2 cursor-pointer text-gray-300 hover:bg-gray-50 hover:text-gray-700 text-sm items-center gap-x-4`}
+                    >
+                      <div className="icon text-lg">{ele.icon}</div>
+                      <h1
+                        className={` gap-1  origin-left duration-200 w-full `}
+                      >
+                        {ele.title}
+                      </h1>
+                    </NavLink>
+                  </AnimatePresence>
                 ))}
 
               {/* admin menu  */}
@@ -231,7 +257,7 @@ const Dashboard = () => {
       </div>
       {/* sidebar child components ends */}
       {/* child components starts ends */}
-    </section>
+    </motion.section>
   );
 };
 
