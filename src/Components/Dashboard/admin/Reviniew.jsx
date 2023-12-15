@@ -2,7 +2,18 @@ import React, { useEffect, useState } from "react";
 import Statistics from "../../Statistics";
 import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
 import CountUp from "react-countup";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid } from "recharts";
+// import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid } from "recharts";
+import {
+  BarChart,
+  Bar,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  Rectangle,
+} from "recharts";
 
 const colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red", "pink"];
 
@@ -142,6 +153,7 @@ const Reviniew = () => {
         </div>
         {/* reviniew card  */}
 
+        {/* delivary man card , barchart  */}
         <div className="test  pt-6 w-full h-full m-auto flex justify-center items-center ">
           {delivaryMan && (
             <BarChart
@@ -158,6 +170,8 @@ const Reviniew = () => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis />
+              <Legend />
+              <Tooltip />
               <Bar
                 dataKey="delivaryDone"
                 fill="#8884d8"
@@ -171,6 +185,7 @@ const Reviniew = () => {
             </BarChart>
           )}
         </div>
+        {/* delivary man card , barchart  */}
       </div>
     </div>
   );
