@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import Statistics from "../../Statistics";
 import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
 import CountUp from "react-countup";
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid } from "recharts";
+
+const colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red", "pink"];
 
 const Reviniew = () => {
   const [reviniew, setReviniew] = useState([]);
   const [axiosPublicUrl] = UseAxiosPublic();
+  const [delivaryMan, setDelivaryMan] = useState([]);
 
   useEffect(() => {
     const UserReviniew = axiosPublicUrl.get("/reviniew").then((response) => {
@@ -17,15 +21,88 @@ const Reviniew = () => {
     });
   }, []);
 
-  console.log(reviniew);
+  // /admin/delivarymans
+
+  useEffect(() => {
+    axiosPublicUrl.get("/admin/delivarymans").then((response) => {
+      // console.log(response.data);
+      setDelivaryMan(response.data);
+    });
+  }, []);
+
+  console.log(delivaryMan);
+  // bar chart data
+  const data = [
+    {
+      name: "Page A",
+      uv: 4000,
+      pv: 24000,
+      amt: 2400,
+    },
+    {
+      name: "Page B",
+      uv: 3000,
+      pv: 1398,
+      amt: 2210,
+    },
+    {
+      name: "Page C",
+      uv: 2000,
+      pv: 9800,
+      amt: 2290,
+    },
+    {
+      name: "Page D",
+      uv: 2780,
+      pv: 3908,
+      amt: 2000,
+    },
+    {
+      name: "Page E",
+      uv: 1890,
+      pv: 4800,
+      amt: 2181,
+    },
+    {
+      name: "Page F",
+      uv: 2390,
+      pv: 3800,
+      amt: 2500,
+    },
+    {
+      name: "Page G",
+      uv: 3490,
+      pv: 4300,
+      amt: 2100,
+    },
+  ];
+
+  const getPath = (x, y, width, height) => {
+    return `M${x},${y + height}C${x + width / 3},${y + height} ${
+      x + width / 2
+    },${y + height / 3}
+    ${x + width / 2}, ${y}
+    C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height} ${
+      x + width
+    }, ${y + height}
+    Z`;
+  };
+
+  const TriangleBar = (props) => {
+    const { fill, x, y, width, height } = props;
+
+    return <path d={getPath(x, y, width, height)} stroke="none" fill={fill} />;
+  };
+  // bar chart data
 
   return (
-    <div className="reviniewContainer bg-red-500 h-screen ">
-      <div className="reviniewWrapper bg-lime-300 h-full flex flex-col  ">
+    // <div className="reviniewContainer bg-red-500 h-screen ">
+    <div className="reviniewContainer bg-blue-300  ">
+      <div className="reviniewWrapper  h-full flex flex-col  ">
         <Statistics />
 
         {/* reviniew card  */}
-        <div className=" w-[50%] flex group flex-col items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-600 p-4 lg:p-8  cursor-pointer relative m-auto    hover:shadow-lg ">
+        <div className=" w-[50%] flex group flex-col items-center justify-center rounded-lg bg-blue-100  p-4 lg:p-8  cursor-pointer relative m-auto    hover:shadow-lg ">
           {/* top border  */}
 
           {/* top line  */}
@@ -64,6 +141,36 @@ const Reviniew = () => {
           </div>
         </div>
         {/* reviniew card  */}
+
+        <div className="test  pt-6 w-full h-full m-auto flex justify-center items-center ">
+          {delivaryMan && (
+            <BarChart
+              width={500}
+              height={300}
+              data={delivaryMan}
+              margin={{
+                top: 20,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Bar
+                dataKey="delivaryDone"
+                fill="#8884d8"
+                // shape={<TriangleBar />}
+                label={{ position: "top" }}
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={colors[index % 20]} />
+                ))}
+              </Bar>
+            </BarChart>
+          )}
+        </div>
       </div>
     </div>
   );
